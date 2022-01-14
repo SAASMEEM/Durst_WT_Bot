@@ -3,6 +3,7 @@
 
 # Bot config
 /config.json
+/.env
 
 # Editor config
 /.vscode
