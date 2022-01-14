@@ -1,0 +1,8 @@
+# node dependencies
+/node_modules
+
+# Bot config
+/config.json
+
+# Editor config
+/.vscode

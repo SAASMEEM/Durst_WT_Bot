@@ -1,0 +1,13 @@
+module.exports = {
+    name: 'name',
+    description: 'Describe you command.',
+    aliases: ['put aliases here'],
+    usage: '\u200b',
+    execute(message, args, client) {
+        try {
+            //code
+        } catch (error) {
+            message.channel.send(`\`${error.message}\``);
+        };
+    },
+};
