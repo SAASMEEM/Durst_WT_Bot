@@ -1,10 +1,7 @@
-//const keepAlive = require('./server')
-
 // Require the necessary discord.js classes
 const fs = require('fs');
 
 const { Client, Collection, Intents } = require('discord.js');
-const mySecret = process.env['token']
 
 const mongoose = require("mongoose");
 const botconfig = require("./config.json");
@@ -44,11 +41,6 @@ for (const file of eventFiles) {
     }
 }
 
-// When the client is ready, run this code (only once)
-client.once('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-});
-
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
 
@@ -65,5 +57,4 @@ client.on('interactionCreate', async interaction => {
 });
 
 // Login to Discord with your client's token
-//keepAlive()
-client.login(botconfig.BOT_TOKEN);
+client.login(botconfig.token);

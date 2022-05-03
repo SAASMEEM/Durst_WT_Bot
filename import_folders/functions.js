@@ -20,7 +20,13 @@ function getMentionedUser(mention, client) {
     return client.users.cache.get(mention);
 }
 
-async function checkPerms(interaction, roleId, channelId) {
+async function checkPerms(interaction, userId, roleId, channelId) {
+    if (userId) {
+        if (interaction.member.id !== userId) {
+            await interaction.reply({ content: `Only <@${userId}> can use this command`, ephemeral: true })
+            return false
+        }
+    }
     if (roleId) {
         if (!interaction.member.roles.cache.has(roleId)) {
             await interaction.reply({ content: `Only <@&${roleId}> can use this command`, ephemeral: true })

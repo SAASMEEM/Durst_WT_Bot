@@ -27,14 +27,14 @@ module.exports = {
             if (!data) {
                 const newData = new Data({
                     userID: interaction.author.id,
-                    name: Name,
+                    nickname: Name,
                     lb: "all",
                     time: 0,
                     blocked: false,
                 })
                 newData.save().catch(err => console.log(err));
             } else {
-                data.name = Name;
+                data.nickname = Name;
                 data.save().catch(err => console.log(err));
             }
             interaction.reply(`Name changed to ${Name}`)

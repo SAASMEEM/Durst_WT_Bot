@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const botconfig = require("../../config.json");
-const { Permissions, MessageActionRow, MessageButton } = require('discord.js');
+const { checkPerms } = require('../../import_folders/functions')
 
 mongoose.connect(botconfig.mongoPass, {
     useNewUrlParser: true,
@@ -19,11 +19,14 @@ module.exports = {
         .addStringOption(option => option.setName('state').setDescription('Insert the state').setRequired(true)),
 
     async execute(interaction) {
+        var check = await checkPerms(interaction, botconfig.adminId, null/*'772094019748233218'*/, null)
+        if (!check) return
+
         const Name = interaction.options.getString('name');
         const Type = interaction.options.getString('type');
         const State = interaction.options.getString('state');
-        if (!Type === 'PLAYING' && !Type === 'LISTENING') return interaction.reply({ content: `You entered a false Type! Please use [PLAYING/LISTENING]`, ephermal: true })
-        if (!State === 'idle' && !State === 'online' && !State === 'dnd') return interaction.reply({ content: `You entered a false State! Please use [idle/online/dnd]`, ephermal: true })
+        if (!Type === 'PLAYING' || !Type === 'LISTENING' || !Type === 'COMPETING') return interaction.reply({ content: `You entered a false Type! Please use [PLAYING/LISTENING]`, ephemeral: true })
+        if (!State === 'idle' || !State === 'online' || !State === 'dnd' || !State === 'invisible') return interaction.reply({ content: `You entered a false State! Please use [idle/online/dnd]`, ephemeral: true })
 
         Status.findOne({
             search: true
@@ -43,7 +46,7 @@ module.exports = {
                 status.state = State;
                 status.save().catch(err => console.log(err));
             }
-            interaction.reply(`Name changed to "${Name}"\nType changed to "${Type}"\nState changed to "${State}`)
+            interaction.reply({ content: `Name changed to "${Name}"\nType changed to "${Type}"\nState changed to "${State}`, ephemeral: true })
         })
     },
 };

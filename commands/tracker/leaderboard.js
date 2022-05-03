@@ -27,7 +27,8 @@ module.exports = {
             var page = Math.ceil(res.length / 10);
 
             let lbembed = new Discord.MessageEmbed()
-                .setTitle(`Top Users`);
+                .setTitle(`Top Users`)
+                .setDescription(`All time Leaderboard`);
             const Page = interaction.options.getNumber('page')
             let pg = parseInt(Page);
             if (pg != Math.floor(pg)) pg = 1;
@@ -35,26 +36,45 @@ module.exports = {
             let end = pg * 10
             let start = (pg * 10) - 10;
 
+            /*
+            const forwardButton = new Discord.MessageButton()
+                .setCustomId('left')
+                .setEmoji('◀️')
+                .setStyle('PRIMARY');
+            const backButton = new Discord.MessageButton()
+                .setCustomId('right')
+                .setEmoji('▶️')
+                .setStyle('PRIMARY');
+                */
+
             if (res.length === 0) {
                 lbembed.addFields({
                     name: "Error", value: "No pages found"
                 });
+                /*
+                forwardButton.setDisabled(true);
+                backButton.setDisabled(true);
+                */
             } else if (res.length <= start) {
                 lbembed.addFields({
                     name: "Error", value: "Page not found!"
                 });
+                /*
+                forwardButton.setDisabled(true);
+                backButton.setDisabled(true);
+                */
             } else if (res.length <= end) {
-                lbembed.setFooter(`page ${pg} of ${page}`);
+                lbembed.setFooter({ text: `page ${pg} of ${page}` });
                 for (i = start; i < res.length; i++) {
-                    lbembed.addField(`${i + 1}. ${res[i].name}`, `${Duration(res[i].time, { unit: ['h', 'm'], round: true })}`)
+                    lbembed.addField(`${i + 1}. \`${Duration(res[i].time, { unit: ['h', 'm'], round: true })}\``, `${res[i].nickname} \(${res[i].name}\)`)
                 }
             } else {
-                lbembed.setFooter(`page ${pg} of ${page}`);
+                lbembed.setFooter({ text: `page ${pg} of ${page}` });
                 for (i = start; i < end; i++) {
-                    lbembed.addField(`${i + 1}. ${res[i].name}`, `${Duration(res[i].time, { unit: ['h', 'm'], round: true })}`)
+                    lbembed.addField(`${i + 1}. \`${Duration(res[i].time, { unit: ['h', 'm'], round: true })}\``, `${res[i].nickname} \(${res[i].name}\)`)
                 }
             }
-            interaction.reply({ embeds: [lbembed] })
+            interaction.reply({ embeds: [lbembed],/* components: [forwardButton, backButton]*/ })
         })
     },
 };

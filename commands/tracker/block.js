@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const botconfig = require("../../config.json");
-const { Permissions, MessageActionRow, MessageButton } = require('discord.js');
+const { MessageActionRow, MessageButton } = require('discord.js');
+const { checkPerms } = require('../../import_folders/functions')
 
 mongoose.connect(botconfig.mongoPass, {
     useNewUrlParser: true,
@@ -17,7 +18,9 @@ module.exports = {
         .addUserOption(option => option.setName('target').setDescription('Select a User').setRequired(true)),
 
     async execute(interaction) {
-        if (!interaction.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) return interaction.reply({ content: `You don't have permissions to block someone.`, ephermal: true })
+        var check = await checkPerms(interaction, null, '772094019748233218', null)
+        if (!check) return
+
         const User = interaction.options.getUser('target');
         if (!User) return interaction.reply("Couldn't find user");
 
@@ -34,10 +37,10 @@ module.exports = {
             );
 
         const Blocked = await Data.exists({ blocked: true })
-        console.log(Blocked)
+        //console.log(Blocked)
 
         if (Blocked) return interaction.reply(`You cannot block an already blocked user.`)
-        const message = await interaction.reply({ content: `React with ✅ to confirm the unblock of ${User.tag}`, components: [confirmation], fetchReply: true });
+        const message = await interaction.reply({ content: `React with ✅ to confirm the block of ${User.tag}`, components: [confirmation], fetchReply: true });
 
         const filter = i => i.customId === 'Yes' || 'Cancel'
 
@@ -49,10 +52,11 @@ module.exports = {
                 }, (err, data) => {
                     if (err) console.log(err)
                     data.time = 0;
-                    data.lb = "all";
-                    data.blocked = false;
+                    data.timeweekly = 0;
+                    data.lb = "none";
+                    data.blocked = true;
                     data.save().catch(err => console.log(err));
-                    i.update({ content: `${User.username} was unblocked!`, components: [] })
+                    i.update({ content: `${User.username} was blocked!`, components: [] })
                 })
             } else {
                 i.update({ content: `Request was cancelled!`, components: [] });

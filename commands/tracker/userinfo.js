@@ -19,7 +19,7 @@ module.exports = {
 
     async execute(interaction) {
         const User = interaction.options.getUser('target') || interaction.user;
-        if (!User) await interaction.reply({ content: "Couldn't find user", ephermal: true });
+        if (!User) await interaction.reply({ content: "Couldn't find user", ephemeral: true });
         var infoembed = new Discord.MessageEmbed()
             .setColor('#880099')
             .setTitle(`${User.username}`)
@@ -30,13 +30,13 @@ module.exports = {
         }, (err, data) => {
             if (err) console.log(err);
             if (!data) {
-                infoembed.addFields({ name: 'Name:', value: `None` },)
-                infoembed.addFields({ name: 'Time:', value: `None` },)
-                infoembed.addFields({ name: 'Blocked:', value: `None` },)
+                infoembed.addFields({ name: 'This User has no profile set up!', value: `<@${User.id}> can create their profile by using voice-channel.` })
                 interaction.reply({ embeds: [infoembed] })
             } else {
-                infoembed.addFields({ name: 'Name:', value: `${data.name}` },)
+                infoembed.addFields({ name: 'Name:', value: `${data.name}` })
+                infoembed.addFields({ name: 'Nickname', value: `${data.nickname}` })
                 infoembed.addFields({ name: 'Time:', value: `${Duration(data.time, { unit: ['h', 'm'], round: true })}` },)
+                infoembed.addFields({ name: 'Weekly Time:', value: `${Duration(data.timeweekly, { unit: ['h', 'm'], round: true })}` },)
                 infoembed.addFields({ name: 'Blocked:', value: `${data.blocked}` },)
                 interaction.reply({ embeds: [infoembed] })
             }

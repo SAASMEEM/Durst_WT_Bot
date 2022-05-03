@@ -1,169 +1,187 @@
+const Discord = require("discord.js");
 const mongoose = require("mongoose");
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require("@discordjs/builders");
 const botconfig = require("../../config.json");
-const { Permissions } = require('discord.js');
-const Discord = require('discord.js');
+const { checkPerms } = require('../../import_folders/functions')
 
-const Data = require("../../models/data.js")
+const Data = require("../../models/data.js");
 
+/** @type {{data: import("@discordjs/builders").SlashCommandBuilder, execute: (interaction: import("discord.js").MessageComponentInteraction) => Promise<void>}} */
 module.exports = {
     data: new SlashCommandBuilder()
         .setName(`clanwar`)
-        .setDescription('Call a clanwar')
-        .addStringOption(option => option.setName('battlerank').setDescription('Insert the battle rank').setRequired(true))
-        .addStringOption(option => option.setName('time').setDescription('Specify the starting time').setRequired(true)),
+        .setDescription("Call a clanwar")
+        .addStringOption((option) =>
+            option
+                .setName("battlerank")
+                .setDescription("Insert the battle rank")
+                .setRequired(true),
+        )
+        .addIntegerOption((option) =>
+            option
+                .setName("time")
+                .setDescription("Specify the starting time")
+                .setRequired(true),
+        ),
 
     async execute(interaction) {
-        if (!interaction.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return interaction.reply({ content: `You don't have permissions to call a clanwar.`, ephermal: true })
-        const br = interaction.options.getString('battlerank');
-        const Time = interaction.options.getString('time');
+        var check = await checkPerms(interaction, botconfig.adminId, null/*'772094019748233218'*/, null)
+        if (!check) return
 
-        let tableEmbed = new Discord.MessageEmbed()
-            .setColor('#880099')
-            .setTitle('Clanwar')
-            .setDescription(`Battlerank: ${br}\nTime: ${Time}`)
-            .setThumbnail(`${interaction.guild.iconURL({ dynamic: true })}`)
-            .addFields(
-                { name: '✅Accepted:', value: '\u200b', inline: true },
-                { name: '❌Declined:', value: '\u200b', inline: true },
-                { name: '❔Maybe:', value: '\u200b', inline: true },
-            )
-            .setTimestamp()
+        const br = interaction.options.getString("battlerank");
+        const Time = interaction.options.getInteger("time");
+
+        const tableEmbed = new Discord.MessageEmbed({
+            color: '880099',
+            title: `Clanwar (${br})`,
+            description: `⏲️ ${Time}\n[Fahrzeuge](https://wt.md5lukas.de/vehicles)\n[Checkliste](https://shorturl.at/byA07)`,
+            fields: [
+                { name: '✅Accepted:', value: '\u200B', inline: true },
+                { name: '❌Declined:', value: '\u200B', inline: true },
+                { name: '❔Maybe:', value: '\u200B', inline: true },
+            ],
+            timestamp: Date.now(),
+        });
 
         await interaction.deferReply();
-        await interaction.followUp({ content: `<@872529382034522173>` })
+        await interaction.followUp({ content: `CW um ${Time} Uhr! Tragt euch ein!` });
 
-        const Reactions = new Discord.MessageActionRow()
-            .addComponents(
-                new Discord.MessageButton()
-                    .setEmoji('✅')
-                    .setCustomId('Yes')
-                    .setStyle('SUCCESS'),
-                new Discord.MessageButton()
-                    .setEmoji('❌')
-                    .setCustomId('Cancel')
-                    .setStyle('DANGER'),
-                new Discord.MessageButton()
-                    .setEmoji('❔')
-                    .setCustomId('Maybe')
-                    .setStyle('SECONDARY'),
-            )
+        const Reactions = new Discord.MessageActionRow().addComponents(
+            new Discord.MessageButton()
+                .setEmoji("✅")
+                .setCustomId("Yes")
+                .setStyle("SUCCESS"),
+            new Discord.MessageButton()
+                .setEmoji("❌")
+                .setCustomId("Cancel")
+                .setStyle("DANGER"),
+            new Discord.MessageButton()
+                .setEmoji("❔")
+                .setCustomId("Maybe")
+                .setStyle("SECONDARY"),
+        );
 
-        const m = await interaction.channel.send({ embeds: [tableEmbed], components: [Reactions], fetchReply: true })
+        const message = await interaction.channel.send({
+            embeds: [tableEmbed],
+            components: [Reactions],
+            fetchReply: true,
+        });
 
-        const acceptfilter = a => a.customId === 'Yes'
-        const declinefilter = d => d.customId === 'Cancel'
-        const questionfilter = q => q.customId === 'Maybe'
+        const time = 86400000;
 
-        const time = 3000000
+        const buttonCollector =
+            interaction.channel.createMessageComponentCollector({
+                filter: (m) =>
+                    m.customId === "Yes" ||
+                    m.customId === "Cancel" ||
+                    m.customId === "Maybe",
+                time,
+            });
 
-        const accept = interaction.channel.createMessageComponentCollector({ acceptfilter, time: time });
-        const decline = interaction.channel.createMessageComponentCollector({ declinefilter, time: time });
-        const question = interaction.channel.createMessageComponentCollector({ questionfilter, time: time });
+        /** @type {Map<string,"+"|"-"|"~">} */
+        const tableMap = new Map();
 
-        //create arrays
-        const acceptarray = [];
-        const declinearray = [];
-        const questionarray = [];
-
-
-
-        accept.on('collect', async a => {
-            if (a.customId = 'Yes') {
-                console.log(`accept`)
-                if (acceptarray.includes(a.user.id)) return;
-                acceptarray.push(a.user.id)
-                console.log(acceptarray)
-                console.log(declinearray)
-                console.log(questionarray)
-
-
-                const embed = m.embeds[0]
-                embed.fields[0] = { name: '✅Accepted:', value: `>>> ${acceptarray.join('\n ')}`, inline: true }
-                if (declinearray.includes(a.user.id)) {
-                    var declineindex = declinearray.indexOf(a.user.id);
-                    if (declineindex !== -1) {
-                        declinearray.splice(declineindex, 1)
+        buttonCollector.on("collect", (buttonInteraction) => {
+            switch (buttonInteraction.customId) {
+                case "Yes":
+                    if (tableMap.get(buttonInteraction.user.id) === "+") {
+                        buttonInteraction.reply({
+                            content: `You already accepted this clanwar!`,
+                            ephemeral: true,
+                        });
+                        return;
                     }
-                    const embed = m.embeds[0]
-                    embed.fields[1] = { name: '❌Declined:', value: `\u200b${declinearray.join('\n ')}`, inline: true }
-                }
-                if (questionarray.includes(a.user.id)) {
-                    var questionindex = questionarray.indexOf(a.user.id);
-                    if (questionindex !== -1) {
-                        questionarray.splice(questionindex, 1)
+                    tableMap.set(buttonInteraction.user.id, "+");
+                    buttonInteraction.reply({
+                        content: `You accepted the clanwar.`,
+                        ephemeral: true,
+                    });
+                    break;
+
+                case "Cancel":
+                    if (tableMap.get(buttonInteraction.user.id) === "-") {
+                        buttonInteraction.reply({
+                            content: `You already declined this clanwar!`,
+                            ephemeral: true,
+                        });
+                        return;
                     }
-                    const embed = m.embeds[0]
-                    embed.fields[2] = { name: '❔Maybe:', value: `\u200b${questionarray.join('\n ')}`, inline: true }
-                }
-                console.log(acceptarray)
-                console.log(declinearray)
-                console.log(questionarray)
-                console.log('accept over')
-                m.edit({ embeds: [embed] });
+                    tableMap.set(buttonInteraction.user.id, "-");
+                    buttonInteraction.reply({
+                        content: `You declined the clanwar.`,
+                        ephemeral: true,
+                    });
+                    break;
+
+                case "Maybe":
+                    if (tableMap.get(buttonInteraction.user.id) === "~") {
+                        buttonInteraction.reply({
+                            content: `You already enlisted as a possible clanwar participant!`,
+                            ephemeral: true,
+                        });
+                        return;
+                    }
+                    tableMap.set(buttonInteraction.user.id, "~");
+                    buttonInteraction.reply({
+                        content: `You enlisted as a possible clanwar participant.`,
+                        ephemeral: true,
+                    });
+                    break;
+
+                default:
+                    console.log("Something Broke");
+                    buttonInteraction.reply({
+                        content: "Something Broke",
+                        ephemeral: true,
+                    });
+                    break;
             }
-        })
 
-        decline.on('collect', async d => {
-            if (d.customId = 'Cancel') {
-                console.log('decline')
-                if (declinearray.includes(d.user.id)) return;
-                declinearray.push(d.user.id)
-                const embed = m.embeds[0]
-                embed.fields[1] = { name: '❌Declined:', value: `>>> ${declinearray.join('\n ')}`, inline: true }
-                if (acceptarray.includes(d.user.id)) {
-                    var acceptindex = acceptarray.indexOf(d.user.id);
-                    if (acceptindex !== -1) {
-                        acceptarray.splice(acceptindex, 1)
-                    }
-                    const embed = m.embeds[0]
-                    embed.fields[1] = { name: '✅Accepted:', value: `\u200b${acceptarray.join('\n ')}`, inline: true }
-                }
-                if (questionarray.includes(d.user.id)) {
-                    var questionindex = questionarray.indexOf(d.user.id);
-                    if (questionindex !== -1) {
-                        questionarray.splice(questionindex, 1)
-                    }
-                    const embed = m.embeds[2]
-                    embed.fields[1] = { name: '❔Maybe:', value: `\u200b${questionarray.join('\n ')}`, inline: true }
-                }
-                console.log(acceptarray)
-                console.log(declinearray)
-                console.log(questionarray)
-                console.log('decline over')
-                m.edit({ embeds: [embed] });
-            }
-        })
+            updateEmbed(message, tableMap);
+        });
+    },
+};
 
-        question.on('collect', async q => {
-            if (q.customId = 'Maybe') {
-                console.log('question')
-                if (questionarray.includes(q.user.id)) return;
-                questionarray.push(q.user.id)
-                const embed = m.embeds[0]
-                embed.fields[2] = { name: '❔Maybe:', value: `>>> ${questionarray.join('\n ')}`, inline: true }
-                if (acceptarray.includes(q.user.id)) {
-                    var acceptindex = acceptarray.indexOf(q.user.id);
-                    if (acceptindex !== -1) {
-                        acceptarray.splice(acceptindex, 1)
-                    }
-                    const embed = m.embeds[0]
-                    embed.fields[1] = { name: '✅Accepted:', value: `\u200b${acceptarray.join('\n ')}`, inline: true }
-                }
-                if (declinearray.includes(q.user.id)) {
-                    var declineindex = declinearray.indexOf(q.user.id);
-                    if (declineindex !== -1) {
-                        declinearray.splice(declineindex, 1)
-                    }
-                    const embed = m.embeds[0]
-                    embed.fields[1] = { name: '❌Declined:', value: `\u200b${declinearray.join('\n ')}`, inline: true }
-                }
-                console.log(acceptarray)
-                console.log(declinearray)
-                console.log(questionarray)
-                console.log('question over')
-                m.edit({ embeds: [embed] });
-            }
-        })
-    }
+/**
+ *
+ * @param {import("discord.js").Message<boolean>} message
+ * @param {Map<string,"+"|"-"|"~">} map
+ */
+function updateEmbed(message, map) {
+    message.embeds[0].fields = getFields(message, map);
+    message.edit({
+        embeds: message.embeds,
+    });
+}
+
+/**
+ *
+ * @param {import("discord.js").Message<boolean>} message
+ * @param {Map<string,"+"|"-"|"~">} map
+ */
+function getFields(message, map) {
+    /** @type {Map<string,"+"|"-"|"~">} */
+    const keyMap = new Map([
+        ["✅Accepted:", "+"],
+        ["❌Declined:", "-"],
+        ["❔Maybe:", "~"],
+    ]);
+
+    return message.embeds[0].fields.map((old) => {
+        const key = keyMap.get(old.name);
+        if (!key) {
+            console.error("Something has gone terribly wrong here!");
+            return undefined;
+        }
+
+        const ids = Array.from(map)
+            .filter((v) => v[1] === key)
+            .map((v) => v[0]);
+
+        return {
+            name: old.name,
+            value: `\u200B${ids.map((id) => `<@${id}>\n `).join("")}`,
+            inline: true,
+        };
+    });
 }
