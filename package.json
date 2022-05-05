@@ -4,6 +4,7 @@
   "description": "second devbot",
   "author": "SAASMEEM",
   "scripts": {
+    "prepare": "husky install",
     "format": "prettier -w .",
     "start": "node index.js",
     "deploy": "node deploy-commands.js"
@@ -23,7 +24,12 @@
     "util": "^0.12.4"
   },
   "devDependencies": {
+    "husky": "^7.0.4",
+    "lint-staged": "^12.4.1",
     "prettier": "^2.6.2"
   },
-  "prettier": {}
+  "prettier": {},
+  "lint-staged": {
+    "*": "prettier --ignore-unknown --write"
+  }
 }
