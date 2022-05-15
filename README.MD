@@ -58,4 +58,5 @@ You can contact me on discord: `테일러#8090`
 Special thanks to
 * [angi-mint](https://github.com/angi-mint)
 * [TimTechDev](https://github.com/TimTechDev)
+
 for helping me develop the bot!
