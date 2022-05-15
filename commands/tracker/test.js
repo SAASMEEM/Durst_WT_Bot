@@ -1,7 +1,8 @@
+const Discord = require("discord.js");
 const mongoose = require("mongoose");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const botconfig = require("../../config.json");
-const { checkPerms } = require('../../import_folders/functions')
+const { checkPerms } = require('../../import_folders/functions');
 
 mongoose.connect(botconfig.mongoPass, {
     useNewUrlParser: true,
