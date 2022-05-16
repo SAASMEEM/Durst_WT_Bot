@@ -1,20 +1,37 @@
 {
-    "devDependencies": {
-        "node": "^16.13.2",
-        "npm": "^7.24.2"
+    "scripts": {
+        "prepare": "husky install",
+        "format": "prettier -w .",
+        "start": "node index.js",
+        "deploy": "node deploy-commands.js"
     },
-    "dependencies": {
-        "@discordjs/builders": "^0.6.0",
-        "@discordjs/rest": "^0.1.0-canary.0",
-        "@discordjs/voice": "^0.8.0",
-        "ansi-regex": "^6.0.1",
-        "discord-api-types": "^0.22.0",
-        "discord.js": "^13.6.0",
-        "express": "^4.17.3",
-        "humanize-duration": "^3.27.1",
-        "mongoose": "^6.2.6",
-        "node-bash-title": "^0.0.2",
-        "save": "^2.4.0",
-        "util": "^0.12.4"
-    }
+	"dependencies": {
+		"@discordjs/builders": "^0.6.0",
+		"@discordjs/rest": "^0.1.0-canary.0",
+		"@discordjs/voice": "^0.8.0",
+		"ansi-regex": "^6.0.1",
+		"discord-api-types": "^0.22.0",
+		"discord.js": "^13.6.0",
+		"express": "^4.17.3",
+		"humanize-duration": "^3.27.1",
+		"mongoose": "^6.2.6",
+		"node-bash-title": "^0.0.2",
+		"save": "^2.4.0",
+		"util": "^0.12.4"
+	},
+	"devDependencies": {
+		"husky": "^7.0.4",
+		"lint-staged": "^12.4.1",
+		"prettier": "^2.6.2"
+	},
+	"prettier": {
+		"useTabs": true
+	},
+	"lint-staged": {
+		"*": "prettier -uw"
+	},
+    "engines": {
+        "node": ">=16.6.0",
+        "npm": ">=7.0.0"
+      }
 }
