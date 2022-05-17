@@ -104,10 +104,10 @@ module.exports = {
 			message.edit({ components: [] });
 			interaction.channel.send(`<@&${cwRoleId}> CW!`);
 			setTimeout(() => {
-				cwrole.members.forEach((member) => {
+				cwrole.members.forEach((member, i) => {
 					member.roles.remove(cwRoleId);
 				});
-			}, 5000);
+			}, i * 5000);
 		}, time);
 
 		const buttonCollector = interaction.channel.createMessageComponentCollector(
