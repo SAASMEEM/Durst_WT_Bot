@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const processTitle = require("node-bash-title");
 const botconfig = require("../config.json");
 
 mongoose.connect(botconfig.mongoPass, {
@@ -6,14 +7,13 @@ mongoose.connect(botconfig.mongoPass, {
 	useUnifiedTopology: true,
 });
 
-const ConsoleTitle = require("node-bash-title");
 const Status = require("../models/dbstatus.js");
-const Data = require("../models/data");
+const Data = require("../models/data.js");
 
 module.exports = {
 	name: "ready",
 	execute(client) {
-		ConsoleTitle("Durst-WarThunder");
+		processTitle("Durst-WarThunder");
 		console.clear();
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 		setInterval(() => {
@@ -21,8 +21,8 @@ module.exports = {
 				{
 					search: true,
 				},
-				(err, status) => {
-					if (err) console.log(err);
+				(error, status) => {
+					if (error) console.log(error);
 					if (!status) {
 						const newStatus = new Status({
 							name: "War Thunder",
@@ -30,8 +30,9 @@ module.exports = {
 							state: "idle",
 							search: true,
 						});
-						newStatus.save().catch((err) => console.log(err));
+						newStatus.save().catch((error) => console.log(error));
 					}
+
 					client.user.setPresence({
 						activities: [{ name: status.name, type: status.type }],
 						status: status.state,
@@ -42,13 +43,13 @@ module.exports = {
 
 		setInterval(() => {
 			const d = new Date();
-			let day = d.getUTCDay();
-			let hour = d.getUTCHours();
-			let minute = d.getUTCMinutes();
-			let second = d.getUTCSeconds();
+			const day = d.getUTCDay();
+			const hour = d.getUTCHours();
+			const minute = d.getUTCMinutes();
+			const second = d.getUTCSeconds();
 
-			if (day == 0 && hour == 3 && minute == 0 && second == 0) {
-				let bulkArr = [
+			if (day === 0 && hour === 3 && minute === 0 && second === 0) {
+				const bulkArray = [
 					{
 						updateMany: {
 							filter: {},
@@ -56,7 +57,7 @@ module.exports = {
 						},
 					},
 				];
-				Data.bulkWrite(bulkArr);
+				Data.bulkWrite(bulkArray);
 			}
 		}, 60 * 1000);
 	},

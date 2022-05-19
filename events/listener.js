@@ -1,6 +1,6 @@
-const Discord = require("discord.js");
 const mongoose = require("mongoose");
 const botconfig = require("../config.json");
+
 const timestamp = new Map();
 
 const Data = require("../models/data.js");
@@ -14,43 +14,46 @@ module.exports = {
 	name: "voiceStateUpdate",
 	execute(oldState, newState) {
 		if (newState.channelId !== null) {
+			// joined channel
 			//console.log(`${newState.member} has joined a channel (ID: ${newState.channelId})`);
 			timestamp.set(newState.id, Date.now());
-		} else {
-			ts1 = timestamp.get(newState.id);
-			if (ts1 == undefined) {
-				timedura = 0;
-			} else {
-				var ts2 = Date.now();
-				var timedura = ts2 - ts1;
-				timestamp.delete(newState.id);
-			}
-			Data.findOne(
-				{
-					userID: newState.id,
-				},
-				(err, data) => {
-					if (err) console.log(err);
-					if (!data) {
-						const newData = new Data({
-							userID: newState.id,
-							name: "<@" + newState.id + ">",
-							nickname:
-								newState.member.nickname || newState.member.user.username,
-							lb: "all",
-							time: timedura,
-							timeweekly: timedura,
-							blocked: false,
-						});
-						newData.save().catch((err) => console.log(err));
-					} else {
-						data.time += timedura;
-						data.timeweekly += timedura;
-						data.save().catch((err) => console.log(err));
-					}
-				}
-			);
-			//console.log(`${newState.member} has left a channel. ${newState.id}'s time in this channel was ${timedura}`);
+			return;
 		}
+
+		// left channel
+
+		const joinTime = timestamp.get(newState.id);
+		let timeSpent = 0;
+		if (joinTime) {
+			timeSpent = Date.now() - joinTime;
+			timestamp.delete(newState.id);
+		}
+
+		Data.findOne(
+			{
+				userID: newState.id,
+			},
+			(error, data) => {
+				if (error) console.log(error);
+				if (data) {
+					data.time += timeSpent;
+					data.timeweekly += timeSpent;
+					data.save().catch((error) => console.log(error));
+					return;
+				}
+
+				const newData = new Data({
+					userID: newState.id,
+					name: "<@" + newState.id + ">",
+					nickname: newState.member.nickname || newState.member.user.username,
+					lb: "all",
+					time: timeSpent,
+					timeweekly: timeSpent,
+					blocked: false,
+				});
+				newData.save().catch((error) => console.log(error));
+			}
+		);
+		//console.log(`${newState.member} has left a channel. ${newState.id}'s time in this channel was ${timeSpent}`);
 	},
 };
