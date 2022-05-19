@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const dataSchema = mongoose.Schema({
+const dataSchema = new mongoose.Schema({
 	userID: String,
 	name: String,
 	nickname: String,
