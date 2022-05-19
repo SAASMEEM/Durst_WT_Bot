@@ -45,7 +45,7 @@
 			"unicorn/prefer-module": "off",
 			"capitalized-comments": "off",
 			"spaced-comment": "off",
-			"unicorn/numeric-separators-style":"off"
+			"unicorn/numeric-separators-style": "off"
 		}
 	},
 	"engines": {
