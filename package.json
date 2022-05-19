@@ -1,10 +1,11 @@
 {
-    "scripts": {
-        "prepare": "husky install",
-        "format": "prettier -w .",
-        "start": "node index.js",
-        "deploy": "node deploy-commands.js"
-    },
+	"scripts": {
+		"prepare": "husky install",
+		"format": "prettier -w .",
+		"lint": "prettier -c .",
+		"start": "node index.js",
+		"deploy": "node deploy-commands.js"
+	},
 	"dependencies": {
 		"@discordjs/builders": "^0.6.0",
 		"@discordjs/rest": "^0.1.0-canary.0",
@@ -24,14 +25,17 @@
 		"lint-staged": "^12.4.1",
 		"prettier": "^2.6.2"
 	},
-	"prettier": {
-		"useTabs": true
-	},
 	"lint-staged": {
 		"*": "prettier -uw"
 	},
-    "engines": {
-        "node": ">=16.6.0",
-        "npm": ">=7.0.0"
-      }
+	"prettier": {
+		"bracketSpacing": true,
+		"singleQuote": false,
+		"trailingComma": "es5",
+		"useTabs": true
+	},
+	"engines": {
+		"node": ">=16.6.0",
+		"npm": ">=7.0.0"
+	}
 }
