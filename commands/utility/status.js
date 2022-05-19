@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const botconfig = require("../../config.json");
-const { checkPerms } = require("../../import_folders/functions");
+const { checkPerms } = require("../../import_folders/functions.js");
 
 mongoose.connect(botconfig.mongoPass, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
 
-const Status = require("../../models/dbstatus");
+const Status = require("../../models/dbstatus.js");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -34,7 +34,7 @@ module.exports = {
 		),
 
 	async execute(interaction) {
-		var check = await checkPerms(
+		const check = await checkPerms(
 			interaction,
 			botconfig.adminId,
 			null /*'772094019748233218'*/,
@@ -65,22 +65,23 @@ module.exports = {
 			{
 				search: true,
 			},
-			(err, status) => {
-				if (err) console.log(err);
+			(error, status) => {
+				if (error) console.log(error);
 				if (!status) {
-					const newData = new Data({
+					status = new Status({
 						name: Name,
 						type: Type,
 						status: State,
 						search: true,
 					});
-					newData.save().catch((err) => console.log(err));
-				} else {
-					status.name = Name;
-					status.type = Type;
-					status.state = State;
-					status.save().catch((err) => console.log(err));
+					status.save().catch((error) => console.log(error));
 				}
+
+				status.name = Name;
+				status.type = Type;
+				status.state = State;
+				status.save().catch((error) => console.log(error));
+
 				interaction.reply({
 					content: `Name changed to "${Name}"\nType changed to "${Type}"\nState changed to "${State}`,
 					ephemeral: true,
