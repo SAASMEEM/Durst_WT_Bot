@@ -1,10 +1,11 @@
 {
-    "scripts": {
-        "prepare": "husky install",
-        "format": "prettier -w .",
-        "start": "node index.js",
-        "deploy": "node deploy-commands.js"
-    },
+	"scripts": {
+		"prepare": "husky install",
+		"format": "prettier -w . && xo --fix .",
+		"lint": "prettier -c . && xo",
+		"start": "node index.js",
+		"deploy": "node deploy-commands.js"
+	},
 	"dependencies": {
 		"@discordjs/builders": "^0.13.0",
 		"@discordjs/rest": "^0.4.1",
@@ -22,16 +23,33 @@
 	"devDependencies": {
 		"husky": "^7.0.4",
 		"lint-staged": "^12.4.1",
-		"prettier": "^2.6.2"
-	},
-	"prettier": {
-		"useTabs": true
+		"prettier": "^2.6.2",
+		"xo": "^0.49.0"
 	},
 	"lint-staged": {
 		"*": "prettier -uw"
 	},
-    "engines": {
-        "node": ">=16.6.0",
-        "npm": ">=7.0.0"
-      }
+	"prettier": {
+		"bracketSpacing": true,
+		"singleQuote": false,
+		"trailingComma": "es5",
+		"useTabs": true
+	},
+	"xo": {
+		"envs": [
+			"es2021",
+			"node"
+		],
+		"prettier": true,
+		"rules": {
+			"unicorn/prefer-module": "off",
+			"capitalized-comments": "off",
+			"spaced-comment": "off",
+			"unicorn/numeric-separators-style": "off"
+		}
+	},
+	"engines": {
+		"node": ">=16.6.0",
+		"npm": ">=7.0.0"
+	}
 }
