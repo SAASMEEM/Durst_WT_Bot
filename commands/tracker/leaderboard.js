@@ -75,7 +75,7 @@ module.exports = {
 								unit: ["h", "m"],
 								round: true,
 							})}\``,
-							`${result[i].nickname} \(${result[i].name}\)`
+							`${result[i].nickname} (${result[i].name})`
 						);
 					}
 				} else {
@@ -86,7 +86,7 @@ module.exports = {
 								unit: ["h", "m"],
 								round: true,
 							})}\``,
-							`${result[i].nickname} \(${result[i].name}\)`
+							`${result[i].nickname} (${result[i].name})`
 						);
 					}
 				}
