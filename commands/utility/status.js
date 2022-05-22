@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const botconfig = require("../../config.json");
+const config = require("../../config.js");
 const { checkPerms } = require('../../import_folders/functions')
 
-mongoose.connect(botconfig.mongoPass, {
+mongoose.connect(config.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -19,7 +19,7 @@ module.exports = {
         .addStringOption(option => option.setName('state').setDescription('Insert the state').setRequired(true)),
 
     async execute(interaction) {
-        var check = await checkPerms(interaction, botconfig.adminId, null/*'772094019748233218'*/, null)
+        var check = await checkPerms(interaction, config.ADMIN_ID, null, null)
         if (!check) return
 
         const Name = interaction.options.getString('name');

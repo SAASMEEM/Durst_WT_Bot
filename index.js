@@ -4,9 +4,10 @@ const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
 
 const mongoose = require("mongoose");
-const botconfig = require("./config.json");
+const config = require("./config.js");
+
 const timestamp = new Map();
-mongoose.connect(botconfig.mongoPass, {
+mongoose.connect(config.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -57,4 +58,4 @@ client.on('interactionCreate', async interaction => {
 });
 
 // Login to Discord with your client's token
-client.login(botconfig.token);
+client.login(config.BOT_TOKEN);

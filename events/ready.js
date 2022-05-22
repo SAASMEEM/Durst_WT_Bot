@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const botconfig = require("../config.json");
+const config = require("../config.js");
 
-mongoose.connect(botconfig.mongoPass, {
+mongoose.connect(config.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });

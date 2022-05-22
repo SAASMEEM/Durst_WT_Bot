@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const mongoose = require("mongoose");
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const botconfig = require("../../config.json");
+const config = require("../../config.js");
 const { checkPerms } = require('../../import_folders/functions')
 
 const Data = require("../../models/data.js");
@@ -31,7 +31,7 @@ module.exports = {
         ),
 
     async execute(interaction) {
-        var check = await checkPerms(interaction, null /*botconfig.adminId*/, '772094019748233218', null)
+        var check = await checkPerms(interaction, null /*config.ADMIN_ID*/, config.OFFICER_ROLE_ID, null)
         if (!check) return
 
         const br = interaction.options.getString("battlerank");
@@ -87,7 +87,7 @@ module.exports = {
             fetchReply: true,
         });
 
-        const cwRoleId = '872529382034522173';
+        const cwRoleId = CW_ROLE_ID;
         const guild = interaction.guild;
         var cwrole = guild.roles.cache.get(cwRoleId)
         setTimeout(() => {

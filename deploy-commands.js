@@ -1,7 +1,7 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const fs = require('fs');
-const botconfig = require("./config.json")
+const config = require("./config.js");
 
 const commands = [];
 const dir = './commands/'
@@ -15,18 +15,15 @@ fs.readdirSync(dir).forEach(dirs => {
         // With the key as the command name and the value as the exported module
     }
 });
-// Place your client and guild ids here
-const clientId = '847868324113416233';
-const guildId = '515253143580442660';
 
-const rest = new REST({ version: '9' }).setToken(botconfig.token);
+const rest = new REST({ version: '9' }).setToken(config.BOT_TOKEN);
 
 (async () => {
     try {
         console.log('Started refreshing application (/) commands.');
 
         await rest.put(
-            Routes.applicationGuildCommands(clientId, guildId),
+            Routes.applicationGuildCommands(config.CLIENT_ID, config.GUILD_ID),
             { body: commands },
         );
 

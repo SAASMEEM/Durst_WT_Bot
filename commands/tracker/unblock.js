@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const botconfig = require("../../config.json");
+const config = require("../../config.js");
 const { MessageActionRow, MessageButton } = require('discord.js');
 const { checkPerms } = require('../../import_folders/functions')
 
-mongoose.connect(botconfig.mongoPass, {
+mongoose.connect(config.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -18,7 +18,7 @@ module.exports = {
         .addUserOption(option => option.setName('target').setDescription('Select a User').setRequired(true)),
 
     async execute(interaction) {
-        var check = await checkPerms(interaction, null, '772094019748233218', null)
+        var check = await checkPerms(interaction, null, config.OFFICER_ROLE_ID, null)
         if (!check) return
 
         const User = interaction.options.getUser('target');
