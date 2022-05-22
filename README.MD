@@ -16,6 +16,31 @@ We are a german WarThunder squadron for people of all ages. We are _not_ a tryha
 
 If you want to join us feel free to meet us on the [discord server](https://discord.gg/ecZR7WxMPt).
 
+## Config
+
+Place your secrets and options into `config.json` like so:
+
+```json
+{
+	"token": "<Your discord secret bot token goes here>",
+	"mongoPass": "<Your mongo database instance location goes here. Usually starts with 'mongodb://your-domain'>",
+	"adminId": "<Your discord id goes here>"
+}
+```
+
+
+Also, you may change the `clientId` and `guildId` in `deploy-commands.js`:
+
+https://github.com/SAASMEEM/Durst_WT_Bot/blob/2f5be5e2c7ca26a09a49b739355b1e62e79740e0/deploy-commands.js#L19-L20
+
+Then run `node deploy-commands.js` to deploy slash-commands to your server.
+
+> **Warning:**  
+> The bot is still littered with magic strings and IDs. Especially the [officer role](https://github.com/SAASMEEM/Durst_WT_Bot#offizier) is still hard coded everywhere.  
+> Also, there is a role mentioned by the `clanwar` command, which may be changed:
+> 
+> https://github.com/SAASMEEM/Durst_WT_Bot/blob/2f5be5e2c7ca26a09a49b739355b1e62e79740e0/commands/tracker/clanwar.js#L89-L91
+
 
 ## Usage
 
@@ -49,7 +74,6 @@ Offizier can use all the commands above and:
 ### 🔧Developer only Commands
 
 * **status:** the developer can change the status shown by the bot like `Playing WarThunder`
-
 
 ## Additional Information
 
