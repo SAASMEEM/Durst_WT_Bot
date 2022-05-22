@@ -2,14 +2,12 @@ const Discord = require("discord.js");
 const mongoose = require("mongoose");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const botconfig = require("../../config.json");
-const { checkPerms } = require("../../import_folders/functions");
+const { checkPerms } = require("../../import_folders/functions.js");
 
 mongoose.connect(botconfig.mongoPass, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
-
-const Data = require("../../models/data.js");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -35,7 +33,7 @@ module.exports = {
 		),
 
 	async execute(interaction) {
-		var check = await checkPerms(
+		const check = await checkPerms(
 			interaction,
 			botconfig.adminId,
 			null /*'772094019748233218'*/,
@@ -47,15 +45,15 @@ module.exports = {
 		const inserthour = interaction.options.getInteger("hour");
 		const insertminute = interaction.options.getInteger("minute");
 		const d = new Date();
-		let year = d.getFullYear();
-		let month = d.getMonth();
-		let day = d.getDate();
-		let hour = d.getHours();
-		let minute = d.getMinutes();
-		let second = d.getSeconds();
+		const year = d.getFullYear();
+		const second = d.getSeconds();
+		const month = d.getMonth();
+		const day = d.getDate();
+		const hour = d.getHours();
+		const minute = d.getMinutes();
 		const date = new Date(year, month, day, hour, minute, second);
 		const dateseconds = date.getTime() / 1000;
-		const start = new Date(year, month, day, inserthour, insertminute, 00);
+		const start = new Date(year, month, day, inserthour, insertminute, 0);
 		const startseconds = start.getTime() / 1000;
 		const time = startseconds * 1000 - dateseconds * 1000;
 
@@ -98,15 +96,15 @@ module.exports = {
 		});
 
 		const cwRoleId = "872529382034522173";
-		const guild = interaction.guild;
-		var cwrole = guild.roles.cache.get(cwRoleId);
+		const { guild } = interaction;
+		const cwrole = guild.roles.cache.get(cwRoleId);
 		setTimeout(() => {
 			message.edit({ components: [] });
 			interaction.channel.send(`<@&${cwRoleId}> CW!`);
 			setTimeout(() => {
-				cwrole.members.forEach((member) => {
+				for (const member of cwrole.members) {
 					member.roles.remove(cwRoleId);
-				});
+				}
 			}, 5000);
 		}, time);
 
@@ -133,6 +131,7 @@ module.exports = {
 						});
 						return;
 					}
+
 					tableMap.set(buttonInteraction.user.id, "+");
 					buttonInteraction.member.roles.add(cwRoleId);
 					buttonInteraction.reply({
@@ -149,6 +148,7 @@ module.exports = {
 						});
 						return;
 					}
+
 					tableMap.set(buttonInteraction.user.id, "-");
 					buttonInteraction.member.roles.remove(cwRoleId);
 					buttonInteraction.reply({
@@ -165,6 +165,7 @@ module.exports = {
 						});
 						return;
 					}
+
 					tableMap.set(buttonInteraction.user.id, "~");
 					buttonInteraction.member.roles.remove(cwRoleId);
 					buttonInteraction.reply({
@@ -219,9 +220,7 @@ function getFields(message, map) {
 			return undefined;
 		}
 
-		const ids = Array.from(map)
-			.filter((v) => v[1] === key)
-			.map((v) => v[0]);
+		const ids = [...map].filter((v) => v[1] === key).map((v) => v[0]);
 
 		return {
 			name: old.name,

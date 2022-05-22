@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const botconfig = require("../../config.json");
 const { MessageActionRow, MessageButton } = require("discord.js");
-const { checkPerms } = require("../../import_folders/functions");
+const botconfig = require("../../config.json");
+const { checkPerms } = require("../../import_folders/functions.js");
 
 mongoose.connect(botconfig.mongoPass, {
 	useNewUrlParser: true,
@@ -22,7 +22,12 @@ module.exports = {
 		),
 
 	async execute(interaction) {
-		var check = await checkPerms(interaction, null, "772094019748233218", null);
+		const check = await checkPerms(
+			interaction,
+			null,
+			"772094019748233218",
+			null
+		);
 		if (!check) return;
 
 		const User = interaction.options.getUser("target");
@@ -41,7 +46,7 @@ module.exports = {
 
 		if (Blocked)
 			return interaction.reply(`You cannot block an already blocked user.`);
-		const message = await interaction.reply({
+		await interaction.reply({
 			content: `React with ✅ to confirm the block of ${User.tag}`,
 			components: [confirmation],
 			fetchReply: true,
@@ -59,13 +64,13 @@ module.exports = {
 					{
 						userID: User.id,
 					},
-					(err, data) => {
-						if (err) console.log(err);
+					(error, data) => {
+						if (error) console.log(error);
 						data.time = 0;
 						data.timeweekly = 0;
 						data.lb = "none";
 						data.blocked = true;
-						data.save().catch((err) => console.log(err));
+						data.save().catch((error) => console.log(error));
 						i.update({
 							content: `${User.username} was blocked!`,
 							components: [],

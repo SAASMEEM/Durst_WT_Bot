@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const humanDuration = require("humanize-duration");
 const mongoose = require("mongoose");
 const botconfig = require("../../config.json");
-const Duration = require("humanize-duration");
 
 mongoose.connect(botconfig.mongoPass, {
 	useNewUrlParser: true,
@@ -10,6 +10,8 @@ mongoose.connect(botconfig.mongoPass, {
 });
 
 const Data = require("../../models/data.js");
+
+const ITEMS_PER_PAGE = 10;
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -26,54 +28,47 @@ module.exports = {
 			lb: "all",
 		})
 			.sort([["timeweekly", "descending"]])
-			.exec((err, res) => {
-				if (err) console.log(err);
-				var page = Math.ceil(res.length / 10);
+			.exec((error, result) => {
+				if (error) console.log(error);
+				const lastPage = Math.ceil(result.length / ITEMS_PER_PAGE);
 
-				let lbembed = new Discord.MessageEmbed()
+				const leaderboardEmbed = new Discord.MessageEmbed()
 					.setTitle(`Top Users`)
 					.setDescription(`Weekly Leaderboard \`Reset: Sunday 3AM UTC\``);
-				const Page = interaction.options.getNumber("page");
-				let pg = parseInt(Page);
-				if (pg != Math.floor(pg)) pg = 1;
-				if (!pg) pg = 1;
-				let end = pg * 10;
-				let start = pg * 10 - 10;
+				const pageOption = interaction.options.getNumber("page");
+				let page = Number.parseInt(pageOption, 10);
+				if (!page) page = 1;
+				if (page !== Math.floor(page)) page = 1;
+				const lastIndex = page * ITEMS_PER_PAGE;
 
-				if (res.length === 0) {
-					lbembed.addFields({
+				if (result.length === 0) {
+					leaderboardEmbed.addFields({
 						name: "Error",
 						value: "No pages found",
 					});
-				} else if (res.length <= start) {
-					lbembed.addFields({
+				} else if (result.length <= lastIndex - ITEMS_PER_PAGE) {
+					leaderboardEmbed.addFields({
 						name: "Error",
 						value: "Page not found!",
 					});
-				} else if (res.length <= end) {
-					lbembed.setFooter({ text: `page ${pg} of ${page}` });
-					for (i = start; i < res.length; i++) {
-						lbembed.addField(
-							`${i + 1}. \`${Duration(res[i].timeweekly, {
-								unit: ["h", "m"],
-								round: true,
-							})}\``,
-							`${res[i].nickname} \(${res[i].name}\)`
-						);
-					}
 				} else {
-					lbembed.setFooter({ text: `page ${pg} of ${page}` });
-					for (i = start; i < end; i++) {
-						lbembed.addField(
-							`${i + 1}. \`${Duration(res[i].timeweekly, {
+					leaderboardEmbed.setFooter({ text: `page ${page} of ${lastPage}` });
+					for (
+						let i = lastIndex - ITEMS_PER_PAGE;
+						i < Math.min(lastIndex, result.length);
+						i++
+					) {
+						leaderboardEmbed.addField(
+							`${i + 1}. \`${humanDuration(result[i].timeweekly, {
 								unit: ["h", "m"],
 								round: true,
 							})}\``,
-							`${res[i].nickname} \(${res[i].name}\)`
+							`${result[i].nickname} (${result[i].name})`
 						);
 					}
 				}
-				interaction.reply({ embeds: [lbembed] });
+
+				interaction.reply({ embeds: [leaderboardEmbed] });
 			});
 	},
 };

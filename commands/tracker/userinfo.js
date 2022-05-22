@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const duration = require("humanize-duration");
 const mongoose = require("mongoose");
 const botconfig = require("../../config.json");
-const Duration = require("humanize-duration");
 
 mongoose.connect(botconfig.mongoPass, {
 	useNewUrlParser: true,
@@ -26,7 +26,7 @@ module.exports = {
 				content: "Couldn't find user",
 				ephemeral: true,
 			});
-		var infoembed = new Discord.MessageEmbed()
+		const infoEmbed = new Discord.MessageEmbed()
 			.setColor("#880099")
 			.setTitle(`${User.username}`)
 			.setThumbnail(User.displayAvatarURL({ dynamic: true }))
@@ -35,31 +35,32 @@ module.exports = {
 			{
 				userID: User.id,
 			},
-			(err, data) => {
-				if (err) console.log(err);
+			(error, data) => {
+				if (error) console.log(error);
 				if (!data) {
-					infoembed.addFields({
+					infoEmbed.addFields({
 						name: "This User has no profile set up!",
 						value: `<@${User.id}> can create their profile by using voice-channel.`,
 					});
-					interaction.reply({ embeds: [infoembed] });
-				} else {
-					infoembed.addFields({ name: "Name:", value: `${data.name}` });
-					infoembed.addFields({ name: "Nickname", value: `${data.nickname}` });
-					infoembed.addFields({
-						name: "Time:",
-						value: `${Duration(data.time, { unit: ["h", "m"], round: true })}`,
-					});
-					infoembed.addFields({
-						name: "Weekly Time:",
-						value: `${Duration(data.timeweekly, {
-							unit: ["h", "m"],
-							round: true,
-						})}`,
-					});
-					infoembed.addFields({ name: "Blocked:", value: `${data.blocked}` });
-					interaction.reply({ embeds: [infoembed] });
+					interaction.reply({ embeds: [infoEmbed] });
+					return;
 				}
+
+				infoEmbed.addFields({ name: "Name:", value: `${data.name}` });
+				infoEmbed.addFields({ name: "Nickname", value: `${data.nickname}` });
+				infoEmbed.addFields({
+					name: "Time:",
+					value: `${duration(data.time, { unit: ["h", "m"], round: true })}`,
+				});
+				infoEmbed.addFields({
+					name: "Weekly Time:",
+					value: `${duration(data.timeweekly, {
+						unit: ["h", "m"],
+						round: true,
+					})}`,
+				});
+				infoEmbed.addFields({ name: "Blocked:", value: `${data.blocked}` });
+				interaction.reply({ embeds: [infoEmbed] });
 			}
 		);
 	},

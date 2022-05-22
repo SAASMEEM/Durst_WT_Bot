@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const humanDuration = require("humanize-duration");
 const mongoose = require("mongoose");
 const botconfig = require("../../config.json");
-const Duration = require("humanize-duration");
 
 mongoose.connect(botconfig.mongoPass, {
 	useNewUrlParser: true,
@@ -24,19 +24,19 @@ module.exports = {
 			lb: "all",
 		})
 			.sort([["time", "descending"]])
-			.exec((err, res) => {
-				if (err) console.log(err);
-				var page = Math.ceil(res.length / 10);
+			.exec((error, result) => {
+				if (error) console.log(error);
+				const lastPage = Math.ceil(result.length / 10);
 
-				let lbembed = new Discord.MessageEmbed()
+				const leaderboardEmbed = new Discord.MessageEmbed()
 					.setTitle(`Top Users`)
 					.setDescription(`All time Leaderboard`);
-				const Page = interaction.options.getNumber("page");
-				let pg = parseInt(Page);
-				if (pg != Math.floor(pg)) pg = 1;
-				if (!pg) pg = 1;
-				let end = pg * 10;
-				let start = pg * 10 - 10;
+				const pageOption = interaction.options.getNumber("page");
+				let page = Number.parseInt(pageOption, 10);
+				if (!page) page = 1;
+				if (page !== Math.floor(page)) page = 1;
+				const end = page * 10;
+				const start = page * 10 - 10;
 
 				/*
             const forwardButton = new Discord.MessageButton()
@@ -49,8 +49,8 @@ module.exports = {
                 .setStyle('PRIMARY');
                 */
 
-				if (res.length === 0) {
-					lbembed.addFields({
+				if (result.length === 0) {
+					leaderboardEmbed.addFields({
 						name: "Error",
 						value: "No pages found",
 					});
@@ -58,8 +58,8 @@ module.exports = {
                 forwardButton.setDisabled(true);
                 backButton.setDisabled(true);
                 */
-				} else if (res.length <= start) {
-					lbembed.addFields({
+				} else if (result.length <= start) {
+					leaderboardEmbed.addFields({
 						name: "Error",
 						value: "Page not found!",
 					});
@@ -67,31 +67,34 @@ module.exports = {
                 forwardButton.setDisabled(true);
                 backButton.setDisabled(true);
                 */
-				} else if (res.length <= end) {
-					lbembed.setFooter({ text: `page ${pg} of ${page}` });
-					for (i = start; i < res.length; i++) {
-						lbembed.addField(
-							`${i + 1}. \`${Duration(res[i].time, {
+				} else if (result.length <= end) {
+					leaderboardEmbed.setFooter({ text: `page ${page} of ${lastPage}` });
+					for (let i = start; i < result.length; i++) {
+						leaderboardEmbed.addField(
+							`${i + 1}. \`${humanDuration(result[i].time, {
 								unit: ["h", "m"],
 								round: true,
 							})}\``,
-							`${res[i].nickname} \(${res[i].name}\)`
+							`${result[i].nickname} \(${result[i].name}\)`
 						);
 					}
 				} else {
-					lbembed.setFooter({ text: `page ${pg} of ${page}` });
-					for (i = start; i < end; i++) {
-						lbembed.addField(
-							`${i + 1}. \`${Duration(res[i].time, {
+					leaderboardEmbed.setFooter({ text: `page ${page} of ${lastPage}` });
+					for (let i = start; i < end; i++) {
+						leaderboardEmbed.addField(
+							`${i + 1}. \`${humanDuration(result[i].time, {
 								unit: ["h", "m"],
 								round: true,
 							})}\``,
-							`${res[i].nickname} \(${res[i].name}\)`
+							`${result[i].nickname} \(${result[i].name}\)`
 						);
 					}
 				}
+
 				interaction.reply({
-					embeds: [lbembed] /* components: [forwardButton, backButton]*/,
+					embeds: [
+						leaderboardEmbed,
+					] /* components: [forwardButton, backButton]*/,
 				});
 			});
 	},

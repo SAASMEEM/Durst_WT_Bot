@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const mongoose = require("mongoose");
 const botconfig = require("../../config.json");
@@ -26,21 +25,22 @@ module.exports = {
 			{
 				userID: interaction.user.id,
 			},
-			(err, data) => {
-				if (err) console.log(err);
+			(error, data) => {
+				if (error) console.log(error);
 				if (!data) {
-					const newData = new Data({
+					data = new Data({
 						userID: interaction.author.id,
 						nickname: Name,
 						lb: "all",
 						time: 0,
 						blocked: false,
 					});
-					newData.save().catch((err) => console.log(err));
-				} else {
-					data.nickname = Name;
-					data.save().catch((err) => console.log(err));
+					data.save().catch((error) => console.log(error));
 				}
+
+				data.nickname = Name;
+				data.save().catch((error) => console.log(error));
+
 				interaction.reply(`Name changed to ${Name}`);
 			}
 		);
