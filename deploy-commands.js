@@ -17,7 +17,7 @@ fs.readdirSync(dir).forEach(dirs => {
 });
 // Place your client and guild ids here
 const clientId = '847868324113416233';
-const guildId = '515253143580442660';
+const guildId = botconfig.guildId;
 
 const rest = new REST({ version: '9' }).setToken(botconfig.token);
 
