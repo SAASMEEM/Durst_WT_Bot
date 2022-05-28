@@ -22,13 +22,13 @@ module.exports = {
             }, (err, status) => {
                 if (err) console.log(err)
                 if (!status) {
-                    const newStatus = new Status({
+                    status = new Status({
                         name: "War Thunder",
                         type: "PLAYING",
                         state: "idle",
                         search: true,
                     })
-                    newStatus.save().catch(err => console.log(err));
+                    status.save().catch(err => console.log(err));
                 }
                 client.user.setPresence({ activities: [{ name: status.name, type: status.type }], status: status.state });
             })
