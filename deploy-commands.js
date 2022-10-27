@@ -1,3 +1,4 @@
+require('dotenv/config')
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const fs = require("fs");
@@ -17,17 +18,14 @@ fs.readdirSync(dir).forEach((dirs) => {
 		// With the key as the command name and the value as the exported module
 	}
 });
-// Place your client and guild ids here
-const clientId = botconfig.clientID;
-const guildId = botconfig.guildId;
 
-const rest = new REST({ version: "9" }).setToken(botconfig.token);
+const rest = new REST({ version: "9" }).setToken(process.env.token);
 
 (async () => {
 	try {
 		console.log("Started refreshing application (/) commands.");
 
-		await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
+		await rest.put(Routes.applicationGuildCommands(botconfig.botId, botconfig.guildId), {
 			body: commands,
 		});
 

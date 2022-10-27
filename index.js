@@ -1,17 +1,10 @@
+require('dotenv/config')
 // Require the necessary discord.js classes
 const fs = require('fs');
 
 const { Client, Collection, Intents } = require('discord.js');
 
-const mongoose = require("mongoose");
-const botconfig = require("./config.json");
 const timestamp = new Map();
-mongoose.connect(botconfig.mongoPass, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-
-const Data = require("./models/data.js")
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES] });
@@ -57,4 +50,4 @@ client.on('interactionCreate', async interaction => {
 });
 
 // Login to Discord with your client's token
-client.login(botconfig.token);
+client.login(process.env.token);
