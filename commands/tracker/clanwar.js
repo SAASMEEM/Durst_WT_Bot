@@ -29,7 +29,7 @@ module.exports = {
         ),
 
     async execute(interaction) {
-        var check = await checkPerms(interaction, null /*botconfig.adminId*/, botconfig.uffzId, null)
+        var check = await checkPerms(interaction, null /*botconfig.adminId*/, botconfig.uffzRoleId, null)
         if (!check) return
 
         const br = interaction.options.getString("battlerank")
