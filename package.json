@@ -1,8 +1,8 @@
 {
 	"scripts": {
 		"prepare": "husky install",
-		"format": "prettier -w .",
-		"lint": "prettier -c .",
+		"format": "prettier -w . && xo --fix .",
+		"lint": "prettier -c . && xo",
 		"start": "node index.js",
 		"deploy": "node deploy-commands.js"
 	},
@@ -24,13 +24,27 @@
 	"devDependencies": {
 		"husky": "^7.0.4",
 		"lint-staged": "^13.0.3",
-		"prettier": "^2.7.1"
+		"prettier": "^2.7.1",
+		"xo": "^0.52.4"
 	},
 	"prettier": {
 		"bracketSpacing": true,
 		"singleQuote": false,
 		"trailingComma": "es5",
 		"useTabs": true
+	},
+	"xo": {
+		"envs": [
+			"es2021",
+			"node"
+		],
+		"prettier": true,
+		"rules": {
+			"unicorn/prefer-module": "off",
+			"capitalized-comments": "off",
+			"spaced-comment": "off",
+			"import/no-unassigned-import": "off"
+		}
 	},
 	"lint-staged": {
 		"*": "prettier -uw"
