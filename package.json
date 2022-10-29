@@ -2,6 +2,7 @@
     "scripts": {
         "prepare": "husky install",
         "format": "prettier -w .",
+        "lint": "prettier -c .",
         "start": "node index.js",
         "deploy": "node deploy-commands.js"
     },
@@ -25,9 +26,12 @@
         "lint-staged": "^13.0.3",
         "prettier": "^2.7.1"
     },
-    "prettier": {
-        "useTabs": true
-    },
+	"prettier": {
+		"bracketSpacing": true,
+		"singleQuote": false,
+		"trailingComma": "es5",
+		"useTabs": true
+	},
     "lint-staged": {
         "*": "prettier -uw"
     },
