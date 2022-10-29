@@ -8,7 +8,7 @@ Durstpanzer II is a discord-bot for the german WarThunder squadron 🍻Durst🍻
 
 The bot is based on discord.js and runs on version 13.
 
-Durstpanzer II can track down the time spent by all users in voice-channels. 
+Durstpanzer II is build to help the sqadron leaders to organize the squadron.
 
 ### About the squadron
 
@@ -22,10 +22,13 @@ Place your secrets and options into `config.json` like so:
 
 ```json
 {
-	"token": "<Your discord secret bot token goes here>",
-	"mongoPass": "<Your mongo database instance location goes here. Usually starts with 'mongodb://your-domain'>",
-	"adminId": "<Your discord id goes here>"
+    "botId": "<Your bot's id goes here>",
+    "guildId": "<Your Server's id goes here>",
+    "adminId": "<Your own id goes here>",
+    "uffzRoleId": "<The leader's role id goes here. >",
+    "cwRoleId": "The member role id goes here>"
 }
+
 ```
 
 
