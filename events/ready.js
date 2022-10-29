@@ -1,9 +1,9 @@
-const ConsoleTitle = require("node-bash-title");
+const shellTitle = require("node-bash-title");
 
 module.exports = {
 	name: "ready",
 	execute(client) {
-		ConsoleTitle("Durst-WarThunder");
+		shellTitle("Durst-WarThunder");
 		console.clear();
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 

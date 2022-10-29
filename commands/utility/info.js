@@ -1,5 +1,8 @@
+const process = require("process");
 const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
+
+const SECONDS_IN_DAY = 86_400;
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,14 +10,14 @@ module.exports = {
 		.setDescription("shows info about the bot"),
 	async execute(interaction) {
 		const ram = process.memoryUsage().heapUsed / 1024 / 1024;
-		const ping = new Date() - interaction.createdTimestamp;
+		const ping = Date.now() - interaction.createdTimestamp;
 		let totalSeconds = interaction.client.uptime / 1000;
-		let d = Math.floor(totalSeconds / 86400);
-		totalSeconds %= 86400;
-		let h = Math.floor(totalSeconds / 3600);
+		const d = Math.floor(totalSeconds / SECONDS_IN_DAY);
+		totalSeconds %= SECONDS_IN_DAY;
+		const h = Math.floor(totalSeconds / 3600);
 		totalSeconds %= 3600;
-		let m = Math.floor(totalSeconds / 60);
-		let s = Math.floor(totalSeconds % 60);
+		const m = Math.floor(totalSeconds / 60);
+		const s = Math.floor(totalSeconds % 60);
 
 		const InfoEmbed = new Discord.MessageEmbed()
 			.setTitle("Bot Info")

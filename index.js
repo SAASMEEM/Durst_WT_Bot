@@ -1,10 +1,9 @@
 require("dotenv/config");
 // Require the necessary discord.js classes
 const fs = require("fs");
+const process = require("process");
 
 const { Client, Collection, Intents } = require("discord.js");
-
-const timestamp = new Map();
 
 // Create a new client instance
 const client = new Client({
@@ -13,7 +12,7 @@ const client = new Client({
 client.commands = new Collection();
 
 const load = (dir = "./commands/") => {
-	fs.readdirSync(dir).forEach((dirs) => {
+	for (const dirs of fs.readdirSync(dir)) {
 		const commandFiles = fs
 			.readdirSync(`${dir}/${dirs}`)
 			.filter((files) => files.endsWith(".js"));
@@ -23,8 +22,9 @@ const load = (dir = "./commands/") => {
 			// With the key as the command name and the value as the exported module
 			client.commands.set(command.data.name, command);
 		}
-	});
+	}
 };
+
 load();
 
 const eventFiles = fs

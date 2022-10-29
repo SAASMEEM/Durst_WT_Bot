@@ -6,6 +6,7 @@ function getMentionedMember(mention, message) {
 			mention = mention.slice(1);
 		}
 	}
+
 	return message.guild.members.cache.get(mention);
 }
 
@@ -17,37 +18,37 @@ function getMentionedUser(mention, client) {
 			mention = mention.slice(1);
 		}
 	}
+
 	return client.users.cache.get(mention);
 }
 
 async function checkPerms(interaction, userId, roleId, channelId) {
-	if (userId) {
-		if (interaction.member.id !== userId) {
-			await interaction.reply({
-				content: `Only <@${userId}> can use this command`,
-				ephemeral: true,
-			});
-			return false;
-		}
+	if (userId && interaction.member.id !== userId) {
+		await interaction.reply({
+			content: `Only <@${userId}> can use this command`,
+			ephemeral: true,
+		});
+		return false;
 	}
-	if (roleId) {
-		if (!interaction.member.roles.cache.has(roleId)) {
-			await interaction.reply({
-				content: `Only <@&${roleId}> can use this command`,
-				ephemeral: true,
-			});
-			return false;
-		}
+
+	if (roleId && !interaction.member.roles.cache.has(roleId)) {
+		await interaction.reply({
+			content: `Only <@&${roleId}> can use this command`,
+			ephemeral: true,
+		});
+
+		return false;
 	}
-	if (channelId) {
-		if (interaction.channel.id !== channelId) {
-			await interaction.reply({
-				content: `You can only use this command in <#${channelId}>`,
-				ephemeral: true,
-			});
-			return false;
-		}
+
+	if (channelId && interaction.channel.id !== channelId) {
+		await interaction.reply({
+			content: `You can only use this command in <#${channelId}>`,
+			ephemeral: true,
+		});
+
+		return false;
 	}
+
 	return true;
 }
 
