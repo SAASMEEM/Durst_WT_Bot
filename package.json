@@ -1,38 +1,56 @@
 {
-    "scripts": {
-        "prepare": "husky install",
-        "format": "prettier -w .",
-        "start": "node index.js",
-        "deploy": "node deploy-commands.js"
-    },
-    "dependencies": {
-        "@discordjs/builders": "^1.3.0",
-        "@discordjs/rest": "^1.3.0",
-        "@discordjs/voice": "^0.13.0",
-        "ansi-regex": "^6.0.1",
-        "discord-api-types": "^0.37.15",
-        "discord.js": "^14.6.0",
-        "dotenv": "^16.0.3",
-        "express": "^4.18.1",
-        "humanize-duration": "^3.27.2",
-        "mongoose": "^6.3.5",
-        "node-bash-title": "^0.0.2",
-        "save": "^2.9.0",
-        "util": "^0.12.5"
-    },
-    "devDependencies": {
-        "husky": "^7.0.4",
-        "lint-staged": "^13.0.3",
-        "prettier": "^2.7.1"
-    },
-    "prettier": {
-        "useTabs": true
-    },
-    "lint-staged": {
-        "*": "prettier -uw"
-    },
-    "engines": {
-        "node": ">=16.6.0",
-        "npm": ">=7.0.0"
-    }
+	"scripts": {
+		"prepare": "husky install",
+		"format": "prettier -w . && xo --fix .",
+		"lint": "prettier -c . && xo",
+		"start": "node index.js",
+		"deploy": "node deploy-commands.js"
+	},
+	"dependencies": {
+		"@discordjs/builders": "^1.3.0",
+		"@discordjs/rest": "^1.3.0",
+		"@discordjs/voice": "^0.13.0",
+		"ansi-regex": "^6.0.1",
+		"discord-api-types": "^0.37.15",
+		"discord.js": "^14.6.0",
+		"dotenv": "^16.0.3",
+		"express": "^4.18.1",
+		"humanize-duration": "^3.27.2",
+		"mongoose": "^6.3.5",
+		"node-bash-title": "^0.0.2",
+		"save": "^2.9.0",
+		"util": "^0.12.5"
+	},
+	"devDependencies": {
+		"husky": "^7.0.4",
+		"lint-staged": "^13.0.3",
+		"prettier": "^2.7.1",
+		"xo": "^0.52.4"
+	},
+	"prettier": {
+		"bracketSpacing": true,
+		"singleQuote": false,
+		"trailingComma": "es5",
+		"useTabs": true
+	},
+	"xo": {
+		"envs": [
+			"es2021",
+			"node"
+		],
+		"prettier": true,
+		"rules": {
+			"unicorn/prefer-module": "off",
+			"capitalized-comments": "off",
+			"spaced-comment": "off",
+			"import/no-unassigned-import": "off"
+		}
+	},
+	"lint-staged": {
+		"*": "prettier -uw"
+	},
+	"engines": {
+		"node": ">=16.6.0",
+		"npm": ">=7.0.0"
+	}
 }
