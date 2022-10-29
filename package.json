@@ -17,7 +17,7 @@
         "humanize-duration": "^3.27.2",
         "mongoose": "^6.3.5",
         "node-bash-title": "^0.0.2",
-        "save": "^2.5.0",
+        "save": "^2.9.0",
         "util": "^0.12.4"
     },
     "devDependencies": {
