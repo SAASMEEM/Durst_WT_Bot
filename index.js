@@ -3,11 +3,11 @@ require("dotenv/config");
 const fs = require("fs");
 const process = require("process");
 
-const { Client, Collection, GatewayIntentBits } = require("discord.js");
+const { Client, Collection, Intents } = require("discord.js");
 
 // Create a new client instance
 const client = new Client({
-	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates],
+	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES],
 });
 client.commands = new Collection();
 
