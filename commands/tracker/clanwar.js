@@ -92,7 +92,11 @@ module.exports = {
 
 		setTimeout(() => {
 			message.edit({ components: [] });
-			interaction.channel.send(`<@&${botconfig.cwRoleId}> CW!`);
+			if (tableMap.size < 8) {
+				interaction.channel.send(`There are less than 8 members assigned. No CW today.`)
+			} else {
+				interaction.channel.send(`<@&${botconfig.cwRoleId}> CW!`);
+			}
 		}, time);
 
 		const buttonCollector = interaction.channel.createMessageComponentCollector(
