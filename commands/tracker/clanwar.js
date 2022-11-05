@@ -109,6 +109,13 @@ module.exports = {
 		const tableMap = new Map();
 
 		buttonCollector.on("collect", (buttonInteraction) => {
+			if (!buttonInteraction.member.roles.cache.has(botconfig.cwRoleId)) {
+				buttonInteraction.reply({
+					content: `Only <@&${botconfig.cwRoleId}> can join the clanwar!\nPlease make sure to fill in the [registration](https://shorturl.at/lnH49). \nIf you already did so, please contact Missile, Assra or Aplha to give you permission.`,
+					ephemeral: true,
+				});
+				return
+			}
 			switch (buttonInteraction.customId) {
 				case "Yes":
 					if (tableMap.get(buttonInteraction.user.id) === "+") {
