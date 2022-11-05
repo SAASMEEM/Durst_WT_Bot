@@ -54,16 +54,24 @@ Afterwards run `node index.js` to start the bot.
 ## Usage
 
 There are 3 permission levels:
-* 🍺Mannschafter
-* 🍻Offizier
-* 🔧Developer
+
+- 🍺Mannschafter
+- 🍻Offizier
+- 🔧Developer
 
 ### 🍺Mannschafter
 
 #### Utility
 
-* **avatar:** shows the profile picture of yourself or a selected user
-* **info:** shows information about the bot
+- **avatar:** shows the profile picture of yourself or a selected user
+- **info:** shows information about the bot
+
+#### Time-tracking
+
+- **userinfo:** shows the time spent in voice-channels by yourself or a selected user
+- **leaderboard:** lists all users sorted by their time-scores
+- **leaderboard2:** this is a weekly leaderboard for the time-scores
+- **username:** you can change your username shown in the leaderboards
 
 ### 🍻Offizier
 
@@ -78,7 +86,8 @@ _There are currently no commands_
 ## Additional Information
 
 Special thanks to
-* [angi-mint](https://github.com/angi-mint)
-* [TimTechDev](https://github.com/TimTechDev)
+
+- [angi-mint](https://github.com/angi-mint)
+- [TimTechDev](https://github.com/TimTechDev)
 
 for helping me develop the bot!
