@@ -42,7 +42,8 @@ Place your options into `config.json` like this:
     "guildId": "<Your-server's-id-goes-here>",
     "adminId": "<Your-own-id-goes-here>",
     "uffzRoleId": "<The-leader's-role-id-goes-here>",
-    "cwRoleId": "<The-member-role-id-goes-here>"
+    "cwRoleId": "<The-member-role-id-goes-here>",
+    "cwChannelId": "<Your-channel-id-goes-here>"
 }
 
 ```
