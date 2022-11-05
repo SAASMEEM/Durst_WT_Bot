@@ -30,9 +30,9 @@ module.exports = {
 	async execute(interaction) {
 		const check = await checkPerms(
 			interaction,
-			null /*botconfig.adminId*/,
-			botconfig.uffzRoleId,
-			null
+			null,
+			botconfig.cwRoleId,
+			botconfig.cwChannelId
 		);
 		if (!check) return;
 
