@@ -66,13 +66,6 @@ There are 3 permission levels:
 - **avatar:** shows the profile picture of yourself or a selected user
 - **info:** shows information about the bot
 
-#### Time-tracking
-
-- **userinfo:** shows the time spent in voice-channels by yourself or a selected user
-- **leaderboard:** lists all users sorted by their time-scores
-- **leaderboard2:** this is a weekly leaderboard for the time-scores
-- **username:** you can change your username shown in the leaderboards
-
 ### 🍻Offizier
 
 Offizier can use all the commands above and:
@@ -81,7 +74,7 @@ Offizier can use all the commands above and:
 
 ### 🔧Developer only Commands
 
-_There are currently no commands_
+`There are currently no commands`
 
 ## Additional Information
 
