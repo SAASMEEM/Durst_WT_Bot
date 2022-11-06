@@ -111,7 +111,7 @@ module.exports = {
 		buttonCollector.on("collect", (buttonInteraction) => {
 			if (!buttonInteraction.member.roles.cache.has(botconfig.cwRoleId)) {
 				buttonInteraction.reply({
-					content: `Only <@&${botconfig.cwRoleId}> can join the clanwar!\nPlease make sure to fill in the [registration](https://shorturl.at/lnH49). \nIf you already did so, please contact Missile, Assra or Aplha to give you permission.`,
+					content: `Only <@&${botconfig.cwRoleId}> can join the clanwar!\nPlease make sure to fill in the [registration](https://shorturl.at/lnH49). \nIf you already did so, please contact <@&${botconfig.uffzRoleId}> to give you permission.`,
 					ephemeral: true,
 				});
 				return
