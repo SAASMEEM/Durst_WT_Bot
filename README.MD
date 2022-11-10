@@ -36,6 +36,10 @@ token=<your-token-goes-here>
 
 Place your options into `config.json` like this:
 
+> **Warning**
+> The defaultTime has to be in 24h time format!
+> Example: "20" -> 20 o'clock
+
 ```json
 {
     "botId": "<Your-bot's-id-goes-here>",
@@ -43,7 +47,8 @@ Place your options into `config.json` like this:
     "adminId": "<Your-own-id-goes-here>",
     "uffzRoleId": "<The-leader's-role-id-goes-here>",
     "cwRoleId": "<The-member-role-id-goes-here>",
-    "cwChannelId": "<Your-channel-id-goes-here>"
+    "cwChannelId": "<Your-channel-id-goes-here>",
+    "defaultTime": "<Your-default-clanwar-starttime-goes-here>"
 }
 
 ```
