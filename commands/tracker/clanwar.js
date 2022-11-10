@@ -49,7 +49,7 @@ module.exports = {
 		const hour = d.getHours();
 		const minute = d.getMinutes();
 		const second = d.getSeconds();
-		const starttime = 0
+		let starttime = null
 		if (inserthour == null || inserthour == undefined) {
 			starttime = defaulthour
 		} else {
@@ -58,7 +58,7 @@ module.exports = {
 
 		const date = new Date(year, month, day, hour, minute, second);
 		const dateseconds = date.getTime() / 1000;
-		const start = new Date(year, month, day, starthour, 0, 0);
+		const start = new Date(year, month, day, starttime, 0, 0);
 		const startseconds = start.getTime() / 1000;
 		const time = startseconds * 1000 - dateseconds * 1000;
 
