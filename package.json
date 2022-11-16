@@ -16,7 +16,6 @@
 		"dotenv": "^16.0.3",
 		"express": "^4.18.2",
 		"humanize-duration": "^3.27.3",
-		"mongoose": "^6.3.5",
 		"node-bash-title": "^0.0.2",
 		"save": "^2.9.0",
 		"util": "^0.12.5"
