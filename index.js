@@ -7,7 +7,7 @@ const { Client, Collection, Intents } = require("discord.js");
 
 // Create a new client instance
 const client = new Client({
-	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES],
+	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS],
 });
 client.commands = new Collection();
 
