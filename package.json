@@ -24,7 +24,7 @@
 		"husky": "^7.0.4",
 		"lint-staged": "^13.0.3",
 		"prettier": "^2.7.1",
-		"xo": "^0.52.4"
+		"xo": "^0.53.0"
 	},
 	"prettier": {
 		"bracketSpacing": true,
