@@ -102,11 +102,7 @@ module.exports = {
 
 		setTimeout(() => {
 			message.edit({ components: [] });
-			if (tableMap.size < 8) {
-				interaction.channel.send(`There are less than 8 members assigned. No CW today.`)
-			} else {
-				interaction.channel.send(`<@&${botconfig.cwRoleId}> CW!`);
-			}
+			interaction.channel.send(`<@&${botconfig.cwRoleId}> CW!`);
 		}, time);
 
 		const buttonCollector = interaction.channel.createMessageComponentCollector(
@@ -202,16 +198,20 @@ module.exports = {
  * @param {Map<string,"+"|"-"|"~">} map
  */
 function updateEmbed(message, map) {
-	message.embeds[0].fields = getFields(message, map);
-	message.edit({
-		embeds: message.embeds,
-	});
+	try {
+		message.embeds[0].fields = getFields(message, map)
+		message.edit({
+			embeds: message.embeds,
+		})
+	} catch(e) {
+		message.edit({ components: [], content: '**Die Tabelle wurde gelöscht! Der Befehl muss neu gestartet werden.**' });
+	}
 }
 
 /**
  *
  * @param {import("discord.js").Message<boolean>} message
- * @param {Map<string,"+"|"-"|"~">} map
+ * @param {Map<string,"+"|"-"|"~">interaction} map
  */
 function getFields(message, map) {
 	/** @type {Map<string,"+"|"-"|"~">} */
