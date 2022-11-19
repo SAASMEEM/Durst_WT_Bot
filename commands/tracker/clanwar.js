@@ -17,15 +17,17 @@ module.exports = {
 		.addIntegerOption((option) =>
 			option
 				.setName("hour")
-				.setDescription("Specify the starting time")
-				.setRequired(true)
-		)
+				.setDescription("Specify the starting time. Default: 20:00")
+				.setRequired(false)
+		),
+		/*
 		.addIntegerOption((option) =>
 			option
 				.setName("minute")
 				.setDescription("Specify the starting time")
 				.setRequired(true)
 		),
+		*/
 
 	async execute(interaction) {
 		const check = await checkPerms(
@@ -38,7 +40,8 @@ module.exports = {
 
 		const br = interaction.options.getString("battlerank");
 		const inserthour = interaction.options.getInteger("hour");
-		const insertminute = interaction.options.getInteger("minute");
+//		const insertminute = interaction.options.getInteger("minute");
+		const defaulthour = botconfig.defaultTime
 		const d = new Date();
 		const year = d.getFullYear();
 		const month = d.getMonth();
@@ -46,9 +49,16 @@ module.exports = {
 		const hour = d.getHours();
 		const minute = d.getMinutes();
 		const second = d.getSeconds();
+		let starttime = null
+		if (inserthour == null || inserthour == undefined) {
+			starttime = defaulthour
+		} else {
+			starttime = inserthour
+		}
+
 		const date = new Date(year, month, day, hour, minute, second);
 		const dateseconds = date.getTime() / 1000;
-		const start = new Date(year, month, day, inserthour, insertminute, 0);
+		const start = new Date(year, month, day, starttime, 0, 0);
 		const startseconds = start.getTime() / 1000;
 		const time = startseconds * 1000 - dateseconds * 1000;
 
@@ -66,7 +76,7 @@ module.exports = {
 
 		await interaction.deferReply();
 		await interaction.followUp({
-			content: `CW um ${inserthour}:${insertminute} Uhr! Tragt euch ein!`,
+			content: `CW um ${starttime}:00 Uhr! Tragt euch ein!`,
 		});
 
 		const Reactions = new Discord.MessageActionRow().addComponents(
@@ -115,7 +125,7 @@ module.exports = {
 		buttonCollector.on("collect", (buttonInteraction) => {
 			if (!buttonInteraction.member.roles.cache.has(botconfig.cwRoleId)) {
 				buttonInteraction.reply({
-					content: `Only <@&${botconfig.cwRoleId}> can join the clanwar!\nPlease make sure to fill in the [registration](https://shorturl.at/lnH49). \nIf you already did so, please contact Missile, Assra or Aplha to give you permission.`,
+					content: `Only <@&${botconfig.cwRoleId}> can join the clanwar!\nPlease make sure to fill in the [registration](https://shorturl.at/lnH49). \nIf you already did so, please contact <@&${botconfig.uffzRoleId}> to give you permission.`,
 					ephemeral: true,
 				});
 				return
