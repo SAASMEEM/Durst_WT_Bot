@@ -198,16 +198,20 @@ module.exports = {
  * @param {Map<string,"+"|"-"|"~">} map
  */
 function updateEmbed(message, map) {
-	message.embeds[0].fields = getFields(message, map);
-	message.edit({
-		embeds: message.embeds,
-	});
+	try {
+		message.embeds[0].fields = getFields(message, map)
+		message.edit({
+			embeds: message.embeds,
+		})
+	} catch(e) {
+		message.edit({ components: [], content: '**Die Tabelle wurde gelöscht! Der Befehl muss neu gestartet werden.**' });
+	}
 }
 
 /**
  *
  * @param {import("discord.js").Message<boolean>} message
- * @param {Map<string,"+"|"-"|"~">} map
+ * @param {Map<string,"+"|"-"|"~">interaction} map
  */
 function getFields(message, map) {
 	/** @type {Map<string,"+"|"-"|"~">} */
