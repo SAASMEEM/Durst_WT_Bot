@@ -51,7 +51,7 @@ module.exports = {
                     title: `Nachricht von 🍻Durst🍻`,
                     description: `[discord server](https://discord.gg/ecZR7WxMPt)`,
                     fields: [
-                        { name: "Nachricht:", value: `Du wurdest aus der Ingame kampfgruppe entfernt!`},
+                        { name: "Nachricht:", value: `Du wurdest aus der Ingame Kampfgruppe entfernt!`},
                         { name: "Warum:", value: `Unsere Ingame Kampfgruppen sind leider vom Platz her beschränkt.
                         Daher müssen wir um den aktiven Mitgliedern Platz zu schaffen inaktive Mitglieder entfernen.`},
                         { name: "System:", value: `Wir richten uns beim Aussortieren nach der Discord Aktivität.
