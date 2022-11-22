@@ -95,8 +95,8 @@ module.exports = {
                 });
                 // send embed
                 member.send({ embeds: [removeEmbed] }).catch(e => {
-                    return
-                    // TODO add feedback when no DM was delivered
+                    if (e === Discord.DiscordAPIError) return interaction.channel.send(`<@${user.id}> kann keine Direktnachten empfangen!`)
+                    // TODO channel auf id festlegen
                 })
             // /user/add
             } else if (interaction.options.getSubcommand() === "add") {
