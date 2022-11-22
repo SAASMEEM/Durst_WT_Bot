@@ -18,6 +18,7 @@ module.exports = {
 		member.send({embeds: [embed]}).catch (e =>{
 			const channel = member.guild.channels.cache.get(botconfig.uffzChannelId)
 			channel.send(`<@${user.id}> konnte keine Direktnacht empfangen!`)
-			return		})
+			return
+		})
     },
 };
