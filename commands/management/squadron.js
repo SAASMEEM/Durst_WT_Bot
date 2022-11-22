@@ -96,6 +96,7 @@ module.exports = {
                 // send embed
                 member.send({ embeds: [removeEmbed] }).catch(e => {
                     return
+                    // TODO add feedback when no DM was delivered
                 })
             // /user/add
             } else if (interaction.options.getSubcommand() === "add") {

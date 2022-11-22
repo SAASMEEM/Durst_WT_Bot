@@ -17,6 +17,7 @@ module.exports = {
 		});
 		member.send({embeds: [embed]}).catch (e =>{
 			return
+			// TODO add feedback when no DM get send
 		})
     },
 };
