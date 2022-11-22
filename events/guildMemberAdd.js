@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const botconfig = require('../config.json');
 
 module.exports = {
 	name: "guildMemberAdd",
@@ -17,7 +18,7 @@ module.exports = {
 		});
 		member.send({embeds: [embed]}).catch (e =>{
 			const channel = member.guild.channels.cache.get(botconfig.uffzChannelId)
-			channel.send(`<@${user.id}> konnte keine Direktnacht empfangen!`)
+			channel.send(`<@${member.user.id}> konnte keine Direktnacht empfangen!`)
 			return
 		})
     },
