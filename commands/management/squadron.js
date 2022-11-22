@@ -90,13 +90,16 @@ module.exports = {
                     return
                 })
             } else if (interaction.options.getSubcommand() === "add") {
-                const role = interaction.options.getInteger("role")
                 const user = interaction.options.getUser("target")
                 const member = await interaction.guild.members.fetch(user).then()
+                const role = interaction.options.getInteger("role")
                 
-                
-
-                //member.roles.remove(botconfig.freundeRoleId)
+                if (role == 1) {
+                    member.roles.add(botconfig.mannschafter1RoleId)
+                } else if (role == 2) {
+                    member.roles.add(botconfig.mannschafter2RoleId)
+                }
+                member.roles.remove(botconfig.freundeRoleId)
             }
         }
 
