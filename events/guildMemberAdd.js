@@ -16,8 +16,8 @@ module.exports = {
 			timestamp: Date.now(),
 		});
 		member.send({embeds: [embed]}).catch (e =>{
-			return
-			// TODO add feedback when no DM get send
-		})
+			const channel = member.guild.channels.cache.get(botconfig.uffzChannelId)
+			channel.send(`<@${user.id}> konnte keine Direktnacht empfangen!`)
+			return		})
     },
 };

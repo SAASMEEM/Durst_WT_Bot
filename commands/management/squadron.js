@@ -38,10 +38,10 @@ module.exports = {
                                 .setDescription('Choose the mannschafter-role the user should get added')
                                 .setRequired(true)
                                 .setChoices(
-                                    { name: 'Mannschafter (Main)', value: 1},
-                                    { name: 'Mannschafter (zweit)', value: 2}
+                                    { name: 'Mannschafter (Main)', value: 1 },
+                                    { name: 'Mannschafter (zweit)', value: 2 }
                                 )
-                                
+
                         )
                 )
         ),
@@ -95,12 +95,11 @@ module.exports = {
                 });
                 // send embed
                 member.send({ embeds: [removeEmbed] }).catch(e => {
-                    const channel = GUILD.channels.cache.get(botconfig.uffzChannelId)
-                    if (e === Discord.DiscordAPIError) return channel.send(`<@${user.id}> kann keine Direktnachten empfangen!`)
+                    const channel = member.guild.channels.cache.get(botconfig.uffzChannelId)
+                    channel.send(`<@${user.id}> konnte keine Direktnacht empfangen!`)
                     return
-                    // TODO channel auf id festlegen
                 })
-            // /user/add
+                // /user/add
             } else if (interaction.options.getSubcommand() === "add") {
                 // get guildmember object from user object
                 const user = interaction.options.getUser("target")
