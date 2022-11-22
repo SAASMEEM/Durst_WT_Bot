@@ -108,8 +108,18 @@ module.exports = {
                 // manage roles
                 if (role == 1) {
                     member.roles.add(botconfig.mannschafter1RoleId)
+                    member.roles.remove(botconfig.mannschafter2RoleId)
+                    interaction.reply({
+                        content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter1RoleId}>!`,
+                        ephemeral: true
+                    })
                 } else if (role == 2) {
                     member.roles.add(botconfig.mannschafter2RoleId)
+                    member.roles.remove(botconfig.mannschafter1RoleId)
+                    interaction.reply({
+                        content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter2RoleId}>!`,
+                        ephemeral: true
+                    })
                 }
                 member.roles.remove(botconfig.freundeRoleId)
             }
