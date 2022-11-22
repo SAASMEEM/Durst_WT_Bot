@@ -95,7 +95,9 @@ module.exports = {
                 });
                 // send embed
                 member.send({ embeds: [removeEmbed] }).catch(e => {
-                    if (e === Discord.DiscordAPIError) return interaction.channel.send(`<@${user.id}> kann keine Direktnachten empfangen!`)
+                    const channel = GUILD.channels.cache.get(botconfig.uffzChannelId)
+                    if (e === Discord.DiscordAPIError) return channel.send(`<@${user.id}> kann keine Direktnachten empfangen!`)
+                    return
                     // TODO channel auf id festlegen
                 })
             // /user/add

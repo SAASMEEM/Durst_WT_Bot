@@ -50,6 +50,7 @@ Place your options into `config.json` like this:
     "mannschafter1RoleId": "<The-first-member-role-id-goes-here>",
     "mannschafter2RoleId": "<The-first-member-role-id-goes-here>",
     "freundeRoleId": "<The-friend-role-id-goes-here>",
+    "uffzChannelId": "<The-leader's-channel-id-goes-here>",
     "cwChannelId": "<Your-channel-id-goes-here>",
     "defaultTime": "<Your-default-clanwar-starttime-goes-here>"
 }
