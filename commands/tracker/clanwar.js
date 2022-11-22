@@ -118,9 +118,9 @@ module.exports = {
 		/** @type {Map<string,"+"|"-"|"~">} */
 		const tableMap = new Map();
 
-		buttonCollector.on("collect", (buttonInteraction) => {
+		buttonCollector.on("collect", async (buttonInteraction) => {
 			if (!buttonInteraction.member.roles.cache.has(botconfig.cwRoleId)) {
-				buttonInteraction.reply({
+				await buttonInteraction.reply({
 					content: `Only <@&${botconfig.cwRoleId}> can join the clanwar!\nPlease make sure to fill in the [registration](https://shorturl.at/lnH49). \nIf you already did so, please contact <@&${botconfig.uffzRoleId}> to give you permission.`,
 					ephemeral: true,
 				});
@@ -129,7 +129,7 @@ module.exports = {
 			switch (buttonInteraction.customId) {
 				case "Yes":
 					if (tableMap.get(buttonInteraction.user.id) === "+") {
-						buttonInteraction.reply({
+						await buttonInteraction.reply({
 							content: `You already accepted this clanwar!`,
 							ephemeral: true,
 						});
@@ -138,7 +138,7 @@ module.exports = {
 
 					tableMap.set(buttonInteraction.user.id, "+");
 					//                    buttonInteraction.member.roles.add(cwRoleId)
-					buttonInteraction.reply({
+					await buttonInteraction.reply({
 						content: `You accepted the clanwar.`,
 						ephemeral: true,
 					});
@@ -146,7 +146,7 @@ module.exports = {
 
 				case "Cancel":
 					if (tableMap.get(buttonInteraction.user.id) === "-") {
-						buttonInteraction.reply({
+						await buttonInteraction.reply({
 							content: `You already declined this clanwar!`,
 							ephemeral: true,
 						});
@@ -155,7 +155,7 @@ module.exports = {
 
 					tableMap.set(buttonInteraction.user.id, "-");
 					//                    buttonInteraction.member.roles.remove(cwRoleId)
-					buttonInteraction.reply({
+					await buttonInteraction.reply({
 						content: `You declined the clanwar.`,
 						ephemeral: true,
 					});
@@ -163,7 +163,7 @@ module.exports = {
 
 				case "Maybe":
 					if (tableMap.get(buttonInteraction.user.id) === "~") {
-						buttonInteraction.reply({
+						await buttonInteraction.reply({
 							content: `You already enlisted as a possible clanwar participant!`,
 							ephemeral: true,
 						});
@@ -172,7 +172,7 @@ module.exports = {
 
 					tableMap.set(buttonInteraction.user.id, "~");
 					//                    buttonInteraction.member.roles.add(cwRoleId)
-					buttonInteraction.reply({
+					await buttonInteraction.reply({
 						content: `You enlisted as a possible clanwar participant.`,
 						ephemeral: true,
 					});
@@ -180,7 +180,7 @@ module.exports = {
 
 				default:
 					console.log("Something Broke");
-					buttonInteraction.reply({
+					await buttonInteraction.reply({
 						content: "Something Broke",
 						ephemeral: true,
 					});
