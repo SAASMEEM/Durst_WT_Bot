@@ -45,7 +45,8 @@ module.exports = {
                         )
                 )
         ),
-    async execute(interaction, guild) {
+    async execute(interaction) {
+        // check for required permission
         const check = await checkPerms(
             interaction,
             null,
@@ -53,18 +54,24 @@ module.exports = {
             null
         );
         if (!check) return;
+        // /user
         if (interaction.options.getSubcommandGroup() === "user") {
+            // /user/remove
             if (interaction.options.getSubcommand() === "remove") {
+                // get guildmember objecct from user object
                 const user = interaction.options.getUser("target")
                 const member = await interaction.guild.members.fetch(user).then()
+                // manage roles
                 member.roles.remove(botconfig.mannschafter1RoleId)
                 member.roles.remove(botconfig.mannschafter2RoleId)
                 member.roles.remove(botconfig.cwRoleId)
                 member.roles.add(botconfig.freundeRoleId)
+                // send feedback
                 interaction.reply({
                     content: `<@${user.id}> ist jetzt kein Mannschafter mehr!`,
                     ephemeral: true
                 })
+                // create embed for user DM
                 const removeEmbed = new Discord.MessageEmbed({
                     color: "2F3136",
                     thumbnail: {
@@ -73,7 +80,7 @@ module.exports = {
                     title: `Nachricht von 🍻Durst🍻`,
                     description: `[discord server](https://discord.gg/ecZR7WxMPt)`,
                     fields: [
-                        { name: "Nachricht:", value: `Du wurdest aus der Ingame kampfgruppe entfernt!` },
+                        { name: "Nachricht:", value: `Du wurdest aus der Ingame Kampfgruppe entfernt!` },
                         {
                             name: "Warum:", value: `Unsere Ingame Kampfgruppen sind leider vom Platz her beschränkt.
                         Daher müssen wir um den aktiven Mitgliedern Platz zu schaffen inaktive Mitglieder entfernen.`},
@@ -86,14 +93,18 @@ module.exports = {
                     ],
                     timestamp: Date.now(),
                 });
+                // send embed
                 member.send({ embeds: [removeEmbed] }).catch(e => {
                     return
                 })
+            // /user/add
             } else if (interaction.options.getSubcommand() === "add") {
+                // get guildmember object from user object
                 const user = interaction.options.getUser("target")
                 const member = await interaction.guild.members.fetch(user).then()
+                // get mannschafterRolePointer -> 1 || 2
                 const role = interaction.options.getInteger("role")
-                
+                // manage roles
                 if (role == 1) {
                     member.roles.add(botconfig.mannschafter1RoleId)
                 } else if (role == 2) {
