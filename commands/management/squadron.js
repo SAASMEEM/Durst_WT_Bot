@@ -116,6 +116,7 @@ module.exports = {
                 } else if (role == 2) {
                     member.roles.add(botconfig.mannschafter2RoleId)
                     member.roles.remove(botconfig.mannschafter1RoleId)
+                    member.roles .remove(botconfig.cwRoleId)
                     interaction.reply({
                         content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter2RoleId}>!`,
                         ephemeral: true
