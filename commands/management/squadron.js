@@ -41,7 +41,12 @@ module.exports = {
                                     { name: 'Mannschafter (Main)', value: 1 },
                                     { name: 'Mannschafter (zweit)', value: 2 }
                                 )
-
+                        )
+                        .addStringOption(option =>
+                            option
+                                .setName('nickname')
+                                .setDescription('Add a Nickname to the user')
+                                .setRequired(false)
                         )
                 )
         ),
@@ -99,7 +104,7 @@ module.exports = {
                 })
                 // /user/add
             } else if (interaction.options.getSubcommand() === "add") {
-                // get guildmember object from user object
+                // get guildmember object from user objectsetNickname
                 const user = interaction.options.getUser("target")
                 const member = await interaction.guild.members.fetch(user).then()
                 // get mannschafterRolePointer -> 1 || 2
@@ -121,6 +126,8 @@ module.exports = {
                         ephemeral: true
                     })
                 }
+                const nickname = interaction.options.getString("nickname")
+                member.setNickname(nickname)
             }
         }
 
