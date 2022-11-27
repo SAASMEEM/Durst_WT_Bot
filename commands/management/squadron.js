@@ -65,7 +65,6 @@ module.exports = {
                 member.roles.remove(botconfig.mannschafter1RoleId)
                 member.roles.remove(botconfig.mannschafter2RoleId)
                 member.roles.remove(botconfig.cwRoleId)
-                member.roles.add(botconfig.freundeRoleId)
                 // send feedback
                 interaction.reply({
                     content: `<@${user.id}> ist jetzt kein Mannschafter mehr!`,
@@ -88,7 +87,7 @@ module.exports = {
                         Dass heißt, wir behalten discord-aktive Mitgleider und entfernen discord-inaktive Mitglieder wenn dafür die notwendigkeit besteht.`},
                         {
                             name: "Support:", value: `Falls du dich als aktives Diescord-Mitglied ansiehst und denkst du wirst ungerecht behandelt dann wende dich gerne an einen Offizier auf unserem Server.
-                        Du bist natürlich immmer noch gerne Willkommen mit der Freundes-Rolle auf unserem Server o7`},
+                        Du bist natürlich immmer noch gerne Willkommen auf unserem Server o7`},
                     ],
                     timestamp: Date.now(),
                 });
@@ -122,7 +121,6 @@ module.exports = {
                         ephemeral: true
                     })
                 }
-                member.roles.remove(botconfig.freundeRoleId)
             }
         }
 
