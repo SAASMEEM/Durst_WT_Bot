@@ -1,3 +1,5 @@
+// no need cause of community server
+/*
 const Discord = require("discord.js");
 const botconfig = require('../config.json');
 
@@ -23,3 +25,4 @@ module.exports = {
 		})
     },
 };
+*/

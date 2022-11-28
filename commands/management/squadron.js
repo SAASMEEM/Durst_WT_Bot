@@ -41,7 +41,12 @@ module.exports = {
                                     { name: 'Mannschafter (Main)', value: 1 },
                                     { name: 'Mannschafter (zweit)', value: 2 }
                                 )
-
+                        )
+                        .addStringOption(option =>
+                            option
+                                .setName('nickname')
+                                .setDescription('Add a Nickname to the user')
+                                .setRequired(false)
                         )
                 )
         ),
@@ -65,7 +70,6 @@ module.exports = {
                 member.roles.remove(botconfig.mannschafter1RoleId)
                 member.roles.remove(botconfig.mannschafter2RoleId)
                 member.roles.remove(botconfig.cwRoleId)
-                member.roles.add(botconfig.freundeRoleId)
                 // send feedback
                 interaction.reply({
                     content: `<@${user.id}> ist jetzt kein Mannschafter mehr!`,
@@ -88,7 +92,7 @@ module.exports = {
                         Dass heißt, wir behalten discord-aktive Mitgleider und entfernen discord-inaktive Mitglieder wenn dafür die notwendigkeit besteht.`},
                         {
                             name: "Support:", value: `Falls du dich als aktives Diescord-Mitglied ansiehst und denkst du wirst ungerecht behandelt dann wende dich gerne an einen Offizier auf unserem Server.
-                        Du bist natürlich immmer noch gerne Willkommen mit der Freundes-Rolle auf unserem Server o7`},
+                        Du bist natürlich immmer noch gerne Willkommen auf unserem Server o7`},
                     ],
                     timestamp: Date.now(),
                 });
@@ -100,7 +104,7 @@ module.exports = {
                 })
                 // /user/add
             } else if (interaction.options.getSubcommand() === "add") {
-                // get guildmember object from user object
+                // get guildmember object from user objectsetNickname
                 const user = interaction.options.getUser("target")
                 const member = await interaction.guild.members.fetch(user).then()
                 // get mannschafterRolePointer -> 1 || 2
@@ -122,7 +126,8 @@ module.exports = {
                         ephemeral: true
                     })
                 }
-                member.roles.remove(botconfig.freundeRoleId)
+                const nickname = interaction.options.getString("nickname")
+                member.setNickname(nickname)
             }
         }
 
