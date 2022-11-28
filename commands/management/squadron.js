@@ -126,8 +126,6 @@ module.exports = {
                         ephemeral: true
                     })
                 }
-                const nickname = interaction.options.getString("nickname")
-                member.setNickname(nickname)
             }
         }
 
