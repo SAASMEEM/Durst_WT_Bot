@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const botconfig = require("../../config.json");
 const { checkPerms } = require("../../import_folders/functions.js");
+let run = false
 
 /** @type {{data: import("@discordjs/builders").SlashCommandBuilder, execute: (interaction: import("discord.js").MessageComponentInteraction) => Promise<void>}} */
 module.exports = {
@@ -37,6 +38,13 @@ module.exports = {
 			botconfig.cwChannelId
 		);
 		if (!check) return;
+		if (run) {
+			await interaction.reply({
+				content: `You can call a clanwar only once!`,
+				ephemeral: true,
+			});
+			return
+		}
 
 		const br = interaction.options.getString("battlerank");
 		const inserthour = interaction.options.getInteger("hour");
@@ -100,9 +108,12 @@ module.exports = {
 			fetchReply: true,
 		});
 
+		run = true
+
 		setTimeout(() => {
 			message.edit({ components: [] });
 			interaction.channel.send(`<@&${botconfig.cwRoleId}> CW!`);
+			run = false
 		}, time);
 
 		const buttonCollector = interaction.channel.createMessageComponentCollector(
@@ -205,6 +216,7 @@ function updateEmbed(message, map) {
 		})
 	} catch(e) {
 		message.edit({ components: [], content: '**Die Tabelle wurde gelöscht! Der Befehl muss neu gestartet werden.**' });
+		run = false
 	}
 }
 
