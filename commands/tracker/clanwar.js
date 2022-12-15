@@ -31,6 +31,7 @@ module.exports = {
 		*/
 
 	async execute(interaction) {
+		// check for permission and if already running
 		const check = await checkPerms(
 			interaction,
 			null,
@@ -46,6 +47,7 @@ module.exports = {
 			return
 		}
 
+		// declare variables
 		const br = interaction.options.getString("battlerank");
 		const inserthour = interaction.options.getInteger("hour");
 //		const insertminute = interaction.options.getInteger("minute");
@@ -70,6 +72,7 @@ module.exports = {
 		const startseconds = start.getTime() / 1000;
 		const time = startseconds * 1000 - dateseconds * 1000;
 
+		// declare embed
 		const tableEmbed = new Discord.MessageEmbed({
 			color: "880099",
 			title: `Clanwar (${br})`,
@@ -82,11 +85,7 @@ module.exports = {
 			timestamp: Date.now(),
 		});
 
-		await interaction.deferReply();
-		await interaction.followUp({
-			content: `CW um ${starttime}:00 Uhr! Tragt euch ein!`,
-		});
-
+		// declare buttons
 		const Reactions = new Discord.MessageActionRow().addComponents(
 			new Discord.MessageButton()
 				.setEmoji("✅")
@@ -102,14 +101,19 @@ module.exports = {
 				.setStyle("SECONDARY")
 		);
 
+		// post message and embed with buttons
+		await interaction.deferReply();
+		await interaction.followUp({
+			content: `CW um ${starttime}:00 Uhr! Tragt euch ein!`,
+		});
 		const message = await interaction.channel.send({
 			embeds: [tableEmbed],
 			components: [Reactions],
 			fetchReply: true,
 		});
-
 		run = true
 
+		// remove buttons and send notification
 		setTimeout(() => {
 			message.edit({ components: [] });
 			interaction.channel.send(`<@&${botconfig.cwRoleId}> CW!`);
