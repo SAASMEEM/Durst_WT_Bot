@@ -4,6 +4,54 @@ const botconfig = require("../../config.json");
 const { checkPerms } = require("../../import_folders/functions.js");
 let run = false
 
+// functions
+/**
+ *
+ * @param {import("discord.js").Message<boolean>} message
+ * @param {Map<string,"+"|"-"|"~">} map
+ */
+function updateEmbed(message, map) {
+	try {
+		message.embeds[0].fields = getFields(message, map)
+		message.edit({
+			embeds: message.embeds,
+		})
+	} catch(e) {
+		message.edit({ components: [], content: '**Die Tabelle wurde gelöscht! Der Befehl muss neu gestartet werden.**' });
+		run = false
+	}
+}
+
+/**
+ *
+ * @param {import("discord.js").Message<boolean>} message
+ * @param {Map<string,"+"|"-"|"~">interaction} map
+ */
+function getFields(message, map) {
+	/** @type {Map<string,"+"|"-"|"~">} */
+	const keyMap = new Map([
+		["✅Accepted:", "+"],
+		["❌Declined:", "-"],
+		["❔Maybe:", "~"],
+	]);
+
+	return message.embeds[0].fields.map((old) => {
+		const key = keyMap.get(old.name);
+		if (!key) {
+			console.error("Something has gone terribly wrong here!");
+			return undefined;
+		}
+
+		const ids = [...map].filter((v) => v[1] === key).map((v) => v[0]);
+
+		return {
+			name: old.name,
+			value: `\u200B${ids.map((id) => `<@${id}>\n `).join("")}`,
+			inline: true,
+		};
+	});
+}
+
 /** @type {{data: import("@discordjs/builders").SlashCommandBuilder, execute: (interaction: import("discord.js").MessageComponentInteraction) => Promise<void>}} */
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -120,6 +168,7 @@ module.exports = {
 			run = false
 		}, time);
 
+		// button collector
 		const buttonCollector = interaction.channel.createMessageComponentCollector(
 			{
 				filter: (m) =>
@@ -206,50 +255,3 @@ module.exports = {
 		});
 	},
 };
-
-/**
- *
- * @param {import("discord.js").Message<boolean>} message
- * @param {Map<string,"+"|"-"|"~">} map
- */
-function updateEmbed(message, map) {
-	try {
-		message.embeds[0].fields = getFields(message, map)
-		message.edit({
-			embeds: message.embeds,
-		})
-	} catch(e) {
-		message.edit({ components: [], content: '**Die Tabelle wurde gelöscht! Der Befehl muss neu gestartet werden.**' });
-		run = false
-	}
-}
-
-/**
- *
- * @param {import("discord.js").Message<boolean>} message
- * @param {Map<string,"+"|"-"|"~">interaction} map
- */
-function getFields(message, map) {
-	/** @type {Map<string,"+"|"-"|"~">} */
-	const keyMap = new Map([
-		["✅Accepted:", "+"],
-		["❌Declined:", "-"],
-		["❔Maybe:", "~"],
-	]);
-
-	return message.embeds[0].fields.map((old) => {
-		const key = keyMap.get(old.name);
-		if (!key) {
-			console.error("Something has gone terribly wrong here!");
-			return undefined;
-		}
-
-		const ids = [...map].filter((v) => v[1] === key).map((v) => v[0]);
-
-		return {
-			name: old.name,
-			value: `\u200B${ids.map((id) => `<@${id}>\n `).join("")}`,
-			inline: true,
-		};
-	});
-}
