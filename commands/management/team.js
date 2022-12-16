@@ -47,7 +47,7 @@ module.exports = {
 			timestamp: Date.now(),
 		})
 
-        for (let team = 0; team <= teamnumber; team++) {
+        for (let team = 1; team <= teamnumber; team++) {
             tableEmbed.addFields({ name: `Team ${team}`, value: `\u200B`})
         }
 
