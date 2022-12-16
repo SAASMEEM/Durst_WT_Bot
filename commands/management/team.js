@@ -40,7 +40,7 @@ module.exports = {
 		const tableEmbed = new Discord.MessageEmbed({
 			color: "880099",
 			title: `Team Generator (${teamnumber} teams)`,
-			description: `⏲️ <t:${startseconds}:R>\n[Anmeldung](https://shorturl.at/lnH49)\n[Checkliste](https://shorturl.at/kLNZ9)`,
+			description: `\u200B`,
 			fields: [
 				{ name: "Entry:", value: "\u200B", inline: true },
 			],
@@ -50,5 +50,11 @@ module.exports = {
         for (let team = 0; team <= teamnumber; team++) {
             tableEmbed.addFields({ name: `Team ${team}`, value: `\u200B`})
         }
+
+        const message = await interaction.channel.send({
+			embeds: [tableEmbed],
+			components: [Reactions],
+			fetchReply: true,
+		});
     },
 };
