@@ -53,8 +53,8 @@ module.exports = {
 
         const message = await interaction.channel.send({
 			embeds: [tableEmbed],
-			components: [Reactions],
-			fetchReply: true,
+			// components: [Reactions],
+			// fetchReply: true,
 		});
     },
 };
