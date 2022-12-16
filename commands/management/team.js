@@ -1,7 +1,7 @@
 const Discord = require("discord.js")
 const { SlashCommandBuilder } = require("@discordjs/builders")
-const botconfig = require('../../config.json');
-const { checkPerms } = require("../../import_folders/functions.js");
+const botconfig = require('../../config.json')
+const { checkPerms } = require("../../import_folders/functions.js")
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -32,6 +32,23 @@ module.exports = {
             botconfig.uffzRoleId,
             null
         );
-        if (!check) return;
+        if (!check) return
+
+        const teamnumber = interaction.options.getInteger("teamnum")
+
+        // declare embed
+		const tableEmbed = new Discord.MessageEmbed({
+			color: "880099",
+			title: `Team Generator (${teamnumber} teams)`,
+			description: `⏲️ <t:${startseconds}:R>\n[Anmeldung](https://shorturl.at/lnH49)\n[Checkliste](https://shorturl.at/kLNZ9)`,
+			fields: [
+				{ name: "Entry:", value: "\u200B", inline: true },
+			],
+			timestamp: Date.now(),
+		})
+
+        for (let team = 0; team <= teamnumber; team++) {
+            tableEmbed.addFields({ name: `Team ${team}`, value: `\u200B`})
+        }
     },
 };
