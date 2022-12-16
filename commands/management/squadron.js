@@ -2,6 +2,7 @@ const Discord = require("discord.js")
 const { SlashCommandBuilder } = require("@discordjs/builders")
 const botconfig = require('../../config.json');
 const { checkPerms } = require("../../import_folders/functions.js");
+const e = require("express");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -45,7 +46,7 @@ module.exports = {
                         .addStringOption(option =>
                             option
                                 .setName('nickname')
-                                .setDescription('Add a Nickname to the user')
+                                .setDescription('Add a Nickname to the user. Fill in \"reset\" to remove the nickname')
                                 .setRequired(false)
                         )
                 )
@@ -125,6 +126,12 @@ module.exports = {
                         content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter2RoleId}>!`,
                         ephemeral: true
                     })
+                }
+                const nickname = interaction.options.getString("nickname")
+                if (nickname == "reset") {
+                    member.setNickname(null)
+                } else if (nickname != null) {
+                    member.setNickname(nickname)
                 }
             }
         }
