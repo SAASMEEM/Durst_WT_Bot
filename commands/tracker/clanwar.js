@@ -10,14 +10,14 @@ let run = false
  * @param {import("discord.js").Message<boolean>} message
  * @param {Map<string,"+"|"-"|"~">} map
  */
-function updateEmbed(message, map) {
+async function updateEmbed(message, map) {
 	try {
 		message.embeds[0].fields = getFields(message, map)
-		message.edit({
+		await message.edit({
 			embeds: message.embeds,
 		})
 	} catch(e) {
-		message.edit({ components: [], content: '**Die Tabelle wurde gelöscht! Der Befehl muss neu gestartet werden.**' });
+		await message.edit({ components: [], content: '**Die Tabelle wurde gelöscht! Der Befehl muss neu gestartet werden.**' });
 		run = false
 	}
 }
@@ -162,9 +162,9 @@ module.exports = {
 		run = true
 
 		// remove buttons and send notification
-		setTimeout(() => {
-			message.edit({ components: [] });
-			interaction.channel.send(`<@&${botconfig.cwRoleId}> CW!`);
+		setTimeout(async () => {
+			await message.edit({ components: [] });
+			await interaction.channel.send(`<@&${botconfig.cwRoleId}> CW!`);
 			run = false
 		}, time);
 
