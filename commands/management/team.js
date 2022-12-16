@@ -47,7 +47,7 @@ module.exports = {
 		})
 
         for (let team = 1; team <= teamnumber; team++) {
-            tableEmbed.addFields({ name: `Team ${team}`, value: `\u200B`})
+            tableEmbed.addFields({ name: `Team ${team}`, value: `\u200B`, inline: true})
         }
 
         const message = await interaction.channel.send({
