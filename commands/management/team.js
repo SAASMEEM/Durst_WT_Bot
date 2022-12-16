@@ -41,7 +41,7 @@ module.exports = {
             title: `Team Generator (${teamnumber} teams)`,
             description: `\u200B`,
             fields: [
-                { name: "Entry:", value: "\u200B", inline: true },
+                { name: "Registered:", value: "\u200B", inline: true },
             ],
             timestamp: Date.now(),
         })
