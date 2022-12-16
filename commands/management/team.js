@@ -9,16 +9,18 @@ module.exports = {
         .setDescription("manage teams")
         .addSubcommand(subcommand =>
             subcommand
-                .setName('add')
-                .setDescription('Add a user to the squadron')
+                .setName('generate')
+                .setDescription('Generate random teams')
                 .addIntegerOption(option =>
                     option
-                        .setName('role')
-                        .setDescription('Choose the mannschafter-role the user should get added')
+                        .setName('teamnum')
+                        .setDescription('Choose how many teams you want to create')
                         .setRequired(true)
                         .setChoices(
-                            { name: 'Mannschafter (Main)', value: 1 },
-                            { name: 'Mannschafter (zweit)', value: 2 }
+                            { name: '1', value: 1 },
+                            { name: '2', value: 2 },
+                            { name: '3', value: 3 },
+                            { name: '4', value: 4 }
                         )
                 )
         ),
