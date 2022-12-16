@@ -36,24 +36,52 @@ module.exports = {
         const teamnumber = interaction.options.getInteger("teamnum")
 
         // declare embed
-		const tableEmbed = new Discord.MessageEmbed({
-			color: "880099",
-			title: `Team Generator (${teamnumber} teams)`,
-			description: `\u200B`,
-			fields: [
-				{ name: "Entry:", value: "\u200B", inline: true },
-			],
-			timestamp: Date.now(),
-		})
-
+        const tableEmbed = new Discord.MessageEmbed({
+            color: "880099",
+            title: `Team Generator (${teamnumber} teams)`,
+            description: `\u200B`,
+            fields: [
+                { name: "Entry:", value: "\u200B", inline: true },
+            ],
+            timestamp: Date.now(),
+        })
         for (let team = 1; team <= teamnumber; team++) {
-            tableEmbed.addFields({ name: `Team ${team}`, value: `\u200B`, inline: true})
+            tableEmbed.addFields({ name: `Team ${team}`, value: `\u200B`, inline: true })
         }
 
+        // declare buttons
+        const Reactions = new Discord.MessageActionRow().addComponents(
+            new Discord.MessageButton()
+                .setEmoji("✅")
+                .setLabel("Join")
+                .setCustomId("Join")
+                .setStyle("SUCCESS"),
+            new Discord.MessageButton()
+                .setEmoji("⛔")
+                .setLabel("Leave")
+                .setCustomId("Leave")
+                .setStyle("DANGER"),
+            new Discord.MessageButton()
+                .setEmoji("🔀")
+                .setLabel("Shuffle teams")
+                .setCustomId("Generate")
+                .setStyle("PRIMARY"),
+            new Discord.MessageButton()
+                .setEmoji("🔊")
+                .setLabel("Move to VC")
+                .setCustomId("Voice")
+                .setStyle("PRIMARY"),
+            new Discord.MessageButton()
+                .setEmoji("🔚")
+                .setLabel("End Command")
+                .setCustomId("End")
+                .setStyle("SECONDARY")
+        );
+
         const message = await interaction.channel.send({
-			embeds: [tableEmbed],
-			// components: [Reactions],
-			// fetchReply: true,
-		});
+            embeds: [tableEmbed],
+            components: [Reactions],
+            fetchReply: true,
+        });
     },
 };
