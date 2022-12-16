@@ -78,7 +78,7 @@ module.exports = {
                 .setStyle("SECONDARY")
         );
 
-        const message = await interaction.channel.send({
+        const message = await interaction.reply({
             embeds: [tableEmbed],
             components: [Reactions],
             fetchReply: true,
