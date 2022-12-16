@@ -17,7 +17,6 @@ module.exports = {
                         .setDescription('Choose how many teams you want to create')
                         .setRequired(true)
                         .setChoices(
-                            { name: '1', value: 1 },
                             { name: '2', value: 2 },
                             { name: '3', value: 3 },
                             { name: '4', value: 4 }
