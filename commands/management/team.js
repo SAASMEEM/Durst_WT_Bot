@@ -106,5 +106,47 @@ module.exports = {
                 oneHour,
             }
         )
+
+        buttonCollector.on("collect", async (buttonInteraction) => {
+            switch (buttonInteraction.customId) {
+				case "Join":
+					if (teamMap.get(buttonInteraction.user.id) === "+") {
+						await buttonInteraction.reply({
+							content: `You already joined the team-generator!`,
+							ephemeral: true,
+						});
+						return;
+					}
+					teamMap.set(buttonInteraction.user.id, "+");
+					await buttonInteraction.reply({
+						content: `You joined the team-generator.`,
+						ephemeral: true,
+					});
+					break;
+
+                    case "Leave":
+                        if (teamMap.get(buttonInteraction.user.id) !== "+") {
+                            await buttonInteraction.reply({
+                                content: `You already left the team-generator!`,
+                                ephemeral: true,
+                            });
+                            return;
+                        }
+                        teamMap.delete(buttonInteraction.user.id, "+");
+                        await buttonInteraction.reply({
+                            content: `You left the team-generator.`,
+                            ephemeral: true,
+                        });
+                        break;
+
+				default:
+					console.log("Something Broke");
+					await buttonInteraction.reply({
+						content: "Something Broke",
+						ephemeral: true,
+					});
+					break;
+			}
+        })
     },
 };
