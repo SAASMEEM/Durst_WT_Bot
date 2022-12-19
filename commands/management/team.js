@@ -34,6 +34,7 @@ module.exports = {
         if (!check) return
 
         const teamnumber = interaction.options.getInteger("teamnum")
+        const oneHour = 60 * 60 * 1000
 
         // declare embed
         const tableEmbed = new Discord.MessageEmbed({
@@ -66,7 +67,7 @@ module.exports = {
             new Discord.MessageButton()
                 .setEmoji("🔀")
                 .setLabel("Shuffle teams")
-                .setCustomId("Generate")
+                .setCustomId("Shuffle")
                 .setStyle("PRIMARY"),
             new Discord.MessageButton()
                 .setEmoji("🔊")
@@ -91,6 +92,19 @@ module.exports = {
 
         // create map
         /** @type {Map<string,"+"|"1"|"2"|"3"|"4">} */
-		const teamMap = new Map();
+        const teamMap = new Map();
+
+        // button collector
+        const buttonCollector = interaction.channel.createMessageComponentCollector(
+            {
+                filter: (m) =>
+                    m.customId === "Join" ||
+                    m.customId === "Leave" ||
+                    m.customId === "Shuffle" ||
+                    m.customId === "Voice" ||
+                    m.customId === "End",
+                oneHour,
+            }
+        )
     },
 };
