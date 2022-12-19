@@ -50,7 +50,7 @@ module.exports = {
         }
 
         // declare buttons
-        const Reactions = new Discord.MessageActionRow().addComponents(
+        const ReactionsRow1 = new Discord.MessageActionRow().addComponents(
             new Discord.MessageButton()
                 .setEmoji("✅")
                 .setLabel("Join")
@@ -61,6 +61,8 @@ module.exports = {
                 .setLabel("Leave")
                 .setCustomId("Leave")
                 .setStyle("DANGER"),
+        );
+        const ReactionsRow2 = new Discord.MessageActionRow().addComponents(
             new Discord.MessageButton()
                 .setEmoji("🔀")
                 .setLabel("Shuffle teams")
@@ -71,6 +73,8 @@ module.exports = {
                 .setLabel("Move to VC")
                 .setCustomId("Voice")
                 .setStyle("PRIMARY"),
+        );
+        const ReactionsRow3 = new Discord.MessageActionRow().addComponents(
             new Discord.MessageButton()
                 .setEmoji("🔚")
                 .setLabel("End Command")
@@ -78,9 +82,10 @@ module.exports = {
                 .setStyle("SECONDARY")
         );
 
+        // send embed with buttons
         const message = await interaction.reply({
             embeds: [tableEmbed],
-            components: [Reactions],
+            components: [ReactionsRow1, ReactionsRow2, ReactionsRow3],
             fetchReply: true,
         });
     },
