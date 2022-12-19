@@ -88,5 +88,9 @@ module.exports = {
             components: [ReactionsRow1, ReactionsRow2, ReactionsRow3],
             fetchReply: true,
         });
+
+        // create map
+        /** @type {Map<string,"+"|"1"|"2"|"3"|"4">} */
+		const teamMap = new Map();
     },
 };
