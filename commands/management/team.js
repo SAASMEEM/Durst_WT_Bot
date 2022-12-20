@@ -109,7 +109,6 @@ module.exports = {
 
         buttonCollector.on("collect", async (buttonInteraction) => {
             switch (buttonInteraction.customId) {
-                // TODO functions in cases instead of direct code
                 case "Join":
                     teamJoin(buttonInteraction, teamMap)
                     break
