@@ -92,6 +92,11 @@ module.exports = {
             fetchReply: true,
         });
 
+        // remove buttons and send notification
+		setTimeout(() => {
+            teamEnd(message)
+        }, 1000*30);
+
         // create map
         /** @type {Map<string,"+"|"1"|"2"|"3"|"4">} */
         const teamMap = new Map();
@@ -116,6 +121,10 @@ module.exports = {
 
                 case "Leave":
                     teamLeave(buttonInteraction, teamMap)
+                    break
+
+                case "End":
+                    teamEnd(message)
                     break
 
                 default:
@@ -160,4 +169,8 @@ async function teamLeave(interaction, map) {
         content: `You left the team-generator.`,
         ephemeral: true,
     });
+}
+
+async function teamEnd(message) {
+    message.edit({ components: [] });
 }
