@@ -93,9 +93,9 @@ module.exports = {
         });
 
         // remove buttons and send notification
-		setTimeout(() => {
+        setTimeout(() => {
             teamEnd(message)
-        }, 1000*30);
+        }, 1000 * 30);
 
         // create map
         /** @type {Map<string,"+"|"1"|"2"|"3"|"4">} */
@@ -123,16 +123,23 @@ module.exports = {
                     teamLeave(buttonInteraction, teamMap)
                     break
 
-                case "End":
-                    teamEnd(message)
-                    break
-
                 case "Shuffle":
                     teamShuffle()
                     break
-                
+
                 case "Voice":
                     teamVoice()
+                    break
+
+                case "End":
+                    if (buttonInteraction.member.id != interaction.member.id) {
+                        await buttonInteraction.reply({
+                            content: `Only <@${interaction.member.id}> can end this command!`,
+                            ephemeral: true,
+                        })
+                        return
+                    }
+                    teamEnd(message)
                     break
 
                 default:
