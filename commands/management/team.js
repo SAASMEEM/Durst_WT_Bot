@@ -35,12 +35,14 @@ module.exports = {
 
         const teamnumber = interaction.options.getInteger("teamnum")
         const oneHour = 60 * 60 * 1000
+        const unixTimeNow = Math.floor(Date.now() / 1000)
+        const unixTimeEnd = unixTimeNow + 60 * 60
 
         // declare embed
         const tableEmbed = new Discord.MessageEmbed({
             color: "880099",
             title: `Team Generator (${teamnumber} teams)`,
-            description: `\u200B`,
+            description: `Unvalid <t:${unixTimeEnd}:R>`,
             fields: [
                 { name: "Registered:", value: "\u200B", inline: true },
             ],
@@ -106,7 +108,6 @@ module.exports = {
                 oneHour,
             }
         )
-
         buttonCollector.on("collect", async (buttonInteraction) => {
             switch (buttonInteraction.customId) {
                 case "Join":
@@ -129,6 +130,8 @@ module.exports = {
     },
 };
 
+// functions
+// buttons
 async function teamJoin(interaction, map) {
     if (map.get(interaction.user.id) === "+") {
         await interaction.reply({
