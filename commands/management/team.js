@@ -109,44 +109,53 @@ module.exports = {
 
         buttonCollector.on("collect", async (buttonInteraction) => {
             switch (buttonInteraction.customId) {
-				case "Join":
-					if (teamMap.get(buttonInteraction.user.id) === "+") {
-						await buttonInteraction.reply({
-							content: `You already joined the team-generator!`,
-							ephemeral: true,
-						});
-						return;
-					}
-					teamMap.set(buttonInteraction.user.id, "+");
-					await buttonInteraction.reply({
-						content: `You joined the team-generator.`,
-						ephemeral: true,
-					});
-					break;
+                // TODO functions in cases instead of direct code
+                case "Join":
+                    teamJoin(buttonInteraction, teamMap)
+                    break
 
-                    case "Leave":
-                        if (teamMap.get(buttonInteraction.user.id) !== "+") {
-                            await buttonInteraction.reply({
-                                content: `You already left the team-generator!`,
-                                ephemeral: true,
-                            });
-                            return;
-                        }
-                        teamMap.delete(buttonInteraction.user.id, "+");
-                        await buttonInteraction.reply({
-                            content: `You left the team-generator.`,
-                            ephemeral: true,
-                        });
-                        break;
+                case "Leave":
+                    teamLeave(buttonInteraction, teamMap)
+                    break
 
-				default:
-					console.log("Something Broke");
-					await buttonInteraction.reply({
-						content: "Something Broke",
-						ephemeral: true,
-					});
-					break;
-			}
+                default:
+                    console.log("Unknown Button");
+                    await buttonInteraction.reply({
+                        content: "Unknown Button",
+                        ephemeral: true,
+                    });
+                    break
+            }
         })
     },
 };
+
+async function teamJoin(interaction, map) {
+    if (map.get(interaction.user.id) === "+") {
+        await interaction.reply({
+            content: `You already joined the team-generator!`,
+            ephemeral: true,
+        });
+        return
+    }
+    map.set(interaction.user.id, "+");
+    await interaction.reply({
+        content: `You joined the team-generator.`,
+        ephemeral: true,
+    });
+}
+
+async function teamLeave(interaction, map) {
+    if (map.get(interaction.user.id) !== "+") {
+        await interaction.reply({
+            content: `You already left the team-generator!`,
+            ephemeral: true,
+        });
+        return
+    }
+    map.delete(interaction.user.id, "+");
+    await interaction.reply({
+        content: `You left the team-generator.`,
+        ephemeral: true,
+    });
+}
