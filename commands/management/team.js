@@ -127,6 +127,14 @@ module.exports = {
                     teamEnd(message)
                     break
 
+                case "Shuffle":
+                    teamShuffle()
+                    break
+                
+                case "Voice":
+                    teamVoice()
+                    break
+
                 default:
                     console.log("Unknown Button");
                     await buttonInteraction.reply({
@@ -171,6 +179,14 @@ async function teamLeave(interaction, map) {
     });
 }
 
-async function teamEnd(message) {
+function teamShuffle() {
+    console.log("shuffle")
+}
+
+function teamVoice() {
+    console.log("voice")
+}
+
+function teamEnd(message) {
     message.edit({ components: [] });
 }
