@@ -2,7 +2,6 @@ const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const botconfig = require("../../config.json");
 const { checkPerms } = require("../../import_folders/functions.js");
-let run = false
 
 // functions
 /**
@@ -10,15 +9,14 @@ let run = false
  * @param {import("discord.js").Message<boolean>} message
  * @param {Map<string,"+"|"-"|"~">} map
  */
-function updateEmbed(message, map) {
+async function updateEmbed(message, map) {
 	try {
 		message.embeds[0].fields = getFields(message, map)
-		message.edit({
+		await message.edit({
 			embeds: message.embeds,
 		})
 	} catch(e) {
-		message.edit({ components: [], content: '**Die Tabelle wurde gelöscht! Der Befehl muss neu gestartet werden.**' });
-		run = false
+		await message.edit({ components: [], content: '**Die Tabelle wurde gelöscht! Der Befehl muss neu gestartet werden.**' });
 	}
 }
 
@@ -79,7 +77,7 @@ module.exports = {
 		*/
 
 	async execute(interaction) {
-		// check for permission and if already running
+		// check for permission
 		const check = await checkPerms(
 			interaction,
 			null,
@@ -87,13 +85,6 @@ module.exports = {
 			botconfig.cwChannelId
 		);
 		if (!check) return;
-		if (run) {
-			await interaction.reply({
-				content: `You can call a clanwar only once!`,
-				ephemeral: true,
-			});
-			return
-		}
 
 		// declare variables
 		const br = interaction.options.getString("battlerank");
@@ -159,13 +150,11 @@ module.exports = {
 			components: [Reactions],
 			fetchReply: true,
 		});
-		run = true
 
 		// remove buttons and send notification
-		setTimeout(() => {
-			message.edit({ components: [] });
-			interaction.channel.send(`<@&${botconfig.cwRoleId}> CW!`);
-			run = false
+		setTimeout(async () => {
+			await message.edit({ components: [] });
+			await interaction.channel.send(`<@&${botconfig.cwRoleId}> CW!`);
 		}, time);
 
 		// button collector
