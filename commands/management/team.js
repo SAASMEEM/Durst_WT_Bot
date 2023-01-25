@@ -191,12 +191,17 @@ async function teamLeave(interaction, entryArray) {
     });
 }
 
-function teamShuffle() {
-    console.log("shuffle")
-}
+async function teamShuffle() {
+    await interaction.reply({
+        content: `Feature coming soon!.`,
+        ephemeral: true,
+    });}
 
-function teamVoice() {
-    console.log("voice")
+async function teamVoice() {
+    await interaction.reply({
+        content: `Feature coming soon!.`,
+        ephemeral: true,
+    });
 }
 
 function teamEnd(message) {
