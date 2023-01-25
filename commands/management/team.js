@@ -99,6 +99,7 @@ module.exports = {
 
         // create arrays
         let entryArray = []
+        let shuffleArray = []
         let team1Array = []
         let team2Array = []
         let team3Array = []
@@ -129,7 +130,7 @@ module.exports = {
                     break
 
                 case "Shuffle":
-                    teamShuffle(buttonInteraction, teamnumber, entryArray, team1Array, team2Array, team3Array, team4Array)
+                    teamShuffle(buttonInteraction, teamnumber, entryArray, shuffleArray, team1Array, team2Array, team3Array, team4Array)
                     break
 
                 case "Voice":
@@ -191,13 +192,30 @@ async function teamLeave(interaction, entryArray) {
     });
 }
 
-async function teamShuffle(interaction, teamnumber, entryArray, team1Array, team2Array, team3Array, team4Array) {
+async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, team1Array, team2Array, team3Array, team4Array) {
     if (entryArray.length < teamnumber) {
         await interaction.reply({
             content: `Not enough players!.`,
             ephemeral: true,
         })
     }
+    // Copy array into shuffleArray
+    shuffleArray = entryArray.slice()
+    while (shuffleArray.length > 0) {
+        // Generate a random index from 0 to the length of the shuffleArray
+        var randomIndex = Math.floor(Math.random() * shuffleArray.length);
+        // Generate a random number 0 or 1
+        var randomTeam = Math.floor(Math.random() * 2);
+        // Remove the element at the randomIndex from the shuffleArray
+        var entry = shuffleArray.splice(randomIndex, 1)[0];
+        // Add the entry to the appropriate team array
+        if (randomTeam === 0) {
+            team1Array.push(entry);
+        } else {
+            team2Array.push(entry);
+        }
+    }
+    
 }
 
 async function teamVoice(interaction) {
