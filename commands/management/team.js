@@ -120,10 +120,12 @@ module.exports = {
             switch (buttonInteraction.customId) {
                 case "Join":
                     teamJoin(buttonInteraction, entryArray)
+                    updateEmbedEntry(message, entryArray)
                     break
 
                 case "Leave":
                     teamLeave(buttonInteraction, entryArray)
+                    updateEmbedEntry(message, entryArray)
                     break
 
                 case "Shuffle":
@@ -153,7 +155,6 @@ module.exports = {
                     });
                     break
             }
-            updateEmbed(message, teamnumber, entryArray)
         })
     },
 };
@@ -205,7 +206,7 @@ function teamEnd(message) {
     message.edit({ components: [] });
 }
 
-function updateEmbed(message, teamnumber ,entryArray) {
+function updateEmbedEntry(message ,entryArray) {
     message.embeds[0].fields.find(f => f.name === "Registered:").value = `\u200B${entryArray.join("\n")}`
     message.edit({ embeds: [message.embeds[0]]})
 }
