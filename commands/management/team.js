@@ -95,7 +95,7 @@ module.exports = {
         // remove buttons and send notification
         setTimeout(() => {
             teamEnd(message)
-        }, 1000 * 30);
+        }, 1000 * 60 * 60);
 
         // create arrays
         let entryArray = []
