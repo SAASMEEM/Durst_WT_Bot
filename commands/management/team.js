@@ -169,9 +169,7 @@ async function teamJoin(interaction, entryArray) {
         });
         return
     }
-    console.log(entryArray)
     entryArray.push(interaction.user.id)
-    console.log(entryArray, entryArray.length)
     await interaction.reply({
         content: `You joined the team-generator.`,
         ephemeral: true,
@@ -187,7 +185,6 @@ async function teamLeave(interaction, entryArray) {
         return
     }
     removeArrayItemOnce(entryArray, interaction.user.id)
-    console.log(entryArray, entryArray.length)
     await interaction.reply({
         content: `You left the team-generator.`,
         ephemeral: true,
