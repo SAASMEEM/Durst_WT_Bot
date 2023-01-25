@@ -129,7 +129,7 @@ module.exports = {
                     break
 
                 case "Shuffle":
-                    teamShuffle()
+                    teamShuffle(teamnumber, entryArray, team1Array, team2Array, team3Array, team4Array)
                     break
 
                 case "Voice":
@@ -191,11 +191,14 @@ async function teamLeave(interaction, entryArray) {
     });
 }
 
-async function teamShuffle() {
-    await interaction.reply({
-        content: `Feature coming soon!.`,
-        ephemeral: true,
-    });}
+async function teamShuffle(teamnumber, entryArray, team1Array, team2Array, team3Array, team4Array) {
+    if (entryArray.length > teamnumber) {
+        await interaction.reply({
+            content: `Not enough players!.`,
+            ephemeral: true,
+        })
+    }
+}
 
 async function teamVoice() {
     await interaction.reply({
