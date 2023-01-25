@@ -153,6 +153,7 @@ module.exports = {
                     });
                     break
             }
+            updateEmbed(message, teamnumber, entryArray)
         })
     },
 };
@@ -202,6 +203,11 @@ function teamVoice() {
 
 function teamEnd(message) {
     message.edit({ components: [] });
+}
+
+function updateEmbed(message, teamnumber ,entryArray) {
+    message.embeds[0].fields.find(f => f.name === "Registered:").value = `\u200B${entryArray.join("\n")}`
+    message.edit({ embeds: [message.embeds[0]]})
 }
 
 function removeArrayItemOnce(arr, value) {
