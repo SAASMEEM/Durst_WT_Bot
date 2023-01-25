@@ -97,9 +97,12 @@ module.exports = {
             teamEnd(message)
         }, 1000 * 30);
 
-        // create map
-        /** @type {Map<string,"+"|"1"|"2"|"3"|"4">} */
-        const teamMap = new Map();
+        // create arrays
+        let entryArray = []
+        let team1Array = []
+        let team2Array = []
+        let team3Array = []
+        let team4Array = []
 
         // button collector
         const buttonCollector = interaction.channel.createMessageComponentCollector(
@@ -116,11 +119,11 @@ module.exports = {
         buttonCollector.on("collect", async (buttonInteraction) => {
             switch (buttonInteraction.customId) {
                 case "Join":
-                    teamJoin(buttonInteraction, teamMap)
+                    teamJoin(buttonInteraction, entryArray)
                     break
 
                 case "Leave":
-                    teamLeave(buttonInteraction, teamMap)
+                    teamLeave(buttonInteraction, entryArray)
                     break
 
                 case "Shuffle":
@@ -156,30 +159,33 @@ module.exports = {
 
 // functions
 // buttons
-async function teamJoin(interaction, map) {
-    if (map.get(interaction.user.id) === "+") {
+async function teamJoin(interaction, entryArray) {
+    if (entryArray.includes(interaction.user.id)) {
         await interaction.reply({
             content: `You already joined the team-generator!`,
             ephemeral: true,
         });
         return
     }
-    map.set(interaction.user.id, "+");
+    console.log(entryArray)
+    entryArray.push(interaction.user.id)
+    console.log(entryArray, entryArray.length)
     await interaction.reply({
         content: `You joined the team-generator.`,
         ephemeral: true,
     });
 }
 
-async function teamLeave(interaction, map) {
-    if (map.get(interaction.user.id) !== "+") {
+async function teamLeave(interaction, entryArray) {
+    if (!entryArray.includes(interaction.user.id)) {
         await interaction.reply({
             content: `You already left the team-generator!`,
             ephemeral: true,
         });
         return
     }
-    map.delete(interaction.user.id, "+");
+    removeArrayItemOnce(entryArray, interaction.user.id)
+    console.log(entryArray, entryArray.length)
     await interaction.reply({
         content: `You left the team-generator.`,
         ephemeral: true,
@@ -197,3 +203,12 @@ function teamVoice() {
 function teamEnd(message) {
     message.edit({ components: [] });
 }
+
+function removeArrayItemOnce(arr, value) {
+    console.log(arr)
+    var index = arr.indexOf(value);
+    if (index > -1) {
+      arr.splice(index, 1);
+    }
+    return arr;
+  }
