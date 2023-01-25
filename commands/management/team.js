@@ -133,7 +133,7 @@ module.exports = {
                     break
 
                 case "Voice":
-                    teamVoice()
+                    teamVoice(buttonInteraction)
                     break
 
                 case "End":
@@ -200,7 +200,7 @@ async function teamShuffle(interaction, teamnumber, entryArray, team1Array, team
     }
 }
 
-async function teamVoice() {
+async function teamVoice(interaction) {
     await interaction.reply({
         content: `Feature coming soon!.`,
         ephemeral: true,
