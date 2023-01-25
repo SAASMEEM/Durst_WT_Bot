@@ -204,12 +204,15 @@ function teamEnd(message) {
 }
 
 function updateEmbedEntry(message ,entryArray) {
-    message.embeds[0].fields.find(f => f.name === "Registered:").value = `\u200B${entryArray.join("\n")}`
+    if (entryArray.length == 0) {
+        message.embeds[0].fields.find(f => f.name === "Registered:").value = `\u200B`
+    } else {
+        message.embeds[0].fields.find(f => f.name === "Registered:").value = `\u200B<@${entryArray.join(">\n<@")}>`
+    }
     message.edit({ embeds: [message.embeds[0]]})
 }
 
 function removeArrayItemOnce(arr, value) {
-    console.log(arr)
     var index = arr.indexOf(value);
     if (index > -1) {
       arr.splice(index, 1);
