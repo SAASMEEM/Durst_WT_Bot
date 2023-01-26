@@ -201,6 +201,63 @@ async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, te
     }
     // Copy array into shuffleArray
     shuffleArray = entryArray.slice()
+    if (teamnumber == 2) {
+        while (shuffleArray.length > 0) {
+            // Generate a random index from 0 to the length of the shuffleArray
+            var randomIndex = Math.floor(Math.random() * shuffleArray.length);
+            // Generate a random number 0 or 1
+            var randomTeam = Math.floor(Math.random() * 2);
+            // Remove the element at the randomIndex from the shuffleArray
+            var entry = shuffleArray.splice(randomIndex, 1)[0];
+            // Add the entry to the appropriate team array
+            if (randomTeam === 0) {
+                team1Array.push(entry);
+            } else {
+                team2Array.push(entry);
+            }
+        }
+    } else if (teamnumber == 3) {
+        while (shuffleArray.length > 0) {
+            // Generate a random index from 0 to the length of the shuffleArray
+            var randomIndex = Math.floor(Math.random() * shuffleArray.length);
+            // Generate a random number 0, 1 or 2
+            var randomTeam = Math.floor(Math.random() * 3);
+            // Remove the element at the randomIndex from the shuffleArray
+            var entry = shuffleArray.splice(randomIndex, 1)[0];
+            // Add the entry to the appropriate team array
+            if (randomTeam === 0) {
+                team1Array.push(entry);
+            } else if (randomTeam === 1) {
+                team2Array.push(entry);
+            } else {
+                team3Array.push(entry);
+            }
+        }
+    } else if (teamnumber == 4) {
+        while (shuffleArray.length > 0) {
+            // Generate a random index from 0 to the length of the shuffleArray
+            var randomIndex = Math.floor(Math.random() * shuffleArray.length);
+            // Generate a random number 0, 1, 2 or 3
+            var randomTeam = Math.floor(Math.random() * 4);
+            // Remove the element at the randomIndex from the shuffleArray
+            var entry = shuffleArray.splice(randomIndex, 1)[0];
+            // Add the entry to the appropriate team array
+            if (randomTeam === 0) {
+                team1Array.push(entry);
+            } else if (randomTeam === 1) {
+                team2Array.push(entry);
+            } else if (randomTeam === 2) {
+                team3Array.push(entry);
+            } else {
+                team4Array.push(entry);
+            }
+        }        
+    } else {
+        console.log("ERROR: Invalid Team Number")
+    }
+
+    // Copy array into shuffleArray
+    shuffleArray = entryArray.slice()
     while (shuffleArray.length > 0) {
         // Generate a random index from 0 to the length of the shuffleArray
         var randomIndex = Math.floor(Math.random() * shuffleArray.length);
@@ -215,7 +272,7 @@ async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, te
             team2Array.push(entry);
         }
     }
-    
+
 }
 
 async function teamVoice(interaction) {
@@ -229,19 +286,19 @@ function teamEnd(message) {
     message.edit({ components: [] });
 }
 
-function updateEmbedEntry(message ,entryArray) {
+function updateEmbedEntry(message, entryArray) {
     if (entryArray.length == 0) {
         message.embeds[0].fields.find(f => f.name === "Registered:").value = `\u200B`
     } else {
         message.embeds[0].fields.find(f => f.name === "Registered:").value = `\u200B<@${entryArray.join(">\n<@")}>`
     }
-    message.edit({ embeds: [message.embeds[0]]})
+    message.edit({ embeds: [message.embeds[0]] })
 }
 
 function removeArrayItemOnce(arr, value) {
     var index = arr.indexOf(value);
     if (index > -1) {
-      arr.splice(index, 1);
+        arr.splice(index, 1);
     }
     return arr;
-  }
+}
