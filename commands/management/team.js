@@ -199,6 +199,7 @@ async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, te
             content: `Not enough players!`,
             ephemeral: true,
         })
+        return
     }
     // Copy array into shuffleArray
     shuffleArray = entryArray.slice()
