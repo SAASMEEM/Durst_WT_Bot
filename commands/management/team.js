@@ -112,12 +112,10 @@ module.exports = {
             switch (buttonInteraction.customId) {
                 case "Join":
                     teamJoin(buttonInteraction, entryArray)
-                    updateEmbedEntry(message, entryArray)
                     break
 
                 case "Leave":
                     teamLeave(buttonInteraction, entryArray)
-                    updateEmbedEntry(message, entryArray)
                     break
 
                 case "Shuffle":
@@ -147,6 +145,7 @@ module.exports = {
                     });
                     break
             }
+            updateEmbed(message, teamnumber, entryArray, team1Array, team2Array, team3Array, team4Array)
         })
     },
 };
@@ -246,24 +245,6 @@ async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, te
     } else {
         console.log("ERROR: Invalid Team Number")
     }
-
-    // Copy array into shuffleArray
-    shuffleArray = entryArray.slice()
-    while (shuffleArray.length > 0) {
-        // Generate a random index from 0 to the length of the shuffleArray
-        var randomIndex = Math.floor(Math.random() * shuffleArray.length);
-        // Generate a random number 0 or 1
-        var randomTeam = Math.floor(Math.random() * 2);
-        // Remove the element at the randomIndex from the shuffleArray
-        var entry = shuffleArray.splice(randomIndex, 1)[0];
-        // Add the entry to the appropriate team array
-        if (randomTeam === 0) {
-            team1Array.push(entry);
-        } else {
-            team2Array.push(entry);
-        }
-    }
-
 }
 
 async function teamVoice(interaction) {
@@ -277,11 +258,39 @@ function teamEnd(message) {
     message.edit({ components: [] });
 }
 
-function updateEmbedEntry(message, entryArray) {
+function updateEmbed(message, teamnumber, entryArray, team1Array, team2Array, team3Array, team4Array) {
     if (entryArray.length == 0) {
         message.embeds[0].fields.find(f => f.name === "Registered:").value = `\u200B`
     } else {
         message.embeds[0].fields.find(f => f.name === "Registered:").value = `\u200B<@${entryArray.join(">\n<@")}>`
+    }
+
+    if (teamnumber >= 2) {
+        if (team1Array.length == 0) {
+            message.embeds[0].fields.find(f => f.name === "Team 1").value = `\u200B`
+        } else {
+            message.embeds[0].fields.find(f => f.name === "Team 1").value = `\u200B<@${team1Array.join(">\n<@")}>`
+        }
+    
+        if (team2Array.length == 0) {
+            message.embeds[0].fields.find(f => f.name === "Team 2").value = `\u200B`
+        } else {
+            message.embeds[0].fields.find(f => f.name === "Team 2").value = `\u200B<@${team2Array.join(">\n<@")}>`
+        }
+    }
+    if (teamnumber >= 3) {
+        if (team3Array.length == 0) {
+            message.embeds[0].fields.find(f => f.name === "Team 3").value = `\u200B`
+        } else {
+            message.embeds[0].fields.find(f => f.name === "Team 3:").value = `\u200B<@${team3Array.join(">\n<@")}>`
+        }
+    }
+    if (teamnumber >= 4) {
+        if (team4Array.length == 0) {
+            message.embeds[0].fields.find(f => f.name === "Team 4:").value = `\u200B`
+        } else {
+            message.embeds[0].fields.find(f => f.name === "Team 4:").value = `\u200B<@${team4Array.join(">\n<@")}>`
+        }
     }
     message.edit({ embeds: [message.embeds[0]] })
 }
