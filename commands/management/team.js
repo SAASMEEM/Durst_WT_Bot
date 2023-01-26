@@ -249,11 +249,15 @@ async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, te
     } else {
         console.log("ERROR: Invalid Team Number")
     }
+    await interaction.reply({
+        content: `Teams shuffled`,
+        ephemeral: true,
+    });
 }
 
 async function teamVoice(interaction) {
     await interaction.reply({
-        content: `Feature coming soon!.`,
+        content: `Feature coming soon!`,
         ephemeral: true,
     });
 }
