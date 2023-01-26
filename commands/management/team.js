@@ -121,7 +121,7 @@ module.exports = {
                 case "Shuffle":
                     if (buttonInteraction.member.id != interaction.member.id) {
                         await buttonInteraction.reply({
-                            content: `Only <@${interaction.member.id}> can end this command!`,
+                            content: `Only <@${interaction.member.id}> can shuffle the teams!`,
                             ephemeral: true,
                         })
                         return
