@@ -196,7 +196,7 @@ async function teamLeave(interaction, entryArray) {
 async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, team1Array, team2Array, team3Array, team4Array) {
     if (entryArray.length < teamnumber) {
         await interaction.reply({
-            content: `Not enough players!.`,
+            content: `Not enough players!`,
             ephemeral: true,
         })
     }
