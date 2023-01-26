@@ -119,6 +119,13 @@ module.exports = {
                     break
 
                 case "Shuffle":
+                    if (buttonInteraction.member.id != interaction.member.id) {
+                        await buttonInteraction.reply({
+                            content: `Only <@${interaction.member.id}> can end this command!`,
+                            ephemeral: true,
+                        })
+                        return
+                    }
                     team1Array = []
                     team2Array = []
                     team3Array = []
