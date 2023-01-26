@@ -1,7 +1,7 @@
 const Discord = require("discord.js")
 const { SlashCommandBuilder } = require("@discordjs/builders")
 const botconfig = require('../../config.json')
-const { checkPerms } = require("../../import_folders/functions.js")
+const { checkPerms, checkPerm } = require("../../import_folders/functions.js")
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -134,7 +134,14 @@ module.exports = {
                     break
 
                 case "Voice":
-                    teamVoice(buttonInteraction)
+                    if (buttonInteraction.member.id != interaction.member.id) {
+                        await buttonInteraction.reply({
+                            content: `Only <@${interaction.member.id}> can use this command!`,
+                            ephemeral: true,
+                        })
+                        return
+                    }
+                    teamVoice(interaction, buttonInteraction, team1Array, team2Array, team3Array, team4Array)
                     break
 
                 case "End":
@@ -263,11 +270,84 @@ async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, te
     });
 }
 
-async function teamVoice(interaction) {
-    await interaction.reply({
-        content: `Feature coming soon!`,
-        ephemeral: true,
-    });
+async function teamVoice(interaction, buttonInteraction, team1Array, team2Array, team3Array, team4Array) {
+    // const guild = interaction.guild
+    // const category = interaction.channel.parent
+
+    // const team1VoiceChannel = await guild.channels.create('team1', {
+    //     type: 'GUILD_VOICE',
+    //     parent: category
+    // })
+
+    // try {
+    //     for (let i = 0; i < team1Array.length; i++) {
+    //         const user = guild.members.cache.get(team1Array[i]);
+    //         if (!user) continue;
+    //         if (user.voice.channel) {
+    //             if (user.voice.channel.id === team1VoiceChannel.id) {
+    //                 console.log(`User ${user.user.username} is already in the channel.`);
+    //                 continue;
+    //             }
+    //         }
+    //         await user.voice.setChannel(team1VoiceChannel);
+    //     }
+    // } catch (error) {
+    //     if (error.name === 'DiscordAPIError') {
+    //         await buttonInteraction.reply({
+    //             content: `Not all members could get moved into the vc!`,
+    //             ephemeral: true,
+    //         })
+    //     } else {
+    //         throw error;
+    //     }
+    //     return
+    // }
+    // await buttonInteraction.reply({
+    //     content: `All members got moved!`,
+    //     ephemeral: true,
+    // })
+
+    const guild = interaction.guild
+    const category = interaction.channel.parent
+    const team1VoiceChannel = await guild.channels.create('team1', {
+        type: 'GUILD_VOICE',
+        parent: category
+    })
+
+    const alreadyInChannel = []
+    const movedUsers = []
+    let allMoved = true
+    try {
+        const users = await guild.members.fetch({ user: team1Array })
+        for (const user of users.values()) {
+            if (user.voice.channel) {
+                if (user.voice.channel.id === team1VoiceChannel.id) {
+                    alreadyInChannel.push(user.user.username)
+                    continue;
+                }
+            }
+            await user.voice.setChannel(team1VoiceChannel)
+            movedUsers.push(user.user.username)
+        }
+    } catch (error) {
+        if (error.name === 'DiscordAPIError') {
+            allMoved = false
+        } else {
+            throw error
+        }
+    }
+    if (allMoved) {
+        await buttonInteraction.reply({
+            content: `Moved users: ${movedUsers.join(', ')}`,
+            ephemeral: true,
+        })
+    } else {
+        await buttonInteraction.reply({
+            content: `Not all users could be moved!\nMoved users: ${movedUsers.join(', ')}`,
+            ephemeral: true,
+        })
+    }
+
 }
 
 function teamEnd(message) {
