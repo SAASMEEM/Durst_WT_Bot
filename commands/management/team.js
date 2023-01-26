@@ -119,6 +119,10 @@ module.exports = {
                     break
 
                 case "Shuffle":
+                    team1Array = []
+                    team2Array = []
+                    team3Array = []
+                    team4Array = []
                     teamShuffle(buttonInteraction, teamnumber, entryArray, shuffleArray, team1Array, team2Array, team3Array, team4Array)
                     break
 
@@ -191,10 +195,6 @@ async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, te
     }
     // Copy array into shuffleArray
     shuffleArray = entryArray.slice()
-    team1Array = []
-    team2Array = []
-    team3Array = []
-    team4Array = []
     if (teamnumber == 2) {
         while (shuffleArray.length > 0) {
             // Generate a random index from 0 to the length of the shuffleArray
