@@ -297,14 +297,14 @@ function updateEmbed(message, teamnumber, entryArray, team1Array, team2Array, te
         if (team3Array.length == 0) {
             message.embeds[0].fields.find(f => f.name === "Team 3").value = `\u200B`
         } else {
-            message.embeds[0].fields.find(f => f.name === "Team 3:").value = `\u200B<@${team3Array.join(">\n<@")}>`
+            message.embeds[0].fields.find(f => f.name === "Team 3").value = `\u200B<@${team3Array.join(">\n<@")}>`
         }
     }
     if (teamnumber >= 4) {
         if (team4Array.length == 0) {
-            message.embeds[0].fields.find(f => f.name === "Team 4:").value = `\u200B`
+            message.embeds[0].fields.find(f => f.name === "Team 4").value = `\u200B`
         } else {
-            message.embeds[0].fields.find(f => f.name === "Team 4:").value = `\u200B<@${team4Array.join(">\n<@")}>`
+            message.embeds[0].fields.find(f => f.name === "Team 4").value = `\u200B<@${team4Array.join(">\n<@")}>`
         }
     }
     message.edit({ embeds: [message.embeds[0]] })
