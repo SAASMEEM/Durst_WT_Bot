@@ -311,7 +311,6 @@ async function teamVoice(interaction, buttonInteraction, team1Array, team2Array,
             ephemeral: true,
         })
     }
-
 }
 
 function teamEnd(message) {
