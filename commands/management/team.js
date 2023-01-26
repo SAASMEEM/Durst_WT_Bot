@@ -191,10 +191,10 @@ async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, te
     }
     // Copy array into shuffleArray
     shuffleArray = entryArray.slice()
-    let team1Array = []
-    let team2Array = []
-    let team3Array = []
-    let team4Array = []
+    team1Array = []
+    team2Array = []
+    team3Array = []
+    team4Array = []
     if (teamnumber == 2) {
         while (shuffleArray.length > 0) {
             // Generate a random index from 0 to the length of the shuffleArray
