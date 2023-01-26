@@ -271,42 +271,6 @@ async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, te
 }
 
 async function teamVoice(interaction, buttonInteraction, team1Array, team2Array, team3Array, team4Array) {
-    // const guild = interaction.guild
-    // const category = interaction.channel.parent
-
-    // const team1VoiceChannel = await guild.channels.create('team1', {
-    //     type: 'GUILD_VOICE',
-    //     parent: category
-    // })
-
-    // try {
-    //     for (let i = 0; i < team1Array.length; i++) {
-    //         const user = guild.members.cache.get(team1Array[i]);
-    //         if (!user) continue;
-    //         if (user.voice.channel) {
-    //             if (user.voice.channel.id === team1VoiceChannel.id) {
-    //                 console.log(`User ${user.user.username} is already in the channel.`);
-    //                 continue;
-    //             }
-    //         }
-    //         await user.voice.setChannel(team1VoiceChannel);
-    //     }
-    // } catch (error) {
-    //     if (error.name === 'DiscordAPIError') {
-    //         await buttonInteraction.reply({
-    //             content: `Not all members could get moved into the vc!`,
-    //             ephemeral: true,
-    //         })
-    //     } else {
-    //         throw error;
-    //     }
-    //     return
-    // }
-    // await buttonInteraction.reply({
-    //     content: `All members got moved!`,
-    //     ephemeral: true,
-    // })
-
     const guild = interaction.guild
     const category = interaction.channel.parent
     const team1VoiceChannel = await guild.channels.create('team1', {
