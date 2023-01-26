@@ -191,6 +191,10 @@ async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, te
     }
     // Copy array into shuffleArray
     shuffleArray = entryArray.slice()
+    let team1Array = []
+    let team2Array = []
+    let team3Array = []
+    let team4Array = []
     if (teamnumber == 2) {
         while (shuffleArray.length > 0) {
             // Generate a random index from 0 to the length of the shuffleArray
@@ -241,7 +245,7 @@ async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, te
             } else {
                 team4Array.push(entry);
             }
-        }        
+        }
     } else {
         console.log("ERROR: Invalid Team Number")
     }
@@ -271,7 +275,7 @@ function updateEmbed(message, teamnumber, entryArray, team1Array, team2Array, te
         } else {
             message.embeds[0].fields.find(f => f.name === "Team 1").value = `\u200B<@${team1Array.join(">\n<@")}>`
         }
-    
+
         if (team2Array.length == 0) {
             message.embeds[0].fields.find(f => f.name === "Team 2").value = `\u200B`
         } else {
