@@ -278,17 +278,13 @@ async function teamVoice(interaction, buttonInteraction, team1Array, team2Array,
         parent: category
     })
 
-    const alreadyInChannel = []
     const movedUsers = []
     let allMoved = true
     try {
         const users = await guild.members.fetch({ user: team1Array })
         for (const user of users.values()) {
             if (user.voice.channel) {
-                if (user.voice.channel.id === team1VoiceChannel.id) {
-                    alreadyInChannel.push(user.user.username)
-                    continue;
-                }
+                continue
             }
             await user.voice.setChannel(team1VoiceChannel)
             movedUsers.push(user.user.username)
