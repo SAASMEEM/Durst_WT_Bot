@@ -275,7 +275,8 @@ async function teamVoice(interaction, buttonInteraction, team1Array, team2Array,
     const category = interaction.channel.parent
     const team1VoiceChannel = await guild.channels.create('team1', {
         type: 'GUILD_VOICE',
-        parent: category
+        parent: category,
+        userLimit: team1Array.length
     })
 
     const movedUsers = []
