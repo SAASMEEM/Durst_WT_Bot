@@ -96,7 +96,7 @@ module.exports = {
                 // send embed
                 member.send({ embeds: [removeEmbed] }).catch(e => {
                     const channel = member.guild.channels.cache.get(botconfig.uffzChannelId)
-                    channel.send(`<@${user.id}> konnte keine Direktnacht empfangen!`)
+                    channel.send(`<@${user.id}> konnte nicht benachrichtigt werden!`)
                     return
                 })
                 // /user/add
