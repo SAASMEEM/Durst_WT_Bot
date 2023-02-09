@@ -23,7 +23,7 @@ module.exports = {
                         )
                 )
         ),
-    async execute(interaction) {
+    async execute(client,interaction) {
         const teamnumber = interaction.options.getInteger("teamnum")
         const oneHour = 60 * 60 * 1000
         const unixTimeNow = Math.floor(Date.now() / 1000)

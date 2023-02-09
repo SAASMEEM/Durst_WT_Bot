@@ -10,7 +10,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("info")
 		.setDescription("shows info about the bot"),
-	async execute(interaction) {
+	async execute(client, interaction) {
 		const ram = process.memoryUsage().heapUsed / 1024 / 1024;
 		const ping = Date.now() - interaction.createdTimestamp;
 		let totalSeconds = interaction.client.uptime / 1000;
