@@ -54,7 +54,7 @@ module.exports = {
     async execute(interaction) {
         // check for required permission
         const check = await checkPerm(interaction, "MANAGE_NICKNAMES")
-        if (check) return;
+    if (!check) return;
         // /user
         if (interaction.options.getSubcommandGroup() === "user") {
             // /user/remove
