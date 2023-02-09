@@ -1,8 +1,7 @@
 const Discord = require("discord.js")
 const { SlashCommandBuilder } = require("@discordjs/builders")
 const botconfig = require('../../config.json');
-const { checkPerms } = require("../../import_folders/functions.js");
-const e = require("express");
+const { checkPerm } = require("../../import_folders/functions.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -40,7 +39,8 @@ module.exports = {
                                 .setRequired(true)
                                 .setChoices(
                                     { name: 'Mannschafter (Main)', value: 1 },
-                                    { name: 'Mannschafter (zweit)', value: 2 }
+                                    { name: 'Mannschafter (zweite)', value: 2 },
+                                    { name: 'Mannschafter (dritte)', value: 3 }
                                 )
                         )
                         .addStringOption(option =>
@@ -53,12 +53,7 @@ module.exports = {
         ),
     async execute(interaction) {
         // check for required permission
-        const check = await checkPerms(
-            interaction,
-            null,
-            botconfig.uffzRoleId,
-            null
-        );
+        const check = await checkPerm(interaction, "MANAGE_NICKNAMES")
         if (!check) return;
         // /user
         if (interaction.options.getSubcommandGroup() === "user") {
@@ -70,6 +65,7 @@ module.exports = {
                 // manage roles
                 member.roles.remove(botconfig.mannschafter1RoleId)
                 member.roles.remove(botconfig.mannschafter2RoleId)
+                member.roles.remove(botconfig.mannschafter3RoleId)
                 member.roles.remove(botconfig.cwRoleId)
                 // send feedback
                 interaction.reply({
@@ -100,7 +96,7 @@ module.exports = {
                 // send embed
                 member.send({ embeds: [removeEmbed] }).catch(e => {
                     const channel = member.guild.channels.cache.get(botconfig.uffzChannelId)
-                    channel.send(`<@${user.id}> konnte keine Direktnacht empfangen!`)
+                    channel.send(`<@${user.id}> konnte nicht benachrichtigt werden!`)
                     return
                 })
                 // /user/add
@@ -114,6 +110,7 @@ module.exports = {
                 if (role == 1) {
                     member.roles.add(botconfig.mannschafter1RoleId)
                     member.roles.remove(botconfig.mannschafter2RoleId)
+                    member.roles.remove(botconfig.mannschafter3RoleId)
                     interaction.reply({
                         content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter1RoleId}>!`,
                         ephemeral: true
@@ -121,9 +118,19 @@ module.exports = {
                 } else if (role == 2) {
                     member.roles.add(botconfig.mannschafter2RoleId)
                     member.roles.remove(botconfig.mannschafter1RoleId)
-                    member.roles .remove(botconfig.cwRoleId)
+                    member.roles.remove(botconfig.mannschafter3RoleId)
+                    member.roles.remove(botconfig.cwRoleId)
                     interaction.reply({
                         content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter2RoleId}>!`,
+                        ephemeral: true
+                    })
+                } else if (role == 3) {
+                    member.roles.add(botconfig.mannschafter3RoleId)
+                    member.roles.remove(botconfig.mannschafter1RoleId)
+                    member.roles.remove(botconfig.mannschafter2RoleId)
+                    member.roles.remove(botconfig.cwRoleId)
+                    interaction.reply({
+                        content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter3RoleId}>!`,
                         ephemeral: true
                     })
                 }
@@ -137,4 +144,4 @@ module.exports = {
         }
 
     },
-};
+}

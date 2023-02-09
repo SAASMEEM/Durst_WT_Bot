@@ -115,7 +115,7 @@ module.exports = {
 		const tableEmbed = new Discord.MessageEmbed({
 			color: "880099",
 			title: `Clanwar (${br})`,
-			description: `⏲️ <t:${startseconds}:R>\n[Anmeldung](https://shorturl.at/lnH49)\n[Checkliste](https://shorturl.at/kLNZ9)`,
+			description: `⏲️ <t:${startseconds}:R>\n[Fahrzeugaufstellung](https://shorturl.at/lnH49)\n[Checkliste](https://shorturl.at/kLNZ9)`,
 			fields: [
 				{ name: "✅Accepted:", value: "\u200B", inline: true },
 				{ name: "❌Declined:", value: "\u200B", inline: true },
