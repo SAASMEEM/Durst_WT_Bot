@@ -54,7 +54,7 @@ module.exports = {
     async execute(interaction) {
         // check for required permission
         const check = await checkPerm(interaction, "MANAGE_NICKNAMES")
-        if (check) return;
+        if (!check) return;
         // /user
         if (interaction.options.getSubcommandGroup() === "user") {
             // /user/remove
@@ -96,7 +96,7 @@ module.exports = {
                 // send embed
                 member.send({ embeds: [removeEmbed] }).catch(e => {
                     const channel = member.guild.channels.cache.get(botconfig.uffzChannelId)
-                    channel.send(`<@${user.id}> konnte keine Direktnacht empfangen!`)
+                    channel.send(`<@${user.id}> konnte nicht benachrichtigt werden!`)
                     return
                 })
                 // /user/add

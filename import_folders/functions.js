@@ -55,7 +55,7 @@ async function checkPerms(interaction, userId, roleId, channelId) {
 async function checkPerm(interaction, perm)
 {
   const member = interaction.member;
-  if(member.permissions.has(perm))
+  if(!member.permissions.has(perm))
   {
 	await interaction.reply({
 		content: `You need ${perm} to run this command`,
