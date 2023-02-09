@@ -23,7 +23,7 @@ module.exports = {
                         )
                 )
         ),
-    async execute(client,interaction) {
+    async execute(client, interaction) {
         const teamnumber = interaction.options.getInteger("teamnum")
         const oneHour = 60 * 60 * 1000
         const unixTimeNow = Math.floor(Date.now() / 1000)
@@ -141,7 +141,7 @@ module.exports = {
                         })
                         return
                     }
-                    teamVoice(interaction, buttonInteraction, team1Array, team2Array, team3Array, team4Array)
+                    teamVoice(client, interaction, buttonInteraction, team1Array, team2Array, team3Array, team4Array)
                     break
 
                 case "End":
@@ -152,6 +152,7 @@ module.exports = {
                         })
                         return
                     }
+                    buttonCollector.stop()
                     teamEnd(message)
                     break
 
@@ -270,7 +271,7 @@ async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, te
     });
 }
 
-async function teamVoice(interaction, buttonInteraction, team1Array, team2Array, team3Array, team4Array) {
+async function teamVoice(client, interaction, buttonInteraction, team1Array, team2Array, team3Array, team4Array) {
     const guild = interaction.guild
     const category = interaction.channel.parent
     const team1VoiceChannel = await guild.channels.create('team1', {
@@ -278,6 +279,16 @@ async function teamVoice(interaction, buttonInteraction, team1Array, team2Array,
         parent: category,
         userLimit: team1Array.length
     })
+    client.on('voiceStateUpdate', (oldState, newState) => {
+        const channel = oldState.channel;
+        if (!channel) return;
+        console.log(channel)
+        if (channel.id === team1VoiceChannel.id && channel.members.size === 0) {
+            channel.delete()
+                .then(console.log(`Deleted voice channel ${channel.name}`))
+                .catch(console.error);
+        }
+    });
 
     const movedUsers = []
     let allMoved = true
