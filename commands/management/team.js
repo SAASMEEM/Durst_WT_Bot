@@ -152,8 +152,7 @@ module.exports = {
                         })
                         return
                     }
-                    buttonCollector.stop()
-                    teamEnd(message)
+                    teamEnd(message, buttonCollector)
                     break
 
                 default:
@@ -321,8 +320,9 @@ async function teamVoice(client, interaction, buttonInteraction, team1Array, tea
     }
 }
 
-function teamEnd(message) {
-    message.edit({ components: [] });
+function teamEnd(message, buttonCollector) {
+    message.edit({ components: [] })
+    buttonCollector.stop()
 }
 
 function updateEmbed(message, teamnumber, entryArray, team1Array, team2Array, team3Array, team4Array) {
