@@ -38,8 +38,7 @@ Place your options into `config.json` like this:
 
 > **Warning**
 > The defaultTime has to be in 24h time format!
-> Example: "20" -> 20 o'clock
-> 
+> Example: "20" ⇾ 20 o'clock\
 > Also make sure to place all info in there, otherwise the bot will crash!
 
 ```json
