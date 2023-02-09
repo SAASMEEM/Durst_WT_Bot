@@ -58,7 +58,7 @@ async function checkPerm(interaction, perm)
   if(!member.permissions.has(perm))
   {
 	await interaction.reply({
-		content: `You need ${perm} to run this command`,
+		content: `You need \`${perm}\` to run this command`,
 		ephemeral: true,
 	});
     return false;
