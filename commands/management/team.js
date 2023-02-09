@@ -329,34 +329,34 @@ function updateEmbed(message, teamnumber, entryArray, team1Array, team2Array, te
     if (entryArray.length == 0) {
         message.embeds[0].fields.find(f => f.name === "Registered:").value = `\u200B`
     } else {
-        message.embeds[0].fields.find(f => f.name === "Registered:").value = `\u200B<@${entryArray.join(">\n<@")}>`
+        message.embeds[0].fields.find(f => f.name === "Registered:").value = `<@${entryArray.join(">\n<@")}>`
     }
 
     if (teamnumber >= 2) {
         if (team1Array.length == 0) {
             message.embeds[0].fields.find(f => f.name === "Team 1").value = `\u200B`
         } else {
-            message.embeds[0].fields.find(f => f.name === "Team 1").value = `\u200B<@${team1Array.join(">\n<@")}>`
+            message.embeds[0].fields.find(f => f.name === "Team 1").value = `<@${team1Array.join(">\n<@")}>`
         }
 
         if (team2Array.length == 0) {
             message.embeds[0].fields.find(f => f.name === "Team 2").value = `\u200B`
         } else {
-            message.embeds[0].fields.find(f => f.name === "Team 2").value = `\u200B<@${team2Array.join(">\n<@")}>`
+            message.embeds[0].fields.find(f => f.name === "Team 2").value = `<@${team2Array.join(">\n<@")}>`
         }
     }
     if (teamnumber >= 3) {
         if (team3Array.length == 0) {
             message.embeds[0].fields.find(f => f.name === "Team 3").value = `\u200B`
         } else {
-            message.embeds[0].fields.find(f => f.name === "Team 3").value = `\u200B<@${team3Array.join(">\n<@")}>`
+            message.embeds[0].fields.find(f => f.name === "Team 3").value = `<@${team3Array.join(">\n<@")}>`
         }
     }
     if (teamnumber >= 4) {
         if (team4Array.length == 0) {
             message.embeds[0].fields.find(f => f.name === "Team 4").value = `\u200B`
         } else {
-            message.embeds[0].fields.find(f => f.name === "Team 4").value = `\u200B<@${team4Array.join(">\n<@")}>`
+            message.embeds[0].fields.find(f => f.name === "Team 4").value = `<@${team4Array.join(">\n<@")}>`
         }
     }
     message.edit({ embeds: [message.embeds[0]] })
