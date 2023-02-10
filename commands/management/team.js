@@ -281,7 +281,6 @@ async function teamVoice(client, interaction, buttonInteraction, team1Array, tea
     client.on('voiceStateUpdate', (oldState, newState) => {
         const channel = oldState.channel;
         if (!channel) return;
-        console.log(channel)
         if (channel.id === team1VoiceChannel.id && channel.members.size === 0) {
             channel.delete()
                 .then(console.log(`Deleted voice channel ${channel.name}`))
