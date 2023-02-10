@@ -54,7 +54,7 @@ function getFields(message, map) {
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName(`clanwar`)
-		.setDescription("Call a clanwar")
+		.setDescription("Starte einen Clanwar!")
 		.addStringOption((option) =>
 			option
 				.setName("battlerank")
