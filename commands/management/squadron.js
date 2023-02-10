@@ -6,15 +6,15 @@ const { checkPerm } = require("../../import_folders/functions.js");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("squadron")
-        .setDescription("manage the squadron")
+        .setDescription("Kampfgruppenverwaltung")
         .addSubcommandGroup(subcommandgroup =>
             subcommandgroup
                 .setName('user')
-                .setDescription('manage the users')
+                .setDescription('Verwalte die Mannschafter')
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('remove')
-                        .setDescription('Remove a user from the squadron')
+                        .setDescription('Entferne einen Mannschafter aus der Kampfgruppe')
                         .addUserOption(option =>
                             option
                                 .setName('target')
@@ -25,7 +25,7 @@ module.exports = {
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('add')
-                        .setDescription('Add a user to the squadron')
+                        .setDescription('Fuege einen Mannschafter yur kampfgruppe hinzu')
                         .addUserOption(option =>
                             option
                                 .setName('target')
@@ -35,7 +35,7 @@ module.exports = {
                         .addIntegerOption(option =>
                             option
                                 .setName('role')
-                                .setDescription('Choose the mannschafter-role the user should get added')
+                                .setDescription('Bitte waehle die Kampfguppe aus')
                                 .setRequired(true)
                                 .setChoices(
                                     { name: 'Mannschafter (Main)', value: 1 },
@@ -46,17 +46,44 @@ module.exports = {
                         .addStringOption(option =>
                             option
                                 .setName('nickname')
-                                .setDescription('Add a Nickname to the user. Fill in \"reset\" to remove the nickname')
+                                .setDescription('Setzte den Nickname des mannschafters. Schreibe \"reset\" um den Nicknamen yu entfernen.')
                                 .setRequired(false)
+                        )
+                )
+        )
+        .addSubcommandGroup(subcommandgroup =>
+            subcommandgroup
+                .setName('clanwar')
+                .setDescription('Verwalte die Clanwar Teilnehmer')
+                .addSubcommand(subcommand =>
+                    subcommand
+                        .setName('remove')
+                        .setDescription('Entferne einen Mannschafter aus dem Clanwar team')
+                        .addUserOption(option =>
+                            option
+                                .setName('target')
+                                .setDescription('The user')
+                                .setRequired(true)
+                        )
+                )
+                .addSubcommand(subcommand =>
+                    subcommand
+                        .setName('add')
+                        .setDescription('Fuege einen Mannschafter ins Clanwar Team hinzu')
+                        .addUserOption(option =>
+                            option
+                                .setName('target')
+                                .setDescription('The user')
+                                .setRequired(true)
                         )
                 )
         ),
     async execute(interaction) {
-        // check for required permission
-        const check = await checkPerm(interaction, "MANAGE_NICKNAMES")
-        if (!check) return;
         // /user
         if (interaction.options.getSubcommandGroup() === "user") {
+            // check for required permission
+            const check = await checkPerm(interaction, "MANAGE_NICKNAMES")
+            if (!check) return
             // /user/remove
             if (interaction.options.getSubcommand() === "remove") {
                 // get guildmember objecct from user object
@@ -140,6 +167,35 @@ module.exports = {
                 } else if (nickname != null) {
                     member.setNickname(nickname)
                 }
+            }
+        }
+        if (interaction.options.getSubcommandGroup() === "clanwar") {
+            // check for required permission
+            const check = await checkPerm(interaction, "MOVE_MEMBERS")
+            if (!check) return
+            // /user/remove
+            if (interaction.options.getSubcommand() === "remove") {
+                // get guildmember objecct from user object
+                const user = interaction.options.getUser("target")
+                const member = await interaction.guild.members.fetch(user).then()
+                // manage role
+                member.roles.remove(botconfig.cwRoleId)
+                // send feedback
+                interaction.reply({
+                    content: `<@${user.id}> ist jetzt kein clanwar Teammitglied mehr!`,
+                    ephemeral: true
+                })
+                // /user/add
+            } else if (interaction.options.getSubcommand() === "add") {
+                // get guildmember object from user objectsetNickname
+                const user = interaction.options.getUser("target")
+                const member = await interaction.guild.members.fetch(user).then()
+                // manage roles
+                member.roles.add(botconfig.cwRoleId)
+                interaction.reply({
+                    content: `<@${user.id}> ist jetzt Clanwar-Mitglied!`,
+                    ephemeral: true
+                })
             }
         }
 
