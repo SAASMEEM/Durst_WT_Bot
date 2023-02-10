@@ -6,15 +6,15 @@ const { checkPerm } = require("../../import_folders/functions.js");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("squadron")
-        .setDescription("manage the squadron")
+        .setDescription("Kampfgruppenverwaltung")
         .addSubcommandGroup(subcommandgroup =>
             subcommandgroup
                 .setName('user')
-                .setDescription('manage the users')
+                .setDescription('Verwalte die Mannschafter')
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('remove')
-                        .setDescription('Remove a user from the squadron')
+                        .setDescription('Entferne einen Mannschafter aus der Kampfgruppe')
                         .addUserOption(option =>
                             option
                                 .setName('target')
@@ -25,7 +25,7 @@ module.exports = {
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('add')
-                        .setDescription('Add a user to the squadron')
+                        .setDescription('Fuege einen Mannschafter yur kampfgruppe hinzu')
                         .addUserOption(option =>
                             option
                                 .setName('target')
@@ -35,7 +35,7 @@ module.exports = {
                         .addIntegerOption(option =>
                             option
                                 .setName('role')
-                                .setDescription('Choose the mannschafter-role the user should get added')
+                                .setDescription('Bitte waehle die Kampfguppe aus')
                                 .setRequired(true)
                                 .setChoices(
                                     { name: 'Mannschafter (Main)', value: 1 },
@@ -46,7 +46,7 @@ module.exports = {
                         .addStringOption(option =>
                             option
                                 .setName('nickname')
-                                .setDescription('Add a Nickname to the user. Fill in \"reset\" to remove the nickname')
+                                .setDescription('Setzte den Nickname des mannschafters. Schreibe \"reset\" um den Nicknamen yu entfernen.')
                                 .setRequired(false)
                         )
                 )
@@ -54,11 +54,11 @@ module.exports = {
         .addSubcommandGroup(subcommandgroup =>
             subcommandgroup
                 .setName('clanwar')
-                .setDescription('manage the users')
+                .setDescription('Verwalte die Clanwar Teilnehmer')
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('remove')
-                        .setDescription('Remove a user from the clanwar team')
+                        .setDescription('Entferne einen Mannschafter aus dem Clanwar team')
                         .addUserOption(option =>
                             option
                                 .setName('target')
@@ -69,7 +69,7 @@ module.exports = {
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('add')
-                        .setDescription('Add a user to the clanwar team')
+                        .setDescription('Fuege einen Mannschafter ins Clanwar Team hinzu')
                         .addUserOption(option =>
                             option
                                 .setName('target')
