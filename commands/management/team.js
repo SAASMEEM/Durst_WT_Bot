@@ -273,7 +273,7 @@ async function teamShuffle(interaction, teamnumber, entryArray, shuffleArray, te
 async function teamVoice(client, interaction, buttonInteraction, team1Array, team2Array, team3Array, team4Array) {
     const guild = interaction.guild
     const category = interaction.channel.parent
-    const team1VoiceChannel = await guild.channels.create('team1', {
+    const team1VoiceChannel = await guild.channels.create('team#1', {
         type: 'GUILD_VOICE',
         parent: category,
         userLimit: team1Array.length
@@ -286,13 +286,79 @@ async function teamVoice(client, interaction, buttonInteraction, team1Array, tea
                 .then(console.log(`Deleted voice channel ${channel.name}`))
                 .catch(console.error);
         }
-    });
+    })
+    const team2VoiceChannel = await guild.channels.create('team#2', {
+        type: 'GUILD_VOICE',
+        parent: category,
+        userLimit: team1Array.length
+    })
+    client.on('voiceStateUpdate', (oldState, newState) => {
+        const channel = oldState.channel;
+        if (!channel) return;
+        if (channel.id === team2VoiceChannel.id && channel.members.size === 0) {
+            channel.delete()
+                .then(console.log(`Deleted voice channel ${channel.name}`))
+                .catch(console.error);
+        }
+    })
+    const team3VoiceChannel = await guild.channels.create('team#3', {
+        type: 'GUILD_VOICE',
+        parent: category,
+        userLimit: team1Array.length
+    })
+    client.on('voiceStateUpdate', (oldState, newState) => {
+        const channel = oldState.channel;
+        if (!channel) return;
+        if (channel.id === team3VoiceChannel.id && channel.members.size === 0) {
+            channel.delete()
+                .then(console.log(`Deleted voice channel ${channel.name}`))
+                .catch(console.error);
+        }
+    })
+    const team4VoiceChannel = await guild.channels.create('team#4', {
+        type: 'GUILD_VOICE',
+        parent: category,
+        userLimit: team1Array.length
+    })
+    client.on('voiceStateUpdate', (oldState, newState) => {
+        const channel = oldState.channel;
+        if (!channel) return;
+        if (channel.id === team4VoiceChannel.id && channel.members.size === 0) {
+            channel.delete()
+                .then(console.log(`Deleted voice channel ${channel.name}`))
+                .catch(console.error);
+        }
+    })
 
     const movedUsers = []
     let allMoved = true
     try {
-        const users = await guild.members.fetch({ user: team1Array })
-        for (const user of users.values()) {
+        const users1 = await guild.members.fetch({ user: team1Array })
+        for (const user of users1.values()) {
+            if (user.voice.channel) {
+                continue
+            }
+            await user.voice.setChannel(team1VoiceChannel)
+            movedUsers.push(user.user.username)
+        }
+        const users2 = await guild.members.fetch({ user: team2Array })
+        for (const user of users2.values()) {
+            if (user.voice.channel) {
+                continue
+            }
+            await user.voice.setChannel(team1VoiceChannel)
+            movedUsers.push(user.user.username)
+        }
+        const users3 = await guild.members.fetch({ user: team3Array })
+        for (const user of users3.values()) {
+            if (user.voice.channel) {
+                continue
+            }
+            await user.voice.setChannel(team1VoiceChannel)
+            movedUsers.push(user.user.username)
+        }
+        const users4 = await guild.members.fetch({ user: team4Array })
+        for (const user of users4.values()) {
             if (user.voice.channel) {
                 continue
             }
