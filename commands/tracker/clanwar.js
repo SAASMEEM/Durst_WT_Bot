@@ -76,7 +76,7 @@ module.exports = {
 		),
 		*/
 
-	async execute(interaction) {
+	async execute(client, interaction) {
 		// check for permission
 		const check = await checkPerms(
 			interaction,

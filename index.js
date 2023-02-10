@@ -7,11 +7,11 @@ const { Client, Collection, Intents } = require("discord.js");
 
 // Create a new client instance
 const client = new Client({
-	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS],
+	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_VOICE_STATES],
 });
 client.commands = new Collection();
 
-const load = (dir = "./commands/") => {
+const load = (client, dir = "./commands/") => {
 	for (const dirs of fs.readdirSync(dir)) {
 		const commandFiles = fs
 			.readdirSync(`${dir}/${dirs}`)
@@ -21,11 +21,12 @@ const load = (dir = "./commands/") => {
 			// Set a new item in the Collection
 			// With the key as the command name and the value as the exported module
 			client.commands.set(command.data.name, command);
+			command.execute = command.execute.bind(null, client);
 		}
 	}
 };
 
-load();
+load(client);
 
 const eventFiles = fs
 	.readdirSync("./events")
