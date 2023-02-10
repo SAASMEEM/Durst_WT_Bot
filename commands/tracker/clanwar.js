@@ -58,13 +58,13 @@ module.exports = {
 		.addStringOption((option) =>
 			option
 				.setName("battlerank")
-				.setDescription("Insert the battle rank")
+				.setDescription("Aktuelles Battle Ranking")
 				.setRequired(true)
 		)
 		.addIntegerOption((option) =>
 			option
 				.setName("hour")
-				.setDescription("Specify the starting time. Default: 20:00")
+				.setDescription("Bitte die Startzeit angeben. Default: 20:00")
 				.setRequired(false)
 		),
 		/*
@@ -115,7 +115,7 @@ module.exports = {
 		const tableEmbed = new Discord.MessageEmbed({
 			color: "880099",
 			title: `Clanwar (${br})`,
-			description: `⏲️ <t:${startseconds}:R>\n[Fahrzeugaufstellung](https://shorturl.at/lnH49)\n[Checkliste](https://shorturl.at/kLNZ9)`,
+			description: `⏲️ <t:${startseconds}:R>\n[Checkliste](https://shorturl.at/kLNZ9)\n[Fahrzeugaufstellung](https://shorturl.at/lnH49)`,
 			fields: [
 				{ name: "✅Accepted:", value: "\u200B", inline: true },
 				{ name: "❌Declined:", value: "\u200B", inline: true },
@@ -174,7 +174,7 @@ module.exports = {
 		buttonCollector.on("collect", async (buttonInteraction) => {
 			if (!buttonInteraction.member.roles.cache.has(botconfig.cwRoleId)) {
 				await buttonInteraction.reply({
-					content: `Only <@&${botconfig.cwRoleId}> can join the clanwar!\nPlease make sure to fill in the [registration](https://shorturl.at/lnH49). \nIf you already did so, please contact <@&${botconfig.uffzRoleId}> to give you permission.`,
+					content: `Nur <@&${botconfig.cwRoleId}>-Mitlgieder koennen sich zum Clanwar eintragen!\nBitte lies dir die [Checkliste](https://shorturl.at/kLNZ9)_sorgfaeltig_ durch.\nSobald du dies getan hast kannst du dich an einen CW-Mod.`,
 					ephemeral: true,
 				});
 				return
@@ -183,7 +183,7 @@ module.exports = {
 				case "Yes":
 					if (tableMap.get(buttonInteraction.user.id) === "+") {
 						await buttonInteraction.reply({
-							content: `You already accepted this clanwar!`,
+							content: `Du bist schon dem Clanwar beigetreten!`,
 							ephemeral: true,
 						});
 						return;
@@ -192,7 +192,7 @@ module.exports = {
 					tableMap.set(buttonInteraction.user.id, "+");
 					//                    buttonInteraction.member.roles.add(cwRoleId)
 					await buttonInteraction.reply({
-						content: `You accepted the clanwar.`,
+						content: `Du bist dem Clanwar beigetreten.`,
 						ephemeral: true,
 					});
 					break;
@@ -200,7 +200,7 @@ module.exports = {
 				case "Cancel":
 					if (tableMap.get(buttonInteraction.user.id) === "-") {
 						await buttonInteraction.reply({
-							content: `You already declined this clanwar!`,
+							content: `Du hast den Clanwar schon abgelehnt!`,
 							ephemeral: true,
 						});
 						return;
@@ -209,7 +209,7 @@ module.exports = {
 					tableMap.set(buttonInteraction.user.id, "-");
 					//                    buttonInteraction.member.roles.remove(cwRoleId)
 					await buttonInteraction.reply({
-						content: `You declined the clanwar.`,
+						content: `Du hast den Clanwar abgelehnt.`,
 						ephemeral: true,
 					});
 					break;
@@ -217,7 +217,7 @@ module.exports = {
 				case "Maybe":
 					if (tableMap.get(buttonInteraction.user.id) === "~") {
 						await buttonInteraction.reply({
-							content: `You already enlisted as a possible clanwar participant!`,
+							content: `Du bist bereits als moeglicher Teilnehmer eingetragen!`,
 							ephemeral: true,
 						});
 						return;
@@ -226,7 +226,7 @@ module.exports = {
 					tableMap.set(buttonInteraction.user.id, "~");
 					//                    buttonInteraction.member.roles.add(cwRoleId)
 					await buttonInteraction.reply({
-						content: `You enlisted as a possible clanwar participant.`,
+						content: `Du hast dich als moeglicher Teilnehmer eingetragen.`,
 						ephemeral: true,
 					});
 					break;
