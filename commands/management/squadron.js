@@ -6,11 +6,11 @@ const { checkPerm } = require("../../import_folders/functions.js");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("squadron")
-        .setDescription("manage the squadron")
+        .setDescription("Kampfgruppenverwaltung")
         .addSubcommandGroup(subcommandgroup =>
             subcommandgroup
                 .setName('user')
-                .setDescription('manage the users')
+                .setDescription('Verwalte die Mannschafter')
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('remove')
@@ -54,7 +54,7 @@ module.exports = {
         .addSubcommandGroup(subcommandgroup =>
             subcommandgroup
                 .setName('clanwar')
-                .setDescription('manage the users')
+                .setDescription('Verwalte die Clanwar Teilnehmer')
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('remove')
