@@ -78,7 +78,7 @@ module.exports = {
                         )
                 )
         ),
-    async execute(interaction) {
+    async execute(client, interaction) {
         // /user
         if (interaction.options.getSubcommandGroup() === "user") {
             // check for required permission
