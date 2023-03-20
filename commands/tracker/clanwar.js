@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const botconfig = require("../../config.json");
-const { checkPerms } = require("../../import_folders/functions.js");
+const { checkPerm } = require("../../import_folders/functions.js");
 
 // functions
 /**
@@ -78,13 +78,8 @@ module.exports = {
 
 	async execute(client, interaction) {
 		// check for permission
-		const check = await checkPerms(
-			interaction,
-			null,
-			botconfig.cwRoleId,
-			botconfig.cwChannelId
-		);
-		if (!check) return;
+		const check = await checkPerm(interaction, "MENTION_EVERYONE")
+		if (!check) return
 
 		// declare variables
 		const br = interaction.options.getString("battlerank");
