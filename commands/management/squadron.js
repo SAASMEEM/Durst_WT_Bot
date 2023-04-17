@@ -79,7 +79,7 @@ module.exports = {
                 )
         ),
     async execute(client, interaction) {
-        // /user bla
+        // /user
         if (interaction.options.getSubcommandGroup() === "user") {
             // check for required permission
             const check = await checkPerm(interaction, "MANAGE_NICKNAMES")
