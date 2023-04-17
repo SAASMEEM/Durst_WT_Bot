@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
-
+const { DOMParser } = require('xmldom');
 
 module.exports = {
     data: new SlashCommandBuilder()
