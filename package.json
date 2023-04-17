@@ -10,6 +10,7 @@
 		"discord-api-types": "^0.37.37",
 		"discord.js": "^13",
 		"dotenv": "^16.0.3",
+		"jsdom": "^21.1.1",
 		"node-bash-title": "^0.0.2",
 		"util": "^0.12.5",
 		"xmldom": "^0.6.0"
