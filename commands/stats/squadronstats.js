@@ -1,8 +1,11 @@
+const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { DOMParser } = require('xmldom');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const fetch = require('node-fetch');
+const fs = require('fs');
+const axios = require('axios');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,7 +14,7 @@ module.exports = {
         .addStringOption((option) =>
             option.setName("url").setDescription("url of the squad")
         ),
-    async execute(interaction) {
+    async execute(client, interaction) {
         const url = interaction.options.getString("url")
         respond = "";
         if (isValidUrl(url)) {
