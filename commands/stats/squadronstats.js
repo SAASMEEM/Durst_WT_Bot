@@ -6,6 +6,7 @@ const { JSDOM } = jsdom;
 const fetch = require('node-fetch');
 const fs = require('fs');
 const axios = require('axios');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -18,8 +19,17 @@ module.exports = {
         const url = interaction.options.getString("url")
         if (isValidUrl(url)) {  //damit wird überprüft ob die URL passt
           respond = "Die Kampgruppenaktivität ist aktuell " +await getstatact(url) + "\nDie Anzahl der Mitglieder ist: " + await getstatcount(url);
+          const squadstatembed = new EmbedBuilder()
+              .setcolor(0x0099FF)
+              .setTitle(await getsquadname)
+              .setURl(url)
+              .addFields(
+                { name: 'Kampfgruppenaktivität', value: await getstatact, inline: true },
+		            { name: 'Spielerzahl', value: await getstatcount, inline: true },
+              )
+              .setTimestamp()
           
-          
+          channel.send({ embeds: [squadstatembed] });       
           
         } else {
           respond ="Die URL ist ungültig!";
@@ -33,6 +43,13 @@ module.exports = {
 function isValidUrl(url) {  //überprüft ob die URl passt
   const regex = "https://warthunder.com/de/community/claninfo/";
   return url.startsWith(regex);
+}
+
+async function getsquadname(url){
+  const html = await geturldoc
+  const dom = new JSDOM(html);
+  const element = dom.window.document.querySelector("#squadronsInfoRoot > div.squadrons-info__content-wrapper > div.squadrons-info__title")
+  return element;
 }
 
 
