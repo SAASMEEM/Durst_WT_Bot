@@ -49,7 +49,7 @@ async function getsquadname(url){
   const html = await geturldoc
   const dom = new JSDOM(html);
   const element = dom.window.document.querySelector("#squadronsInfoRoot > div.squadrons-info__content-wrapper > div.squadrons-info__title")
-  return element;
+  return "" + element;
 }
 
 
