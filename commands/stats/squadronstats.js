@@ -19,7 +19,7 @@ module.exports = {
         const url = interaction.options.getString("url")
         if (isValidUrl(url)) {  //damit wird überprüft ob die URL passt
           respond = "Die Kampgruppenaktivität ist aktuell " +await getstatact(url) + "\nDie Anzahl der Mitglieder ist: " + await getstatcount(url);
-          const squadstatembed = new EmbedBuilder()
+          const squadstatembed = new Discord.MessageEmbed()
               .setcolor(0x0099FF)
               .setTitle(await getsquadname)
               .setURl(url)
