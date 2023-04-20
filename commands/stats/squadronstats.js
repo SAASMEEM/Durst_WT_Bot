@@ -18,19 +18,27 @@ module.exports = {
     async execute(client, interaction) {
         const url = interaction.options.getString("url")
         if (isValidUrl(url)) {  //damit wird überprüft ob die URL passt
-          respond = "Die Kampgruppenaktivität ist aktuell " +await getstatact(url) + "\nDie Anzahl der Mitglieder ist: " + await getstatcount(url);
+          //respond = "Die Kampgruppenaktivität ist aktuell " +await getstatact(url) + "\nDie Anzahl der Mitglieder ist: " + await getstatcount(url);
+          
+          const title = await getsquadname(url) + " "
+          console.log(title)
+          const statact = await getstatact(url) + " "
+          console.log(statact)
+          const statcount = await getstatcount(url) + " "
+          console.log(statcount)
+          
           const squadstatembed = new Discord.MessageEmbed()
               .setColor("0x0099FF")
-              .setTitle(await getsquadname)
-              .setURl(url)
+              .setTitle(title)
+              .setURL(url)
               .addFields(
-                { name: 'Kampfgruppenaktivität', value: await getstatact, inline: true },
-		            { name: 'Spielerzahl', value: await getstatcount, inline: true },
+                { name: 'Kampfgruppenaktivität', value: statact, inline: true },
+		            { name: 'Spielerzahl', value: statcount, inline: true },
               )
               .setTimestamp()
           
-          channel.send({ embeds: [squadstatembed] });       
-          
+                
+          respond = { embeds: [squadstatembed] };
         } else {
           respond ="Die URL ist ungültig!";
         }
@@ -46,10 +54,12 @@ function isValidUrl(url) {  //überprüft ob die URl passt
 }
 
 async function getsquadname(url){
-  const html = await geturldoc
+  const html = await geturldoc(url)
   const dom = new JSDOM(html);
   const element = dom.window.document.querySelector("#squadronsInfoRoot > div.squadrons-info__content-wrapper > div.squadrons-info__title")
-  return "" + element;
+  const squadname =element.textContent.trim().toString() + " "
+  return squadname;
+
 }
 
 
