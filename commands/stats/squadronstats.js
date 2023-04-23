@@ -12,36 +12,87 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("squadronstats")
         .setDescription("creates a squadronstats box")
-        .addStringOption((option) =>
-            option.setName("url").setDescription("url of the squad")
-        ),
-    async execute(client, interaction) {
-        const url = interaction.options.getString("url")
-        if (isValidUrl(url)) {  //damit wird überprüft ob die URL passt
-          //respond = "Die Kampgruppenaktivität ist aktuell " +await getstatact(url) + "\nDie Anzahl der Mitglieder ist: " + await getstatcount(url);
-          
-          const title = await getsquadname(url) + " "
-          console.log(title)
-          const statact = await getstatact(url) + " "
-          console.log(statact)
-          const statcount = await getstatcount(url) + " "
-          console.log(statcount)
-          
-          const squadstatembed = new Discord.MessageEmbed()
-              .setColor("0x0099FF")
-              .setTitle(title)
-              .setURL(url)
-              .addFields(
-                { name: 'Kampfgruppenaktivität', value: statact, inline: true },
-		            { name: 'Spielerzahl', value: statcount, inline: true },
+        .addSubcommand(subcommand =>
+          subcommand
+              .setName('name')
+              .setDescription('Entferne einen Mannschafter aus der Kampfgruppe')
+              .addStringOption((option) =>
+              option.setName("name").setDescription("name of the squad")
+              .setRequired(true)
+              )        
               )
-              .setTimestamp()
-          
-                
-          respond = { embeds: [squadstatembed] };
-        } else {
-          respond ="Die URL ist ungültig!";
+
+      .addSubcommand(subcommand =>
+          subcommand
+              .setName('url')
+              .setDescription('Fuege einen Mannschafter yur kampfgruppe hinzu')
+              .addStringOption((option) =>
+              option.setName("url").setDescription("url of the squad")
+              .setRequired(true)
+              )
+              )        
+
+        ,
+    async execute(client, interaction) {
+        
+        if (interaction.options.getSubcommand() === 'url') {
+          if (isValidUrl(url)) {  //damit wird überprüft ob die URL passt
+            //respond = "Die Kampgruppenaktivität ist aktuell " +await getstatact(url) + "\nDie Anzahl der Mitglieder ist: " + await getstatcount(url);
+            if (await squadcheck(url)==true) {
+              const url = interaction.options.getString("url")
+            const title = await getsquadname(url) + " "
+            console.log(title)
+            const statact = await getstatact(url) + " "
+            console.log(statact)
+            const statcount = await getstatcount(url) + " "
+            console.log(statcount)
+            
+            const squadstatembed = new Discord.MessageEmbed()
+                .setColor("0x0099FF")
+                .setTitle(title)
+                .setURL(url)
+                .addFields(
+                  { name: 'Kampfgruppenaktivität', value: statact, inline: true },
+                  { name: 'Spielerzahl', value: statcount, inline: true },
+                )
+                .setTimestamp()
+            
+                  
+            respond = { embeds: [squadstatembed] };
+            } else {
+              respond ="Die Kampfgruppe existiert nicht!"
+            }
+            
+          } else {
+            respond ="Die URL ist ungültig!";
+          }
+        } else if(interaction.options.getSubcommand() === 'name'){
+          const name = interaction.options.getString("name")
+          const url = "https://warthunder.com/de/community/claninfo/" + name.replace(/ /g, "%20");
+          if (await squadcheck(url)==true) {
+            console.log(url)
+            const title = await getsquadname(url) + " "
+            console.log(title)
+            const statact = await getstatact(url) + " "
+            console.log(statact)
+            const statcount = await getstatcount(url) + " "
+            console.log(statcount)
+            
+            const squadstatembed = new Discord.MessageEmbed()
+                .setColor("0x0099FF")
+                .setTitle(title)
+                .setURL(url)
+                .addFields(
+                  { name: 'Kampfgruppenaktivität', value: statact, inline: true },
+                  { name: 'Spielerzahl', value: statcount, inline: true },
+                )
+                .setTimestamp()
+            respond = { embeds: [squadstatembed] };
+          } else {
+            respond ="Die Kampfgruppe existiert nicht!"
+          }  
         }
+        
         
         await interaction.reply(respond);
     },
@@ -91,4 +142,15 @@ async function geturldoc(url) { //holt sich den Quelltext der Webseite
   const response = await fetch(url);
   const html = await response.text();
   return html;
+}
+
+async function squadcheck(url){
+  const response = await fetch(url);
+  const url2 = response.url;
+  if(url2 == "https://warthunder.com/de/community/clansleaderboard"){
+    check = false
+  }else {
+    check = true
+  }
+  return check;
 }
