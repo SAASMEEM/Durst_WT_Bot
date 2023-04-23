@@ -144,7 +144,7 @@ async function geturldoc(url) { //holt sich den Quelltext der Webseite
   return html;
 }
 
-async function squadcheck(url){
+async function squadcheck(url){//überprüft ob die Kampfgruppe exisitiert
   const response = await fetch(url);
   const url2 = response.url;
   if(url2 == "https://warthunder.com/de/community/clansleaderboard"){
