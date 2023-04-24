@@ -7,15 +7,16 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const axios = require('axios');
 const { EmbedBuilder } = require('discord.js');
+const { checkPerm } = require("../../import_folders/functions.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("squadronstats")
-        .setDescription("Creates a 'squadronstats' box.")
+        .setName("livestats")
+        .setDescription("Creates a 'squadronstats' box that gets daily updates.")
         .addSubcommand(subcommand =>
           subcommand
               .setName('name')
-              .setDescription("Creates a 'squadronstats' box based on the squad name.")
+              .setDescription("Creates a 'squadronstats' box that receives daily updates based on the squad name.")
               .addStringOption((option) =>
               option.setName("name").setDescription("name of the squad")
               .setRequired(true)
@@ -25,7 +26,7 @@ module.exports = {
       .addSubcommand(subcommand =>
           subcommand
               .setName('url')
-              .setDescription("Creates a 'squadronstats' box based on the squad url.")
+              .setDescription("Creates a 'squadronstats' box that receives daily updates based on the squad url.")
               .addStringOption((option) =>
               option.setName("url").setDescription("url of the squad")
               .setRequired(true)
@@ -34,7 +35,21 @@ module.exports = {
 
         ,
     async execute(client, interaction) {
-        
+      const check = await checkPerm(interaction, "ADMINISTRATOR")
+            if (!check) return  
+      checker = false
+        const channelid = interaction.channel.id;
+        const channel = client.channels.cache.get(channelid);
+        fs.access('idlist.txt', fs.constants.F_OK, (err) => {
+            if (err) {
+                fs.writeFile('idlist.txt', '', function (err) {
+                    if (err) throw err;
+                    console.log('id list created successfully!');
+                  });
+            } else {
+              console.log('File exists');
+            }
+          });
         if (interaction.options.getSubcommand() === 'url') {
           if (isValidUrl(url)) {  //damit wird überprüft ob die URL passt
             //respond = "Die Kampgruppenaktivität ist aktuell " +await getstatact(url) + "\nDie Anzahl der Mitglieder ist: " + await getstatcount(url);
@@ -59,7 +74,8 @@ module.exports = {
             
                   
             respond = { embeds: [squadstatembed] };
-            } else {
+           checker = true
+        } else {
               respond ="Die Kampfgruppe existiert nicht!"
             }
             
@@ -87,14 +103,22 @@ module.exports = {
                   { name: 'Spielerzahl', value: statcount, inline: true },
                 )
                 .setTimestamp()
-            respond = { embeds: [squadstatembed] };
-          } else {
+                respond = { embeds: [squadstatembed] };
+                checker = true
+        } else {
             respond ="Die Kampfgruppe existiert nicht!"
           }  
         }
         
-        
-        await interaction.reply(respond);
+        const response = await channel.send(respond);
+        if (checker == true) {
+            console.log(response.id);
+            fs.appendFile('idlist.txt',response.id + ", ", function (err) {
+                if (err) throw err;
+                console.log('Data appended to file!');
+              });
+        } else { }
+        await interaction.reply({ content: 'live statbox wurde erstellt', ephemeral: true });
     },
 };
 
