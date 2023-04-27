@@ -4,7 +4,7 @@
 [![Bugs](https://img.shields.io/github/issues/SAASMEEM/Durst_WT_Bot/bug?label=Bugs&color=critical)](https://github.com/SAASMEEM/Durst_WT_Bot/labels/bug)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![Discord](https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord)](https://discord.gg/ecZR7WxMPt)
+[![Discord](https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord)](https://discord.gg/KbbXnCKaTY)
 
 Durstpanzer II is a discord-bot for the German WarThunder squadron 🍻Durst🍻.
 
@@ -23,7 +23,7 @@ Durstpanzer II is build to help the squadron leaders to organize the squadron.
 
 We are a German WarThunder squadron for people of all ages. We are _not_ a tryhard squadron, although we always try to play squadron-battles for fun.
 
-If you want to join us feel free to meet us on the [discord server](https://discord.gg/ecZR7WxMPt).
+If you want to join us feel free to meet us on the [discord server](https://discord.gg/KbbXnCKaTY).
 
 ## Config
 
