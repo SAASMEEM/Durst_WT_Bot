@@ -1,5 +1,10 @@
 {
+	"name": "durst_wt",
+	"version": "1.0.0",
 	"scripts": {
+		"prepare": "husky install",
+		"format": "prettier -w . && xo --fix .",
+		"lint": "prettier -c . && xo",
 		"start": "node index.js",
 		"deploy": "node deploy-commands.js"
 	},
@@ -15,6 +20,34 @@
 		"node-bash-title": "^0.0.2",
 		"util": "^0.12.5",
 		"xmldom": "^0.6.0"
+	},
+	"devDependencies": {
+		"husky": "^8.0.2",
+		"lint-staged": "^13.0.4",
+		"prettier": "^2.8.0",
+		"xo": "^0.53.0"
+	},
+	"prettier": {
+		"bracketSpacing": true,
+		"singleQuote": false,
+		"trailingComma": "es5",
+		"useTabs": true
+	},
+	"xo": {
+		"envs": [
+			"es2021",
+			"node"
+		],
+		"prettier": true,
+		"rules": {
+			"unicorn/prefer-module": "off",
+			"capitalized-comments": "off",
+			"spaced-comment": "off",
+			"import/no-unassigned-import": "off"
+		}
+	},
+	"lint-staged": {
+		"*": "prettier -uw"
 	},
 	"engines": {
 		"node": ">=16.6.0",

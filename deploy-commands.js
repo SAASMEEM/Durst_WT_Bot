@@ -1,6 +1,6 @@
 require("dotenv/config");
-const fs = require("fs");
-const process = require("process");
+const fs = require("node:fs");
+const process = require("node:process");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const botconfig = require("./config.json");

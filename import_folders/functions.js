@@ -52,18 +52,22 @@ async function checkPerms(interaction, userId, roleId, channelId) {
 	return true;
 }
 
-async function checkPerm(interaction, perm)
-{
-  const member = interaction.member;
-  if(!member.permissions.has(perm))
-  {
-	await interaction.reply({
-		content: `You need \`${perm}\` to run this command`,
-		ephemeral: true,
-	});
-    return false;
-  }
-  return true;
+async function checkPerm(interaction, perm) {
+	const { member } = interaction;
+	if (!member.permissions.has(perm)) {
+		await interaction.reply({
+			content: `You need \`${perm}\` to run this command`,
+			ephemeral: true,
+		});
+		return false;
+	}
+
+	return true;
 }
 
-module.exports = { getMentionedUser, getMentionedMember, checkPerms , checkPerm};
+module.exports = {
+	getMentionedUser,
+	getMentionedMember,
+	checkPerms,
+	checkPerm,
+};
