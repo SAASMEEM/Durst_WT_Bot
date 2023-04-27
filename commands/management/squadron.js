@@ -187,6 +187,13 @@ export async function execute(client, interaction) {
 
 					break;
 				}
+
+				default: {
+					interaction.reply({
+						content: "Somthing went wrong!",
+						ephemeral: true,
+					});
+				}
 			}
 
 			const nickname = interaction.options.getString("nickname");

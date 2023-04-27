@@ -38,10 +38,9 @@
 		],
 		"prettier": true,
 		"rules": {
-			"unicorn/prefer-module": "off",
+			"node/file-extension-in-import": "off",
 			"capitalized-comments": "off",
 			"spaced-comment": "off",
-			"import/no-unassigned-import": "off",
 			"unicorn/prefer-top-level-await": "off"
 		}
 	},

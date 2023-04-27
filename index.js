@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import { env } from "node:process";
 
 import dotenv from "dotenv";
