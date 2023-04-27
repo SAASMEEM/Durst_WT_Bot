@@ -2,7 +2,6 @@ const process = require("node:process");
 const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { version } = require("discord.js");
-const { checkPerm } = require("../../import_folders/functions");
 
 const SECONDS_IN_DAY = 86_400;
 

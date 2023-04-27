@@ -133,7 +133,7 @@ module.exports = {
 					timestamp: Date.now(),
 				});
 				// send embed
-				member.send({ embeds: [removeEmbed] }).catch((error) => {
+				member.send({ embeds: [removeEmbed] }).catch(() => {
 					const channel = member.guild.channels.cache.get(
 						botconfig.uffzChannelId
 					);
