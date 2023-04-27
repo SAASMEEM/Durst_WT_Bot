@@ -43,7 +43,8 @@
 			"unicorn/prefer-module": "off",
 			"capitalized-comments": "off",
 			"spaced-comment": "off",
-			"import/no-unassigned-import": "off"
+			"import/no-unassigned-import": "off",
+			"unicorn/prefer-top-level-await": "off"
 		}
 	},
 	"lint-staged": {

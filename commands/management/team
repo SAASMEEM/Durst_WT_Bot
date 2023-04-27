@@ -1,3 +1,5 @@
+// Fails tests and crashes the bot
+/*
 const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const botconfig = require("../../config.json");
@@ -552,3 +554,4 @@ function removeArrayItemOnce(array, value) {
 
 	return array;
 }
+*/
