@@ -2,6 +2,8 @@
 
 [![Feature Requests](https://img.shields.io/github/issues/SAASMEEM/Durst_WT_Bot/enhancement?label=Feature%20Requests)](https://github.com/SAASMEEM/Durst_WT_Bot/labels/enhancement)
 [![Bugs](https://img.shields.io/github/issues/SAASMEEM/Durst_WT_Bot/bug?label=Bugs&color=critical)](https://github.com/SAASMEEM/Durst_WT_Bot/labels/bug)
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![Discord](https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord)](https://discord.gg/ecZR7WxMPt)
 
 Durstpanzer II is a discord-bot for the German WarThunder squadron 🍻Durst🍻.
