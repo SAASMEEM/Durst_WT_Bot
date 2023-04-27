@@ -5,6 +5,9 @@ const process = require("node:process");
 
 const { Client, Collection, Intents } = require("discord.js");
 
+const { commands } = require("./commands/index.js");
+const { events } = require("./events/index.js");
+
 // Create a new client instance
 const client = new Client({
 	intents: [
@@ -13,31 +16,15 @@ const client = new Client({
 		Intents.FLAGS.GUILD_VOICE_STATES,
 	],
 });
+
 client.commands = new Collection();
 
-const load = (client, dir = "./commands/") => {
-	for (const dirs of fs.readdirSync(dir)) {
-		const commandFiles = fs
-			.readdirSync(`${dir}/${dirs}`)
-			.filter((files) => files.endsWith(".js"));
-		for (const file of commandFiles) {
-			const command = require(`${dir}/${dirs}/${file}`);
-			// Set a new item in the Collection
-			// With the key as the command name and the value as the exported module
-			client.commands.set(command.data.name, command);
-			command.execute = command.execute.bind(null, client);
-		}
-	}
-};
+for (const command of commands) {
+	client.commands.set(command.data.name, command);
+	command.execute = command.execute.bind(null, client);
+}
 
-load(client);
-
-const eventFiles = fs
-	.readdirSync("./events")
-	.filter((file) => file.endsWith(".js"));
-
-for (const file of eventFiles) {
-	const event = require(`./events/${file}`);
+for (const event of events) {
 	if (event.once) {
 		client.once(event.name, (...args) => event.execute(...args));
 	} else {

@@ -4,20 +4,12 @@ const process = require("node:process");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const botconfig = require("./config.json");
+const { commands } = require("./commands/index.js");
 
-const commands = [];
-const dir = "./commands/";
-for (const dirs of fs.readdirSync(dir)) {
-	const commandFiles = fs
-		.readdirSync(`${dir}/${dirs}`)
-		.filter((files) => files.endsWith(".js"));
-	for (const file of commandFiles) {
-		const command = require(`${dir}/${dirs}/${file}`);
-		commands.push(command.data.toJSON());
+const commandJson = [];
 
-		// Set a new item in the Collection
-		// With the key as the command name and the value as the exported module
-	}
+for (const command of commands) {
+	commandJson.push(command.data.toJSON());
 }
 
 const rest = new REST({ version: "9" }).setToken(process.env.token);
@@ -29,7 +21,7 @@ const rest = new REST({ version: "9" }).setToken(process.env.token);
 		await rest.put(
 			Routes.applicationGuildCommands(botconfig.botId, botconfig.guildId),
 			{
-				body: commands,
+				body: commandJson,
 			}
 		);
 
