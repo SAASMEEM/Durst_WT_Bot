@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const botconfig = require("../../config.json");
+const botconfig = require("../../settings.js");
 const { checkPerm } = require("../../import_folders/functions.js");
 
 // functions

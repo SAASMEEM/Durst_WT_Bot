@@ -3,7 +3,7 @@ const fs = require("node:fs");
 const process = require("node:process");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
-const botconfig = require("./config.json");
+const botconfig = require("./settings.js");
 const { commands } = require("./commands/index.js");
 
 const commandJson = [];
