@@ -147,38 +147,51 @@ module.exports = {
 				// get mannschafterRolePointer -> 1 || 2
 				const role = interaction.options.getInteger("role");
 				// manage roles
-				if (role == 1) {
-					member.roles.add(botconfig.mannschafter1RoleId);
-					member.roles.remove(botconfig.mannschafter2RoleId);
-					member.roles.remove(botconfig.mannschafter3RoleId);
-					interaction.reply({
-						content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter1RoleId}>!`,
-						ephemeral: true,
-					});
-				} else if (role == 2) {
-					member.roles.add(botconfig.mannschafter2RoleId);
-					member.roles.remove(botconfig.mannschafter1RoleId);
-					member.roles.remove(botconfig.mannschafter3RoleId);
-					member.roles.remove(botconfig.cwRoleId);
-					interaction.reply({
-						content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter2RoleId}>!`,
-						ephemeral: true,
-					});
-				} else if (role == 3) {
-					member.roles.add(botconfig.mannschafter3RoleId);
-					member.roles.remove(botconfig.mannschafter1RoleId);
-					member.roles.remove(botconfig.mannschafter2RoleId);
-					member.roles.remove(botconfig.cwRoleId);
-					interaction.reply({
-						content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter3RoleId}>!`,
-						ephemeral: true,
-					});
+				switch (role) {
+					case 1: {
+						member.roles.add(botconfig.mannschafter1RoleId);
+						member.roles.remove(botconfig.mannschafter2RoleId);
+						member.roles.remove(botconfig.mannschafter3RoleId);
+						interaction.reply({
+							content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter1RoleId}>!`,
+							ephemeral: true,
+						});
+
+						break;
+					}
+
+					case 2: {
+						member.roles.add(botconfig.mannschafter2RoleId);
+						member.roles.remove(botconfig.mannschafter1RoleId);
+						member.roles.remove(botconfig.mannschafter3RoleId);
+						member.roles.remove(botconfig.cwRoleId);
+						interaction.reply({
+							content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter2RoleId}>!`,
+							ephemeral: true,
+						});
+
+						break;
+					}
+
+					case 3: {
+						member.roles.add(botconfig.mannschafter3RoleId);
+						member.roles.remove(botconfig.mannschafter1RoleId);
+						member.roles.remove(botconfig.mannschafter2RoleId);
+						member.roles.remove(botconfig.cwRoleId);
+						interaction.reply({
+							content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter3RoleId}>!`,
+							ephemeral: true,
+						});
+
+						break;
+					}
+					// No default
 				}
 
 				const nickname = interaction.options.getString("nickname");
-				if (nickname == "reset") {
+				if (nickname === "reset") {
 					member.setNickname(null);
-				} else if (nickname != null) {
+				} else if (nickname !== null) {
 					member.setNickname(nickname);
 				}
 			}
