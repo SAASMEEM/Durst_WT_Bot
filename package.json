@@ -39,6 +39,7 @@
 		"prettier": true,
 		"rules": {
 			"node/file-extension-in-import": "off",
+			"n/file-extension-in-import": "off",
 			"capitalized-comments": "off",
 			"spaced-comment": "off",
 			"unicorn/prefer-top-level-await": "off"
