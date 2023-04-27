@@ -1,4 +1,6 @@
 {
+	"name": "durst_wt",
+	"version": "1.0.0",
 	"scripts": {
 		"prepare": "husky install",
 		"format": "prettier -w . && xo --fix .",
