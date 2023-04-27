@@ -13,7 +13,7 @@
 		"@discordjs/rest": "^1.6.0",
 		"@discordjs/voice": "^0.16.0",
 		"discord-api-types": "^0.37.37",
-		"discord.js": "^13",
+		"discord.js": "^14",
 		"dotenv": "^16.0.3",
 		"node-bash-title": "^0.0.2",
 		"util": "^0.12.5"
