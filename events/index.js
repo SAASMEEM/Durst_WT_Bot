@@ -1,5 +1,3 @@
-const ready = require("./ready.js");
+import * as ready from "./ready.js";
 
-module.exports = {
-	events: [ready],
-};
+export const events = [ready];
