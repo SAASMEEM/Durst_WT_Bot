@@ -6,7 +6,8 @@ export const data = new SlashCommandBuilder()
 	.setDescription(
 		"Get the avatar URL of the selected user, or your own avatar."
 	)
-	.addUserOption((option) => option.setName("target").setDescription("The user's avatar to show")
+	.addUserOption((option) =>
+		option.setName("target").setDescription("The user's avatar to show")
 	);
 export async function execute(client, interaction) {
 	const user = interaction.options.getUser("target") || interaction.user;

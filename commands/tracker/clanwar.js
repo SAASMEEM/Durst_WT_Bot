@@ -58,18 +58,19 @@ function getFields(message, map) {
 export const data = new SlashCommandBuilder()
 	.setName(`clanwar`)
 	.setDescription("Starte einen Clanwar!")
-	.addStringOption((option) => option
-		.setName("battlerank")
-		.setDescription("Aktuelles Battle Ranking")
-		.setRequired(true)
+	.addStringOption((option) =>
+		option
+			.setName("battlerank")
+			.setDescription("Aktuelles Battle Ranking")
+			.setRequired(true)
 	)
-	.addIntegerOption((option) => option
-		.setName("hour")
-		.setDescription("Bitte die Startzeit angeben. Default: 20:00")
-		.setRequired(false)
+	.addIntegerOption((option) =>
+		option
+			.setName("hour")
+			.setDescription("Bitte die Startzeit angeben. Default: 20:00")
+			.setRequired(false)
 	);
-export
-	/*
+export /*
 		.addIntegerOption((option) =>
 			option
 				.setName("minute")
@@ -77,11 +78,10 @@ export
 				.setRequired(true)
 		),
 		*/
-	async function execute(client, interaction) {
+async function execute(client, interaction) {
 	// check for permission
 	const check = await checkPerm(interaction, "MENTION_EVERYONE");
-	if (!check)
-		return;
+	if (!check) return;
 
 	// declare variables
 	const br = interaction.options.getString("battlerank");
@@ -97,9 +97,7 @@ export
 	const second = d.getSeconds();
 	let starttime = null;
 	starttime =
-		inserthour === null || inserthour === undefined
-			? defaulthour
-			: inserthour;
+		inserthour === null || inserthour === undefined ? defaulthour : inserthour;
 
 	const date = new Date(year, month, day, hour, minute, second);
 	const dateseconds = date.getTime() / 1000;
@@ -122,14 +120,8 @@ export
 
 	// declare buttons
 	const Reactions = new MessageActionRow().addComponents(
-		new MessageButton()
-			.setEmoji("✅")
-			.setCustomId("Yes")
-			.setStyle("SUCCESS"),
-		new MessageButton()
-			.setEmoji("❌")
-			.setCustomId("Cancel")
-			.setStyle("DANGER"),
+		new MessageButton().setEmoji("✅").setCustomId("Yes").setStyle("SUCCESS"),
+		new MessageButton().setEmoji("❌").setCustomId("Cancel").setStyle("DANGER"),
 		new MessageButton()
 			.setEmoji("❔")
 			.setCustomId("Maybe")
@@ -154,14 +146,11 @@ export
 	}, time);
 
 	// button collector
-	const buttonCollector = interaction.channel.createMessageComponentCollector(
-		{
-			filter: (m) => m.customId === "Yes" ||
-				m.customId === "Cancel" ||
-				m.customId === "Maybe",
-			time,
-		}
-	);
+	const buttonCollector = interaction.channel.createMessageComponentCollector({
+		filter: (m) =>
+			m.customId === "Yes" || m.customId === "Cancel" || m.customId === "Maybe",
+		time,
+	});
 
 	/** @type {Map<string,"+"|"-"|"~">} */
 	const tableMap = new Map();
