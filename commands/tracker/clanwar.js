@@ -99,7 +99,9 @@ module.exports = {
 		const second = d.getSeconds();
 		let starttime = null;
 		starttime =
-			inserthour === null || inserthour === undefined ? defaulthour : inserthour;
+			inserthour === null || inserthour === undefined
+				? defaulthour
+				: inserthour;
 
 		const date = new Date(year, month, day, hour, minute, second);
 		const dateseconds = date.getTime() / 1000;
