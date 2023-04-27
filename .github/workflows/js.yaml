@@ -22,8 +22,7 @@ jobs:
         with:
           node-version: 16
           cache: "npm"
-          cache-dependency-path: subdir/package-lock.json
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Run xo
         run: ./node_modules/.bin/xo
