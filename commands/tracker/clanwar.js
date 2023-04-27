@@ -11,12 +11,16 @@ const { checkPerm } = require("../../import_folders/functions.js");
  */
 async function updateEmbed(message, map) {
 	try {
-		message.embeds[0].fields = getFields(message, map)
+		message.embeds[0].fields = getFields(message, map);
 		await message.edit({
 			embeds: message.embeds,
-		})
-	} catch(e) {
-		await message.edit({ components: [], content: '**Die Tabelle wurde gelöscht! Der Befehl muss neu gestartet werden.**' });
+		});
+	} catch {
+		await message.edit({
+			components: [],
+			content:
+				"**Die Tabelle wurde gelöscht! Der Befehl muss neu gestartet werden.**",
+		});
 	}
 }
 
@@ -67,7 +71,7 @@ module.exports = {
 				.setDescription("Bitte die Startzeit angeben. Default: 20:00")
 				.setRequired(false)
 		),
-		/*
+	/*
 		.addIntegerOption((option) =>
 			option
 				.setName("minute")
@@ -78,14 +82,14 @@ module.exports = {
 
 	async execute(client, interaction) {
 		// check for permission
-		const check = await checkPerm(interaction, "MENTION_EVERYONE")
-		if (!check) return
+		const check = await checkPerm(interaction, "MENTION_EVERYONE");
+		if (!check) return;
 
 		// declare variables
 		const br = interaction.options.getString("battlerank");
 		const inserthour = interaction.options.getInteger("hour");
-//		const insertminute = interaction.options.getInteger("minute");
-		const defaulthour = botconfig.defaultTime
+		//		const insertminute = interaction.options.getInteger("minute");
+		const defaulthour = botconfig.defaultTime;
 		const d = new Date();
 		const year = d.getFullYear();
 		const month = d.getMonth();
@@ -93,12 +97,9 @@ module.exports = {
 		const hour = d.getHours();
 		const minute = d.getMinutes();
 		const second = d.getSeconds();
-		let starttime = null
-		if (inserthour == null || inserthour == undefined) {
-			starttime = defaulthour
-		} else {
-			starttime = inserthour
-		}
+		let starttime = null;
+		starttime =
+			inserthour == null || inserthour == undefined ? defaulthour : inserthour;
 
 		const date = new Date(year, month, day, hour, minute, second);
 		const dateseconds = date.getTime() / 1000;
@@ -172,10 +173,11 @@ module.exports = {
 					content: `Nur <@&${botconfig.cwRoleId}>-Mitlgieder koennen sich zum Clanwar eintragen!\nBitte lies dir die [Checkliste](https://shorturl.at/kLNZ9)_sorgfaeltig_ durch.\nSobald du dies getan hast kannst du dich an einen CW-Mod.`,
 					ephemeral: true,
 				});
-				return
+				return;
 			}
+
 			switch (buttonInteraction.customId) {
-				case "Yes":
+				case "Yes": {
 					if (tableMap.get(buttonInteraction.user.id) === "+") {
 						await buttonInteraction.reply({
 							content: `Du bist schon dem Clanwar beigetreten!`,
@@ -191,8 +193,9 @@ module.exports = {
 						ephemeral: true,
 					});
 					break;
+				}
 
-				case "Cancel":
+				case "Cancel": {
 					if (tableMap.get(buttonInteraction.user.id) === "-") {
 						await buttonInteraction.reply({
 							content: `Du hast den Clanwar schon abgelehnt!`,
@@ -208,8 +211,9 @@ module.exports = {
 						ephemeral: true,
 					});
 					break;
+				}
 
-				case "Maybe":
+				case "Maybe": {
 					if (tableMap.get(buttonInteraction.user.id) === "~") {
 						await buttonInteraction.reply({
 							content: `Du bist bereits als moeglicher Teilnehmer eingetragen!`,
@@ -225,14 +229,16 @@ module.exports = {
 						ephemeral: true,
 					});
 					break;
+				}
 
-				default:
+				default: {
 					console.log("Something Broke");
 					await buttonInteraction.reply({
 						content: "Something Broke",
 						ephemeral: true,
 					});
 					break;
+				}
 			}
 
 			updateEmbed(message, tableMap);
