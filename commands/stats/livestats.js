@@ -46,16 +46,7 @@ module.exports = {
 		checker = false;
 		const channelid = interaction.channel.id;
 		const channel = client.channels.cache.get(channelid);
-		fs.access("idlist.txt", fs.constants.F_OK, (error) => {
-			if (error) {
-				fs.writeFile("idlist.txt", "", function (error) {
-					if (error) throw error;
-					console.log("id list created successfully!");
-				});
-			} else {
-				console.log("File exists");
-			}
-		});
+
 		if (interaction.options.getSubcommand() === "url") {
 			if (isValidUrl(url)) {
 				//damit wird überprüft ob die URL passt
@@ -118,19 +109,48 @@ module.exports = {
 		}
 
 		const response = await channel.send(respond);
-		if (checker == true) {
-			console.log(response.id);
-			fs.appendFile("idlist.txt", response.id + ", ", function (error) {
-				if (error) throw error;
-				console.log("Data appended to file!");
-			});
-		} else {
-		}
-
 		await interaction.reply({
 			content: "live statbox wurde erstellt",
 			ephemeral: true,
 		});
+		if (checker == true) {
+			fs.access("idlist.json", fs.constants.F_OK, (error) => {
+				if (error) {
+					const idlist = [];
+					idlist[0] = response.id;
+					const stringlist = JSON.stringify(idlist);
+					fs.writeFile("idlist.json", stringlist, "utf8", function (err) {
+						if (err) {
+							console.log("Error occurred while writing JSON file:", err);
+							return;
+						}
+
+						console.log("JSON file has been saved.");
+					});
+				} else {
+					console.log("File exists");
+					console.log(response.id);
+					fs.readFile("idlist.json", "utf8", function (err, jsonContent) {
+						if (err) {
+							console.log("Error occurred while reading JSON file:", err);
+							return;
+						}
+						idlist = JSON.parse(jsonContent);
+						idlist[idlist.length] = response.id;
+						const stringlist = JSON.stringify(idlist);
+						fs.writeFile("idlist.json", stringlist, "utf8", function (err) {
+							if (err) {
+								console.log("Error occurred while writing JSON file:", err);
+								return;
+							}
+
+							console.log("JSON file has been saved.");
+						});
+					});
+				}
+			});
+		} else {
+		}
 	},
 };
 
