@@ -138,12 +138,14 @@ module.exports = {
 							console.log("Error occurred while reading JSON file:", err);
 							return;
 						}
+						let idlist = [];
 						idlist = JSON.parse(jsonContent);
 						console.log(idlist.length);
+						idlength = idlist.length;
 						idlist[idlist.length] = [];
-						idlist[idlist.length][0] = response.channel.id;
-						idlist[idlist.length][1] = response.id;
-						idlist[idlist.length][2] = url;
+						idlist[idlength][0] = response.channel.id;
+						idlist[idlength][1] = response.id;
+						idlist[idlength][2] = url;
 						const stringlist = JSON.stringify(idlist);
 						fs.writeFile("idlist.json", stringlist, "utf8", function (err) {
 							if (err) {
