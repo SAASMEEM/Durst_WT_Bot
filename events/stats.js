@@ -25,7 +25,7 @@ module.exports = {
 		if (millisUntil < 0) {
 			millisUntil = millisUntil + 86400000;
 		}
-
+		console.log(millisUntil);
 		// Setzen des Intervalls, um die Funktion um 14 Uhr auszuführen
 		const intervalId = setInterval(refresh, millisUntil);
 
