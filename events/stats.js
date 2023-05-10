@@ -78,11 +78,11 @@ async function refresh() {
 						.setTimestamp();
 
 					try {
-						const message = await channel.messages.fetch(messageId); // Nachricht abrufen
+						const message = await channel.messages.fetch(messageid); // Nachricht abrufen
 						message.edit({ embeds: [newEmbed] });
 					} catch (error) {
 						// Nachrichten-ID existiert nicht
-						console.log(`Nachricht mit ID ${messageId} existiert nicht.`);
+						console.log(`Nachricht mit ID ${messageid} existiert nicht.`);
 						idlist.splice(i, 1);
 						i--;
 						idlenght--;
