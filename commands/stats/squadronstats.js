@@ -41,11 +41,11 @@ module.exports = {
 
 	async execute(client, interaction) {
 		if (interaction.options.getSubcommand() === "url") {
+			const url = interaction.options.getString("url");
 			if (isValidUrl(url)) {
 				//damit wird überprüft ob die URL passt
 				//respond = "Die Kampgruppenaktivität ist aktuell " +await getstatact(url) + "\nDie Anzahl der Mitglieder ist: " + await getstatcount(url);
 				if ((await squadcheck(url)) == true) {
-					const url = interaction.options.getString("url");
 					const title = (await getsquadname(url)) + " ";
 					console.log(title);
 					const statact = (await getstatact(url)) + " ";

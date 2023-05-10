@@ -46,13 +46,13 @@ module.exports = {
 		checker = false;
 		const channelid = interaction.channel.id;
 		const channel = client.channels.cache.get(channelid);
-
+		url = "";
 		if (interaction.options.getSubcommand() === "url") {
+			url = interaction.options.getString("url");
 			if (isValidUrl(url)) {
 				//damit wird überprüft ob die URL passt
 				//respond = "Die Kampgruppenaktivität ist aktuell " +await getstatact(url) + "\nDie Anzahl der Mitglieder ist: " + await getstatcount(url);
 				if ((await squadcheck(url)) == true) {
-					const url = interaction.options.getString("url");
 					const title = (await getsquadname(url)) + " ";
 					console.log(title);
 					const statact = (await getstatact(url)) + " ";
@@ -80,9 +80,10 @@ module.exports = {
 			}
 		} else if (interaction.options.getSubcommand() === "name") {
 			const name = interaction.options.getString("name");
-			const url =
+			url =
 				"https://warthunder.com/de/community/claninfo/" +
 				name.replace(/ /g, "%20");
+
 			if ((await squadcheck(url)) == true) {
 				console.log(url);
 				const title = (await getsquadname(url)) + " ";
@@ -116,8 +117,11 @@ module.exports = {
 		if (checker == true) {
 			fs.access("idlist.json", fs.constants.F_OK, (error) => {
 				if (error) {
-					const idlist = [];
-					idlist[0] = response.id;
+					let idlist = [];
+					idlist[0] = [];
+					idlist[0][0] = response.channel.id;
+					idlist[0][1] = response.id;
+					idlist[0][2] = url;
 					const stringlist = JSON.stringify(idlist);
 					fs.writeFile("idlist.json", stringlist, "utf8", function (err) {
 						if (err) {
@@ -129,14 +133,17 @@ module.exports = {
 					});
 				} else {
 					console.log("File exists");
-					console.log(response.id);
 					fs.readFile("idlist.json", "utf8", function (err, jsonContent) {
 						if (err) {
 							console.log("Error occurred while reading JSON file:", err);
 							return;
 						}
 						idlist = JSON.parse(jsonContent);
-						idlist[idlist.length] = response.id;
+						console.log(idlist.length);
+						idlist[idlist.length] = [];
+						idlist[idlist.length][0] = response.channel.id;
+						idlist[idlist.length][1] = response.id;
+						idlist[idlist.length][2] = url;
 						const stringlist = JSON.stringify(idlist);
 						fs.writeFile("idlist.json", stringlist, "utf8", function (err) {
 							if (err) {
