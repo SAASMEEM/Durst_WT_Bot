@@ -6,7 +6,6 @@ const fetch = require("node-fetch");
 const fs = require("node:fs");
 const axios = require("axios");
 const { EmbedBuilder } = require("discord.js");
-const { checkPerm } = require("../../import_folders/functions.js");
 
 module.exports = {
 	name: "stats",
