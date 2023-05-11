@@ -1,9 +1,9 @@
+const fs = require("node:fs");
 const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { DOMParser } = require("xmldom");
 const { JSDOM } = require("jsdom");
 const fetch = require("node-fetch");
-const fs = require("node:fs");
 const axios = require("axios");
 const { EmbedBuilder } = require("discord.js");
 const { checkPerm } = require("../../import_folders/functions.js");
@@ -117,14 +117,14 @@ module.exports = {
 		if (checker == true) {
 			fs.access("idlist.json", fs.constants.F_OK, (error) => {
 				if (error) {
-					let idlist = [];
+					const idlist = [];
 					idlist[0] = [];
 					idlist[0][0] = response;
 					idlist[0][1] = url;
 					const stringlist = JSON.stringify(idlist);
-					fs.writeFile("idlist.json", stringlist, "utf8", function (err) {
-						if (err) {
-							console.log("Error occurred while writing JSON file:", err);
+					fs.writeFile("idlist.json", stringlist, "utf8", function (error_) {
+						if (error_) {
+							console.log("Error occurred while writing JSON file:", error_);
 							return;
 						}
 
@@ -132,11 +132,12 @@ module.exports = {
 					});
 				} else {
 					console.log("File exists");
-					fs.readFile("idlist.json", "utf8", function (err, jsonContent) {
-						if (err) {
-							console.log("Error occurred while reading JSON file:", err);
+					fs.readFile("idlist.json", "utf8", function (error_, jsonContent) {
+						if (error_) {
+							console.log("Error occurred while reading JSON file:", error_);
 							return;
 						}
+
 						let idlist = [];
 						idlist = JSON.parse(jsonContent);
 						console.log(idlist.length);
@@ -145,9 +146,9 @@ module.exports = {
 						idlist[idlength][0] = response;
 						idlist[idlength][1] = url;
 						const stringlist = JSON.stringify(idlist);
-						fs.writeFile("idlist.json", stringlist, "utf8", function (err) {
-							if (err) {
-								console.log("Error occurred while writing JSON file:", err);
+						fs.writeFile("idlist.json", stringlist, "utf8", function (error_) {
+							if (error_) {
+								console.log("Error occurred while writing JSON file:", error_);
 								return;
 							}
 

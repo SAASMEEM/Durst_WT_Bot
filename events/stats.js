@@ -1,8 +1,8 @@
+const fs = require("node:fs");
 const Discord = require("discord.js");
 const { DOMParser } = require("xmldom");
 const { JSDOM } = require("jsdom");
 const fetch = require("node-fetch");
-const fs = require("node:fs");
 const axios = require("axios");
 const { EmbedBuilder } = require("discord.js");
 
@@ -23,8 +23,9 @@ function statupdate(client) {
 			0 // 0 Millisekunden
 		) - now;
 	if (millisUntil < 0) {
-		millisUntil = millisUntil + 86400000;
+		millisUntil += 86_400_000;
 	}
+
 	console.log(millisUntil);
 	// Setzen des Intervalls, um die Funktion um die Uhrzeit auszuführen
 	const intervalId = setInterval(() => {
@@ -42,13 +43,13 @@ async function refresh(client) {
 	fs.access("idlist.json", fs.constants.F_OK, (error) => {
 		if (error) {
 			console.log("Error occurred while reading JSON file:", err);
-			return;
 		} else {
-			fs.readFile("idlist.json", "utf8", async function (err, jsonContent) {
-				if (err) {
-					console.log("Error occurred while reading JSON file:", err);
+			fs.readFile("idlist.json", "utf8", async function (error_, jsonContent) {
+				if (error_) {
+					console.log("Error occurred while reading JSON file:", error_);
 					return;
 				}
+
 				let idlist = [];
 				idlist = JSON.parse(jsonContent);
 				console.log(idlist.length);
@@ -80,18 +81,19 @@ async function refresh(client) {
 
 					try {
 						message.edit({ embeds: [newEmbed] });
-					} catch (error) {
+					} catch {
 						// Nachrichten-ID existiert nicht
 						console.log(`Nachricht existiert nicht.`);
 						idlist.splice(i, 1);
 						i--;
 						idlength--;
 						stringlist = JSON.stringify(idlist);
-						fs.writeFile("idlist.json", stringlist, "utf8", function (err) {
-							if (err) {
-								console.log("Error occurred while updating JSON file:", err);
+						fs.writeFile("idlist.json", stringlist, "utf8", function (error_) {
+							if (error_) {
+								console.log("Error occurred while updating JSON file:", error_);
 								return;
 							}
+
 							console.log("JSON file has been updatet.");
 						});
 					}
