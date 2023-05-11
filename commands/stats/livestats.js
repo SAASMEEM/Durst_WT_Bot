@@ -137,7 +137,6 @@ module.exports = {
 							console.log("Error occurred while reading JSON file:", error_);
 							return;
 						}
-
 						let idlist = [];
 						idlist = JSON.parse(jsonContent);
 						console.log(idlist.length);

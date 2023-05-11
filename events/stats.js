@@ -10,15 +10,14 @@ module.exports = { statupdate };
 
 function statupdate(client) {
 	// Berechnen der Zeit, bis die Funktion ausgeführt werden soll
-	console.log(client);
 	const now = new Date();
 	millisUntil =
 		new Date(
 			now.getFullYear(),
 			now.getMonth(),
 			now.getDate(),
-			11, // 3 Uhr
-			55, // 0 Minuten
+			14, // 4 Uhr
+			1, // 0 Minuten
 			0, // 0 Sekunden
 			0 // 0 Millisekunden
 		) - now;
@@ -58,12 +57,8 @@ async function refresh(client) {
 				//idlist[idlength][1] = url;
 
 				for (i = 0; i < idlength; i++) {
-					console.log(client);
 					messageobject = idlist[i][0];
 					url = idlist[i][1];
-					const message = await client.channels.cache
-						.get(await messageobject.channelId)
-						.messages.fetch(await messageobject.id);
 					// Neue Embed erstellen
 					const title = (await getsquadname(url)) + " ";
 					const statact = (await getstatact(url)) + " ";
@@ -80,7 +75,9 @@ async function refresh(client) {
 						.setTimestamp();
 
 					try {
-						message.edit({ embeds: [newEmbed] });
+						const message = await client.channels.cache
+							.get(await messageobject.channelId)
+							.messages.fetch(await messageobject.id);
 					} catch {
 						// Nachrichten-ID existiert nicht
 						console.log(`Nachricht existiert nicht.`);
@@ -95,8 +92,16 @@ async function refresh(client) {
 							}
 
 							console.log("JSON file has been updatet.");
+							if ((idlist = [])) {
+								fs.unlink("idlist.json", (err) => {
+									if (err) throw err;
+									console.log("Die idlist war leer wurde gelöscht!");
+								});
+							}
 						});
+						return;
 					}
+					message.edit({ embeds: [newEmbed] });
 				}
 			});
 		}
