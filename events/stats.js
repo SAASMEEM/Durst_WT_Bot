@@ -8,16 +8,17 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports = { statupdate };
 
-function statupdate() {
+function statupdate(client) {
 	// Berechnen der Zeit, bis die Funktion ausgeführt werden soll
+	console.log(client);
 	const now = new Date();
-	const millisUntil =
+	millisUntil =
 		new Date(
 			now.getFullYear(),
 			now.getMonth(),
 			now.getDate(),
-			3, // 3 Uhr
-			0, // 0 Minuten
+			11, // 3 Uhr
+			55, // 0 Minuten
 			0, // 0 Sekunden
 			0 // 0 Millisekunden
 		) - now;
@@ -25,8 +26,11 @@ function statupdate() {
 		millisUntil = millisUntil + 86400000;
 	}
 	console.log(millisUntil);
-	// Setzen des Intervalls, um die Funktion um 14 Uhr auszuführen
-	const intervalId = setInterval(refresh, millisUntil);
+	// Setzen des Intervalls, um die Funktion um die Uhrzeit auszuführen
+	const intervalId = setInterval(() => {
+		refresh(client);
+		statupdate(client);
+	}, millisUntil);
 
 	// Stoppen des Intervalls, nachdem die Funktion ausgeführt wurde
 	setTimeout(() => {
@@ -34,7 +38,7 @@ function statupdate() {
 	}, millisUntil);
 }
 
-async function refresh() {
+async function refresh(client) {
 	fs.access("idlist.json", fs.constants.F_OK, (error) => {
 		if (error) {
 			console.log("Error occurred while reading JSON file:", err);
@@ -49,16 +53,16 @@ async function refresh() {
 				idlist = JSON.parse(jsonContent);
 				console.log(idlist.length);
 				idlength = idlist.length;
-				//idlist[idlength][0] = response.channel.id;
-				//idlist[idlength][1] = response.id;
-				//idlist[idlength][2] = url;
+				//idlist[idlength][0] = message;
+				//idlist[idlength][1] = url;
 
 				for (i = 0; i < idlength; i++) {
-					idlist[i][0] = channelid;
-					idlist[i][1] = messageid;
-					idlist[i][2] = url;
-					const channel = client.channels.cache.get(channelid);
-
+					console.log(client);
+					messageobject = idlist[i][0];
+					url = idlist[i][1];
+					const message = await client.channels.cache
+						.get(await messageobject.channelId)
+						.messages.fetch(await messageobject.id);
 					// Neue Embed erstellen
 					const title = (await getsquadname(url)) + " ";
 					const statact = (await getstatact(url)) + " ";
@@ -75,15 +79,15 @@ async function refresh() {
 						.setTimestamp();
 
 					try {
-						const message = await channel.messages.fetch(messageid); // Nachricht abrufen
 						message.edit({ embeds: [newEmbed] });
 					} catch (error) {
 						// Nachrichten-ID existiert nicht
-						console.log(`Nachricht mit ID ${messageid} existiert nicht.`);
+						console.log(`Nachricht existiert nicht.`);
 						idlist.splice(i, 1);
 						i--;
-						idlenght--;
-						fs.writeFile("idlist.json", idlist, "utf8", function (err) {
+						idlength--;
+						stringlist = JSON.stringify(idlist);
+						fs.writeFile("idlist.json", stringlist, "utf8", function (err) {
 							if (err) {
 								console.log("Error occurred while updating JSON file:", err);
 								return;

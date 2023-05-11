@@ -1,17 +1,62 @@
 [
 	[
-		"1097525625121677357",
-		"1105882002915332199",
-		"https://warthunder.com/de/community/claninfo/Perlenbachercrew"
-	],
-	[
-		"1097525625121677357",
-		"1105935768490356848",
-		"https://warthunder.com/de/community/claninfo/Perlenbachercrew"
-	],
-	[
-		"1097525625121677357",
-		"1105935948128190535",
+		{
+			"channelId": "1097525625121677357",
+			"guildId": "1097525624085692587",
+			"id": "1106143322675871764",
+			"position": null,
+			"createdTimestamp": 1683795519275,
+			"type": "DEFAULT",
+			"system": false,
+			"content": "",
+			"authorId": "1097524344713920626",
+			"pinned": false,
+			"tts": false,
+			"nonce": null,
+			"embeds": [
+				{
+					"title": "[╊Durst╋] Perlenbachercrew",
+					"type": "rich",
+					"description": null,
+					"url": "https://warthunder.com/de/community/claninfo/Perlenbachercrew",
+					"timestamp": "2023-05-11T08:58:42.322Z",
+					"color": 39423,
+					"fields": [
+						{
+							"name": "Kampfgruppenaktivität",
+							"value": "241033",
+							"inline": true
+						},
+						{ "name": "Spielerzahl", "value": "117", "inline": true }
+					],
+					"thumbnail": null,
+					"image": null,
+					"author": null,
+					"footer": null
+				}
+			],
+			"components": [],
+			"attachments": [],
+			"stickers": [],
+			"editedTimestamp": null,
+			"mentions": {
+				"everyone": false,
+				"users": [],
+				"roles": [],
+				"crosspostedChannels": [],
+				"repliedUser": null,
+				"members": [],
+				"channels": []
+			},
+			"webhookId": null,
+			"groupActivityApplicationId": null,
+			"applicationId": null,
+			"activity": null,
+			"flags": 0,
+			"reference": null,
+			"interaction": null,
+			"cleanContent": ""
+		},
 		"https://warthunder.com/de/community/claninfo/Perlenbachercrew"
 	]
 ]

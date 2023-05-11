@@ -119,9 +119,8 @@ module.exports = {
 				if (error) {
 					let idlist = [];
 					idlist[0] = [];
-					idlist[0][0] = response.channel.id;
-					idlist[0][1] = response.id;
-					idlist[0][2] = url;
+					idlist[0][0] = response;
+					idlist[0][1] = url;
 					const stringlist = JSON.stringify(idlist);
 					fs.writeFile("idlist.json", stringlist, "utf8", function (err) {
 						if (err) {
@@ -143,9 +142,8 @@ module.exports = {
 						console.log(idlist.length);
 						idlength = idlist.length;
 						idlist[idlist.length] = [];
-						idlist[idlength][0] = response.channel.id;
-						idlist[idlength][1] = response.id;
-						idlist[idlength][2] = url;
+						idlist[idlength][0] = response;
+						idlist[idlength][1] = url;
 						const stringlist = JSON.stringify(idlist);
 						fs.writeFile("idlist.json", stringlist, "utf8", function (err) {
 							if (err) {
