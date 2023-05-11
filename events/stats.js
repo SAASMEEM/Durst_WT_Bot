@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { SlashCommandBuilder } = require("@discordjs/builders");
 const { DOMParser } = require("xmldom");
 const { JSDOM } = require("jsdom");
 const fetch = require("node-fetch");
@@ -7,34 +6,31 @@ const fs = require("node:fs");
 const axios = require("axios");
 const { EmbedBuilder } = require("discord.js");
 
-module.exports = {
-	name: "stats",
-	execute(client) {
-		// Berechnen der Zeit, bis die Funktion ausgeführt werden soll
-		const now = new Date();
-		const millisUntil =
-			new Date(
-				now.getFullYear(),
-				now.getMonth(),
-				now.getDate(),
-				3, // 3 Uhr
-				0, // 0 Minuten
-				0, // 0 Sekunden
-				0 // 0 Millisekunden
-			) - now;
-		if (millisUntil < 0) {
-			millisUntil = millisUntil + 86400000;
-		}
-		console.log(millisUntil);
-		// Setzen des Intervalls, um die Funktion um 14 Uhr auszuführen
-		const intervalId = setInterval(refresh, millisUntil);
+function statupdate() {
+	// Berechnen der Zeit, bis die Funktion ausgeführt werden soll
+	const now = new Date();
+	const millisUntil =
+		new Date(
+			now.getFullYear(),
+			now.getMonth(),
+			now.getDate(),
+			3, // 3 Uhr
+			0, // 0 Minuten
+			0, // 0 Sekunden
+			0 // 0 Millisekunden
+		) - now;
+	if (millisUntil < 0) {
+		millisUntil = millisUntil + 86400000;
+	}
+	console.log(millisUntil);
+	// Setzen des Intervalls, um die Funktion um 14 Uhr auszuführen
+	const intervalId = setInterval(refresh, millisUntil);
 
-		// Stoppen des Intervalls, nachdem die Funktion ausgeführt wurde
-		setTimeout(() => {
-			clearInterval(intervalId);
-		}, millisUntil);
-	},
-};
+	// Stoppen des Intervalls, nachdem die Funktion ausgeführt wurde
+	setTimeout(() => {
+		clearInterval(intervalId);
+	}, millisUntil);
+}
 
 async function refresh() {
 	fs.access("idlist.json", fs.constants.F_OK, (error) => {
