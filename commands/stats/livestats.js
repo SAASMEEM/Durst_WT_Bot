@@ -47,6 +47,7 @@ module.exports = {
 		const channelid = interaction.channel.id;
 		const channel = client.channels.cache.get(channelid);
 		url = "";
+		interaction.reply("Livestatbox wird erstellt");
 		if (interaction.options.getSubcommand() === "url") {
 			url = interaction.options.getString("url");
 			if (isValidUrl(url)) {
@@ -110,10 +111,6 @@ module.exports = {
 		}
 
 		const response = await channel.send(respond);
-		await interaction.reply({
-			content: "live statbox wurde erstellt",
-			ephemeral: true,
-		});
 		if (checker == true) {
 			fs.access("idlist.json", fs.constants.F_OK, (error) => {
 				if (error) {

@@ -17,7 +17,7 @@ function statupdate(client) {
 			now.getMonth(),
 			now.getDate(),
 			14, // 4 Uhr
-			1, // 0 Minuten
+			35, // 0 Minuten
 			0, // 0 Sekunden
 			0 // 0 Millisekunden
 		) - now;
@@ -78,6 +78,8 @@ async function refresh(client) {
 						const message = await client.channels.cache
 							.get(await messageobject.channelId)
 							.messages.fetch(await messageobject.id);
+
+						await message.edit({ embeds: [newEmbed] });
 					} catch {
 						// Nachrichten-ID existiert nicht
 						console.log(`Nachricht existiert nicht.`);
@@ -92,16 +94,15 @@ async function refresh(client) {
 							}
 
 							console.log("JSON file has been updatet.");
-							if ((idlist = [])) {
+
+							if (stringlist == "[]") {
 								fs.unlink("idlist.json", (err) => {
 									if (err) throw err;
-									console.log("Die idlist war leer wurde gelöscht!");
+									console.log("Die idlist ist leer und wurde gelöscht!");
 								});
 							}
 						});
-						return;
 					}
-					message.edit({ embeds: [newEmbed] });
 				}
 			});
 		}
