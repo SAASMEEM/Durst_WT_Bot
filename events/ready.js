@@ -21,6 +21,6 @@ module.exports = {
 			});
 		}, 1000 * 60);
 
-		statupdate();
+		statupdate(client);
 	},
 };
