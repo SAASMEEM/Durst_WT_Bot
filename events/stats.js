@@ -6,6 +6,8 @@ const fs = require("node:fs");
 const axios = require("axios");
 const { EmbedBuilder } = require("discord.js");
 
+module.exports = { statupdate };
+
 function statupdate() {
 	// Berechnen der Zeit, bis die Funktion ausgeführt werden soll
 	const now = new Date();
