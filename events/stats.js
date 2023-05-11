@@ -11,7 +11,7 @@ module.exports = { statupdate };
 function statupdate() {
 	// Berechnen der Zeit, bis die Funktion ausgeführt werden soll
 	const now = new Date();
-	const millisUntil =
+	var millisUntil =
 		new Date(
 			now.getFullYear(),
 			now.getMonth(),
