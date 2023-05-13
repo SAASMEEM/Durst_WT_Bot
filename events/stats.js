@@ -96,8 +96,8 @@ async function refresh(client) {
 							console.log("JSON file has been updatet.");
 
 							if (stringlist == "[]") {
-								fs.unlink("idlist.json", (err) => {
-									if (err) throw err;
+								fs.unlink("idlist.json", (error__) => {
+									if (error__) throw error__;
 									console.log("Die idlist ist leer und wurde gelöscht!");
 								});
 							}
