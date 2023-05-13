@@ -44,7 +44,10 @@ module.exports = {
 		const channelid = interaction.channel.id;
 		const channel = client.channels.cache.get(channelid);
 		let url = "";
-		interaction.reply("Livestatbox wird erstellt");
+		interaction.reply({
+			content: `Livestatbox wird erstellt<a:sesam_loading:847835764650016830>`,
+			ephemeral: true,
+		});
 		let respond = "";
 		if (interaction.options.getSubcommand() === "url") {
 			url = interaction.options.getString("url");
