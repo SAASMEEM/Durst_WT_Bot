@@ -34,6 +34,7 @@ module.exports = {
 		),
 
 	async execute(client, interaction) {
+		let respond = "";
 		if (interaction.options.getSubcommand() === "url") {
 			const url = interaction.options.getString("url");
 			if (isValidUrl(url)) {
