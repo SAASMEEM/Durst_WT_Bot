@@ -34,6 +34,7 @@ module.exports = {
 		),
 
 	async execute(client, interaction) {
+		await interaction.deferReply()
 		let respond = "";
 		if (interaction.options.getSubcommand() === "url") {
 			const url = interaction.options.getString("url");
@@ -93,8 +94,7 @@ module.exports = {
 				respond = "Die Kampfgruppe existiert nicht!";
 			}
 		}
-
-		await interaction.reply(respond);
+		await interaction.followUp(respond);
 	},
 };
 
