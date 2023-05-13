@@ -4,6 +4,7 @@
 # Bot config
 /config.json
 /.env
+idlist.json
 
 # Editor config
 /.vscode

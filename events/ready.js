@@ -1,4 +1,5 @@
 const shellTitle = require("node-bash-title");
+const { statupdate } = require("./stats");
 
 module.exports = {
 	name: "ready",
@@ -19,5 +20,7 @@ module.exports = {
 				status: "idle",
 			});
 		}, 1000 * 60);
+
+		statupdate(client);
 	},
 };
