@@ -14,8 +14,8 @@ Durstpanzer II is a discord-bot for the German WarThunder squadron 🍻Durst🍻
 
 The bot is based on discord.js and runs on version 13.
 > **Warning:**
-> The bot won't work if you use other discord.js versions than 13.
-> If you still want to use other versions, you need to migrate your code!
+> The bot won't work if you use other major discord.js versions than 13.
+> If you still want to use other major versions, you need to migrate your code!
 
 Durstpanzer II is build to help the squadron leaders to organize the squadron.
 
@@ -25,12 +25,14 @@ We are a German WarThunder squadron for people of all ages. We are _not_ a tryha
 
 If you want to join us feel free to meet us on the [discord server](https://discord.gg/KbbXnCKaTY).
 
-## Config
+## How to setup the bot
+
+### Config
 
 Place your secrets into `.env` like this:
 
 ```env
-token=<your-token-goes-here>
+token=your-token-goes-here
 
 ```
 
@@ -43,50 +45,44 @@ Place your options into `config.json` like this:
 
 ```json
 {
-    "botId": "<Your-bot's-id-goes-here>",
-    "guildId": "<Your-server's-id-goes-here>",
-    "adminId": "<Your-own-id-goes-here>",
-    "uffzRoleId": "<The-leader's-role-id-goes-here>",
-    "cwRoleId": "<The-member-role-id-goes-here>",
-    "mannschafter1RoleId": "<The-first-member-role-id-goes-here>",
-    "mannschafter2RoleId": "<The-second-member-role-id-goes-here>",
-    "mannschafter3RoleId": "<The-third-member-role-id-goes-here>",
-    "uffzChannelId": "<The-leader's-channel-id-goes-here>",
-    "cwChannelId": "<Your-channel-id-goes-here>",
-    "defaultTime": "<Your-default-clanwar-starttime-goes-here>"
+    "botId": "Your-bot's-id-goes-here",
+    "guildId": "Your-server's-id-goes-here",
+    "adminId": "Your-own-id-goes-here",
+    "uffzRoleId": "The-leader's-role-id-goes-here",
+    "cwRoleId": "The-member-role-id-goes-here",
+    "mannschafter1RoleId": "The-first-member-role-id-goes-here",
+    "mannschafter2RoleId": "The-second-member-role-id-goes-here",
+    "mannschafter3RoleId": "The-third-member-role-id-goes-here",
+    "uffzChannelId": "The-leader's-channel-id-goes-here",
+    "cwChannelId": "Your-channel-id-goes-here",
+    "defaultTime": "Your-default-clanwar-starttime-goes-here"
 }
 
 ```
 
-Then run `node deploy-commands.js` to deploy slash-commands to your server.
+### Start the bot
 
-Afterwards run `node index.js` to start the bot.
+First run `npm ci` to install the dependencies.
 
-## Usage
+Then run `npm run deploy` to deploy slash-commands to your server.
 
-There are 3 permission levels:
+Afterwards run `npm run start` to start the bot.
 
-- 🍺Mannschafter
-- 🍻Offizier
-- 🔧Developer
+## Commands
 
-### 🍺Mannschafter
+### Squadron Management
 
-#### Utility
+- **squadron:** Manage Roles for Users trough this command
 
-- **avatar:** shows the profile picture of yourself or a selected user
-- **info:** shows information about the bot
-
-### 🍻Offizier
-
-Offizier can use all the commands above and:
+### Clanwar
 
 - **clanwar:** you can call a squadron-battle, which posts a chart to entry yourself. On the entered time the bot notifies all possible participants
 
-### 🔧Developer only Commands
+### Utility
 
-`There are currently no commands`
-
+- **avatar:** shows the profile picture of yourself or a selected user
+- **info:** shows information about the bot
+  
 ## Additional Information
 
 Special thanks to
