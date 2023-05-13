@@ -16,8 +16,8 @@ function statupdate(client) {
 			now.getFullYear(),
 			now.getMonth(),
 			now.getDate(),
-			14, // 4 Uhr
-			35, // 0 Minuten
+			4, // 4 Uhr
+			0, // 0 Minuten
 			0, // 0 Sekunden
 			0 // 0 Millisekunden
 		) - now;
