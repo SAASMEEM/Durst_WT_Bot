@@ -1,14 +1,15 @@
 const shellTitle = require("node-bash-title");
+const { statupdate } = require("./stats");
 
 module.exports = {
 	name: "ready",
 	execute(client) {
 		shellTitle("Durst-WarThunder");
 		console.clear();
-		console.log(`Ready! Logged in as `,client.user.tag,`\n`,new Date());
+		console.log(`Ready! Logged in as`, client.user.tag, `\n`, new Date());
 
 		//set BotStatus every 24h to prevent it from loosing it
-		setInterval( () => {
+		setInterval(() => {
 			client.user.setPresence({
 				activities: [
 					{
@@ -18,6 +19,8 @@ module.exports = {
 				],
 				status: "idle",
 			});
-		}, 1000*60)
+		}, 1000 * 60);
+
+		statupdate(client);
 	},
 };
