@@ -1,7 +1,7 @@
+import fs from "node:fs";
 import { MessageEmbed } from "discord.js";
 import fetch from "node-fetch";
 import JSDOM from "jsdom";
-import fs from "node:fs";
 
 export function statupdate(client) {
 	// Berechnen der Zeit, bis die Funktion ausgeführt werden soll
