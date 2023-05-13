@@ -1,5 +1,5 @@
 import shellTitle from "node-bash-title";
-import { statupdate } from "./stats.js"
+import { statupdate } from "./stats.js";
 
 export const name = "ready";
 export function execute(client) {
@@ -19,5 +19,5 @@ export function execute(client) {
 			status: "idle",
 		});
 	}, 1000 * 60);
-  statupdate(client);
+	statupdate(client);
 }
