@@ -1,17 +1,14 @@
 const fs = require("node:fs");
 const Discord = require("discord.js");
-const { DOMParser } = require("xmldom");
 const { JSDOM } = require("jsdom");
 const fetch = require("node-fetch");
-const axios = require("axios");
-const { EmbedBuilder } = require("discord.js");
 
 module.exports = { statupdate };
 
 function statupdate(client) {
 	// Berechnen der Zeit, bis die Funktion ausgeführt werden soll
 	const now = new Date();
-	millisUntil =
+	let millisUntil =
 		new Date(
 			now.getFullYear(),
 			now.getMonth(),
@@ -41,7 +38,8 @@ function statupdate(client) {
 async function refresh(client) {
 	fs.access("idlist.json", fs.constants.F_OK, (error) => {
 		if (error) {
-			console.log("Error occurred while reading JSON file:", err);
+			let error_;
+			console.log("Error occurred while reading JSON file:", error_);
 		} else {
 			fs.readFile("idlist.json", "utf8", async function (error_, jsonContent) {
 				if (error_) {
@@ -52,17 +50,17 @@ async function refresh(client) {
 				let idlist = [];
 				idlist = JSON.parse(jsonContent);
 				console.log(idlist.length);
-				idlength = idlist.length;
+				let idlength = idlist.length;
 				//idlist[idlength][0] = message;
 				//idlist[idlength][1] = url;
 
-				for (i = 0; i < idlength; i++) {
-					messageobject = idlist[i][0];
-					url = idlist[i][1];
+				for (let i = 0; i < idlength; i++) {
+					const messageobject = idlist[i][0];
+					const url = idlist[i][1];
 					// Neue Embed erstellen
-					const title = (await getsquadname(url)) + " ";
-					const statact = (await getstatact(url)) + " ";
-					const statcount = (await getstatcount(url)) + " ";
+					const title = getsquadname(url) + " ";
+					const statact = getstatact(url) + " ";
+					const statcount = getstatcount(url) + " ";
 
 					const newEmbed = new Discord.MessageEmbed()
 						.setColor("0x0099FF")
@@ -75,18 +73,18 @@ async function refresh(client) {
 						.setTimestamp();
 
 					try {
-						const message = await client.channels.cache
-							.get(await messageobject.channelId)
-							.messages.fetch(await messageobject.id);
+						const message = client.channels.cache
+							.get(messageobject.channelId)
+							.messages.fetch(messageobject.id);
 
-						await message.edit({ embeds: [newEmbed] });
+						message.edit({ embeds: [newEmbed] });
 					} catch {
 						// Nachrichten-ID existiert nicht
 						console.log(`Nachricht existiert nicht.`);
 						idlist.splice(i, 1);
 						i--;
 						idlength--;
-						stringlist = JSON.stringify(idlist);
+						const stringlist = JSON.stringify(idlist);
 						fs.writeFile("idlist.json", stringlist, "utf8", function (error_) {
 							if (error_) {
 								console.log("Error occurred while updating JSON file:", error_);
@@ -95,7 +93,7 @@ async function refresh(client) {
 
 							console.log("JSON file has been updatet.");
 
-							if (stringlist == "[]") {
+							if (stringlist === "[]") {
 								fs.unlink("idlist.json", (error__) => {
 									if (error__) throw error__;
 									console.log("Die idlist ist leer und wurde gelöscht!");
@@ -126,7 +124,7 @@ async function getstatact(url) {
 	const element = dom.window.document.querySelector(
 		"#bodyRoot > div.content > div:nth-child(2) > div:nth-child(3) > div > section > div.squadrons-profile__header-wrapper > div.squadrons-profile__header-aside.squadrons-counter.js-change-tabs > div.squadrons-counter__count-wrapper > div:nth-child(2) > div.squadrons-counter__value"
 	); //hier wird das Element ausgelesen
-	const iact = Number.parseInt(element.textContent.trim()); //hier wird der Text Content des Elements ausgelesen und mit trim alle Leerzeichen entfernt und danach in ein Intwert umgewandelt
+	const iact = Number.parseInt(element.textContent.trim(), 10); //hier wird der Text Content des Elements ausgelesen und mit trim alle Leerzeichen entfernt und danach in ein Intwert umgewandelt
 	return iact;
 }
 
@@ -142,7 +140,7 @@ async function getstatcount(url) {
 		temporary = temporary.replace(/[A-z]/g, ""); // ersetzen der Buchstaben durch nichts aka. Buchstaben entfernen
 		temporary = temporary.replace(/ /g, ""); //Leerzeichen entfernen
 		temporary = temporary.replace(/:/g, ""); //Doppelpunkt entfernen
-		const icount1 = Number.parseInt(temporary); //den Rest des String in einen Intwert übersetzen
+		const icount1 = Number.parseInt(temporary, 10); //den Rest des String in einen Intwert übersetzen
 		return icount1;
 	} catch (error) {
 		console.error("Error:", error);
