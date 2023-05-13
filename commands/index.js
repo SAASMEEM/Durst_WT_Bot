@@ -1,6 +1,8 @@
 import * as squadron from "./management/squadron.js";
+import * as livestats from "./stats/livestats.js";
+import * as squadronstats from "./stats/squadronstats.js";
 import * as clanwar from "./tracker/clanwar.js";
 import * as avatar from "./utility/avatar.js";
 import * as info from "./utility/info.js";
 
-export const commands = [squadron, clanwar, avatar, info];
+export const commands = [squadron, livestats, squadronstats, clanwar, avatar, info];
