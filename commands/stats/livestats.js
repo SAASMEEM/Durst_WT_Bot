@@ -155,7 +155,7 @@ export async function execute(client, interaction) {
 			}
 		});
 	}
-};
+}
 
 function isValidUrl(url) {
 	//überprüft ob die URl passt
