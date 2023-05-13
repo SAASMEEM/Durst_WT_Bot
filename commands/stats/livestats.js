@@ -45,6 +45,7 @@ module.exports = {
 		const channel = client.channels.cache.get(channelid);
 		let url = "";
 		interaction.reply("Livestatbox wird erstellt");
+		let respond = "";
 		if (interaction.options.getSubcommand() === "url") {
 			url = interaction.options.getString("url");
 			if (isValidUrl(url)) {
