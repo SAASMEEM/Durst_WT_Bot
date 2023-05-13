@@ -1,9 +1,7 @@
 const Discord = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const fetch = require("node-fetch");
-const jsdom = require("jsdom");
-
-const { JSDOM } = jsdom;
+const { JSDOM } = require("jsdom");
 
 module.exports = {
 	data: new SlashCommandBuilder()
