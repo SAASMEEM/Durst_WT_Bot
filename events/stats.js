@@ -58,9 +58,9 @@ async function refresh(client) {
 					const messageobject = idlist[i][0];
 					const url = idlist[i][1];
 					// Neue Embed erstellen
-					const title = getsquadname(url) + " ";
-					const statact = getstatact(url) + " ";
-					const statcount = getstatcount(url) + " ";
+					const title = (await getsquadname(url)) + " ";
+					const statact = (await getstatact(url)) + " ";
+					const statcount = (await getstatcount(url)) + " ";
 
 					const newEmbed = new Discord.MessageEmbed()
 						.setColor("0x0099FF")
@@ -73,11 +73,11 @@ async function refresh(client) {
 						.setTimestamp();
 
 					try {
-						const message = client.channels.cache
-							.get(messageobject.channelId)
-							.messages.fetch(messageobject.id);
+						const message = await client.channels.cache
+							.get(await messageobject.channelId)
+							.messages.fetch(await messageobject.id);
 
-						message.edit({ embeds: [newEmbed] });
+						await message.edit({ embeds: [newEmbed] });
 					} catch {
 						// Nachrichten-ID existiert nicht
 						console.log(`Nachricht existiert nicht.`);
