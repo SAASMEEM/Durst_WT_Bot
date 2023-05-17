@@ -43,7 +43,8 @@
 			"capitalized-comments": "off",
 			"spaced-comment": "off",
 			"import/no-unassigned-import": "off",
-			"unicorn/prefer-top-level-await": "off"
+			"unicorn/prefer-top-level-await": "off",
+			"no-await-in-loop": "off"
 		}
 	},
 	"lint-staged": {
