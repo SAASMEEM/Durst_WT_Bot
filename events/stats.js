@@ -68,7 +68,7 @@ async function refresh(client) {
 						.setURL(url)
 						.addFields(
 							{ name: "Kampfgruppenaktivität", value: statact, inline: true },
-							{ name: "Spielerzahl", value: statcount, inline: true }
+							{ name: "Spielerzahl", value: `${statcount}/128`, inline: true }
 						)
 						.setTimestamp();
 
