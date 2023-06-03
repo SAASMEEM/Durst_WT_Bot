@@ -1,7 +1,6 @@
 {
 	"name": "durst_wt",
 	"version": "1.0.0",
-	"type": "module",
 	"scripts": {
 		"prepare": "husky install",
 		"format": "prettier -w . && xo --fix .",
@@ -40,8 +39,7 @@
 		],
 		"prettier": true,
 		"rules": {
-			"node/file-extension-in-import": "off",
-			"n/file-extension-in-import": "off",
+			"unicorn/prefer-module": "off",
 			"capitalized-comments": "off",
 			"spaced-comment": "off",
 			"import/no-unassigned-import": "off",
