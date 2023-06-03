@@ -55,11 +55,11 @@ module.exports = {
 				//damit wird überprüft ob die URL passt
 				//respond = "Die Kampgruppenaktivität ist aktuell " +await getstatact(url) + "\nDie Anzahl der Mitglieder ist: " + await getstatcount(url);
 				if ((await squadcheck(url)) === true) {
-					const title = (await getsquadname(url)) + " ";
+					const title = (await getsquadname(url)).toString();
 					console.log(title);
-					const statact = (await getstatact(url)) + " ";
+					const statact = (await getstatact(url)).toString();
 					console.log(statact);
-					const statcount = (await getstatcount(url)) + " ";
+					const statcount = (await getstatcount(url)).toString();
 					console.log(statcount);
 
 					const squadstatembed = new Discord.MessageEmbed()
@@ -88,11 +88,11 @@ module.exports = {
 
 			if ((await squadcheck(url)) === true) {
 				console.log(url);
-				const title = (await getsquadname(url)) + " ";
+				const title = (await getsquadname(url)).toString();
 				console.log(title);
-				const statact = (await getstatact(url)) + " ";
+				const statact = (await getstatact(url)).toString();
 				console.log(statact);
-				const statcount = (await getstatcount(url)) + " ";
+				const statcount = (await getstatcount(url)).toString();
 				console.log(statcount);
 
 				const squadstatembed = new Discord.MessageEmbed()
@@ -101,8 +101,8 @@ module.exports = {
 					.setURL(url)
 					.addFields(
 						{ name: "Kampfgruppenaktivität", value: statact, inline: true },
-						{ name: "Spielerzahl", value: statcount, inline: true }
-					)
+						{ name: "Spielerzahl", value: `${statcount}/128`, inline: true }
+						)
 					.setTimestamp();
 				respond = { embeds: [squadstatembed] };
 				checker = true;
