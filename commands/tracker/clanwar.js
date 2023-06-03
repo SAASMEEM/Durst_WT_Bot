@@ -141,7 +141,7 @@ module.exports = {
 		// post message and embed with buttons
 		await interaction.deferReply();
 		await interaction.followUp({
-			content: `CW um ${starttime}:00 Uhr! Tragt euch ein!`,
+			content: `<@&${botconfig.mannschafter1RoleId}> CW um ${starttime}:00 Uhr! Tragt euch ein!`,
 		});
 		const message = await interaction.channel.send({
 			embeds: [tableEmbed],
