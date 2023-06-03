@@ -1,4 +1,4 @@
-export function getMentionedMember(mention, message) {
+function getMentionedMember(mention, message) {
 	if (!mention) return;
 	if (mention.startsWith("<@") && mention.endsWith(">")) {
 		mention = mention.slice(2, -1);
@@ -10,7 +10,7 @@ export function getMentionedMember(mention, message) {
 	return message.guild.members.cache.get(mention);
 }
 
-export function getMentionedUser(mention, client) {
+function getMentionedUser(mention, client) {
 	if (!mention) return;
 	if (mention.startsWith("<@") && mention.endsWith(">")) {
 		mention = mention.slice(2, -1);
@@ -22,7 +22,7 @@ export function getMentionedUser(mention, client) {
 	return client.users.cache.get(mention);
 }
 
-export async function checkPerms(interaction, userId, roleId, channelId) {
+async function checkPerms(interaction, userId, roleId, channelId) {
 	if (userId && interaction.member.id !== userId) {
 		await interaction.reply({
 			content: `Only <@${userId}> can use this command`,
@@ -52,7 +52,7 @@ export async function checkPerms(interaction, userId, roleId, channelId) {
 	return true;
 }
 
-export async function checkPerm(interaction, perm) {
+async function checkPerm(interaction, perm) {
 	const { member } = interaction;
 	if (!member.permissions.has(perm)) {
 		await interaction.reply({
@@ -64,3 +64,10 @@ export async function checkPerm(interaction, perm) {
 
 	return true;
 }
+
+module.exports = {
+	getMentionedUser,
+	getMentionedMember,
+	checkPerms,
+	checkPerm,
+};

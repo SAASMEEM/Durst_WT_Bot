@@ -1,9 +1,11 @@
-import fs from "node:fs";
-import { MessageEmbed } from "discord.js";
-import fetch from "node-fetch";
-import JSDOM from "jsdom";
+const fs = require("node:fs");
+const Discord = require("discord.js");
+const { JSDOM } = require("jsdom");
+const fetch = require("node-fetch");
 
-export function statupdate(client) {
+module.exports = { statupdate };
+
+function statupdate(client) {
 	// Berechnen der Zeit, bis die Funktion ausgeführt werden soll
 	const now = new Date();
 	let millisUntil =
@@ -60,7 +62,7 @@ async function refresh(client) {
 					const statact = (await getstatact(url)) + " ";
 					const statcount = (await getstatcount(url)) + " ";
 
-					const newEmbed = new MessageEmbed()
+					const newEmbed = new Discord.MessageEmbed()
 						.setColor("0x0099FF")
 						.setTitle(title)
 						.setURL(url)

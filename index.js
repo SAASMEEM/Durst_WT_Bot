@@ -1,13 +1,9 @@
-import { env } from "node:process";
-
-import dotenv from "dotenv";
+require("dotenv/config");
 // Require the necessary discord.js classes
-import { Client, Intents } from "discord.js";
+const fs = require("node:fs");
+const process = require("node:process");
 
-import { commands } from "./commands/index.js";
-import { events } from "./events/index.js";
-
-dotenv.config();
+const { Client, Collection, Intents } = require("discord.js");
 
 // Create a new client instance
 const client = new Client({
@@ -17,14 +13,31 @@ const client = new Client({
 		Intents.FLAGS.GUILD_VOICE_STATES,
 	],
 });
+client.commands = new Collection();
 
-const commandMap = new Map();
+const load = (client, dir = "./commands/") => {
+	for (const dirs of fs.readdirSync(dir)) {
+		const commandFiles = fs
+			.readdirSync(`${dir}/${dirs}`)
+			.filter((files) => files.endsWith(".js"));
+		for (const file of commandFiles) {
+			const command = require(`${dir}/${dirs}/${file}`);
+			// Set a new item in the Collection
+			// With the key as the command name and the value as the exported module
+			client.commands.set(command.data.name, command);
+			command.execute = command.execute.bind(null, client);
+		}
+	}
+};
 
-for (const command of commands) {
-	commandMap.set(command.data.name, command);
-}
+load(client);
 
-for (const event of events) {
+const eventFiles = fs
+	.readdirSync("./events")
+	.filter((file) => file.endsWith(".js"));
+
+for (const file of eventFiles) {
+	const event = require(`./events/${file}`);
 	if (event.once) {
 		client.once(event.name, (...args) => event.execute(...args));
 	} else {
@@ -35,12 +48,12 @@ for (const event of events) {
 client.on("interactionCreate", async (interaction) => {
 	if (!interaction.isCommand()) return;
 
-	const command = commandMap.get(interaction.commandName);
+	const command = client.commands.get(interaction.commandName);
 
 	if (!command) return;
 
 	try {
-		await command.execute(client, interaction);
+		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
 		await interaction.reply({
@@ -51,4 +64,4 @@ client.on("interactionCreate", async (interaction) => {
 });
 
 // Login to Discord with your client's token
-client.login(env.token);
+client.login(process.env.token);

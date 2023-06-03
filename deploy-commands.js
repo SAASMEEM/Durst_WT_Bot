@@ -1,27 +1,37 @@
-import { env } from "node:process";
-import { REST } from "@discordjs/rest";
-import { Routes } from "discord-api-types/v9";
-import dotenv from "dotenv";
-import { botId, guildId } from "./settings.js";
-import { commands } from "./commands/index.js";
+require("dotenv/config");
+const fs = require("node:fs");
+const process = require("node:process");
+const { REST } = require("@discordjs/rest");
+const { Routes } = require("discord-api-types/v9");
+const botconfig = require("./config.json");
 
-dotenv.config();
+const commands = [];
+const dir = "./commands/";
+for (const dirs of fs.readdirSync(dir)) {
+	const commandFiles = fs
+		.readdirSync(`${dir}/${dirs}`)
+		.filter((files) => files.endsWith(".js"));
+	for (const file of commandFiles) {
+		const command = require(`${dir}/${dirs}/${file}`);
+		commands.push(command.data.toJSON());
 
-const commandJson = [];
-
-for (const command of commands) {
-	commandJson.push(command.data.toJSON());
+		// Set a new item in the Collection
+		// With the key as the command name and the value as the exported module
+	}
 }
 
-const rest = new REST({ version: "9" }).setToken(env.token);
+const rest = new REST({ version: "9" }).setToken(process.env.token);
 
 (async () => {
 	try {
 		console.log("Started refreshing application (/) commands.");
 
-		await rest.put(Routes.applicationGuildCommands(botId, guildId), {
-			body: commandJson,
-		});
+		await rest.put(
+			Routes.applicationGuildCommands(botconfig.botId, botconfig.guildId),
+			{
+				body: commands,
+			}
+		);
 
 		console.log("Successfully reloaded application (/) commands.");
 	} catch (error) {
