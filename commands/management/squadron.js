@@ -129,60 +129,60 @@ export async function execute(client, interaction) {
 						name: "Support:",
 						value: `Falls du dich als aktives Diescord-Mitglied ansiehst und denkst du wirst ungerecht behandelt dann wende dich gerne an einen Offizier auf unserem Server.
                         Du bist natürlich immmer noch gerne Willkommen auf unserem Server o7`,
-						},
-					],
-					timestamp: Date.now(),
-				});
-				// send embed
-				member.send({ embeds: [removeEmbed] }).catch(() => {
-					const channel = member.guild.channels.cache.get(
-						botconfig.uffzChannelId
-					);
-					channel.send(`<@${user.id}> konnte nicht benachrichtigt werden!`);
-				});
-				// /user/add
-			} else if (interaction.options.getSubcommand() === "add") {
-				// get guildmember object from user objectsetNickname
-				const user = interaction.options.getUser("target");
-				const member = await interaction.guild.members.fetch(user).then();
-				// get mannschafterRolePointer -> 1 || 2
-				const role = interaction.options.getInteger("role");
-				// manage roles
-				switch (role) {
-					case 1: {
-						member.roles.add(botconfig.mannschafter1RoleId);
-						member.roles.remove(botconfig.mannschafter2RoleId);
-						member.roles.remove(botconfig.mannschafter3RoleId);
-						interaction.reply({
-							content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter1RoleId}>!`,
-							ephemeral: true,
-						});
+					},
+				],
+				timestamp: Date.now(),
+			});
+			// send embed
+			member.send({ embeds: [removeEmbed] }).catch(() => {
+				const channel = member.guild.channels.cache.get(
+					botconfig.uffzChannelId
+				);
+				channel.send(`<@${user.id}> konnte nicht benachrichtigt werden!`);
+			});
+			// /user/add
+		} else if (interaction.options.getSubcommand() === "add") {
+			// get guildmember object from user objectsetNickname
+			const user = interaction.options.getUser("target");
+			const member = await interaction.guild.members.fetch(user).then();
+			// get mannschafterRolePointer -> 1 || 2
+			const role = interaction.options.getInteger("role");
+			// manage roles
+			switch (role) {
+				case 1: {
+					member.roles.add(botconfig.mannschafter1RoleId);
+					member.roles.remove(botconfig.mannschafter2RoleId);
+					member.roles.remove(botconfig.mannschafter3RoleId);
+					interaction.reply({
+						content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter1RoleId}>!`,
+						ephemeral: true,
+					});
 
 					break;
 				}
 
-					case 2: {
-						member.roles.add(botconfig.mannschafter2RoleId);
-						member.roles.remove(botconfig.mannschafter1RoleId);
-						member.roles.remove(botconfig.mannschafter3RoleId);
-						member.roles.remove(botconfig.cwRoleId);
-						interaction.reply({
-							content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter2RoleId}>!`,
-							ephemeral: true,
-						});
+				case 2: {
+					member.roles.add(botconfig.mannschafter2RoleId);
+					member.roles.remove(botconfig.mannschafter1RoleId);
+					member.roles.remove(botconfig.mannschafter3RoleId);
+					member.roles.remove(botconfig.cwRoleId);
+					interaction.reply({
+						content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter2RoleId}>!`,
+						ephemeral: true,
+					});
 
 					break;
 				}
 
-					case 3: {
-						member.roles.add(botconfig.mannschafter3RoleId);
-						member.roles.remove(botconfig.mannschafter1RoleId);
-						member.roles.remove(botconfig.mannschafter2RoleId);
-						member.roles.remove(botconfig.cwRoleId);
-						interaction.reply({
-							content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter3RoleId}>!`,
-							ephemeral: true,
-						});
+				case 3: {
+					member.roles.add(botconfig.mannschafter3RoleId);
+					member.roles.remove(botconfig.mannschafter1RoleId);
+					member.roles.remove(botconfig.mannschafter2RoleId);
+					member.roles.remove(botconfig.cwRoleId);
+					interaction.reply({
+						content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter3RoleId}>!`,
+						ephemeral: true,
+					});
 
 					break;
 				}
@@ -204,34 +204,33 @@ export async function execute(client, interaction) {
 		}
 	}
 
-		if (interaction.options.getSubcommandGroup() === "clanwar") {
-			// check for required permission
-			const check = await checkPerm(interaction, "MOVE_MEMBERS");
-			if (!check) return;
-			// /user/remove
-			if (interaction.options.getSubcommand() === "remove") {
-				// get guildmember objecct from user object
-				const user = interaction.options.getUser("target");
-				const member = await interaction.guild.members.fetch(user).then();
-				// manage role
-				member.roles.remove(botconfig.cwRoleId);
-				// send feedback
-				interaction.reply({
-					content: `<@${user.id}> ist jetzt kein clanwar Teammitglied mehr!`,
-					ephemeral: true,
-				});
-				// /user/add
-			} else if (interaction.options.getSubcommand() === "add") {
-				// get guildmember object from user objectsetNickname
-				const user = interaction.options.getUser("target");
-				const member = await interaction.guild.members.fetch(user).then();
-				// manage roles
-				member.roles.add(botconfig.cwRoleId);
-				interaction.reply({
-					content: `<@${user.id}> ist jetzt Clanwar-Mitglied!`,
-					ephemeral: true,
-				});
-			}
+	if (interaction.options.getSubcommandGroup() === "clanwar") {
+		// check for required permission
+		const check = await checkPerm(interaction, "MOVE_MEMBERS");
+		if (!check) return;
+		// /user/remove
+		if (interaction.options.getSubcommand() === "remove") {
+			// get guildmember objecct from user object
+			const user = interaction.options.getUser("target");
+			const member = await interaction.guild.members.fetch(user).then();
+			// manage role
+			member.roles.remove(botconfig.cwRoleId);
+			// send feedback
+			interaction.reply({
+				content: `<@${user.id}> ist jetzt kein clanwar Teammitglied mehr!`,
+				ephemeral: true,
+			});
+			// /user/add
+		} else if (interaction.options.getSubcommand() === "add") {
+			// get guildmember object from user objectsetNickname
+			const user = interaction.options.getUser("target");
+			const member = await interaction.guild.members.fetch(user).then();
+			// manage roles
+			member.roles.add(botconfig.cwRoleId);
+			interaction.reply({
+				content: `<@${user.id}> ist jetzt Clanwar-Mitglied!`,
+				ephemeral: true,
+			});
 		}
-	},
-};
+	}
+}
