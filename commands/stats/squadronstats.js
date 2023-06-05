@@ -1,39 +1,36 @@
-const Discord = require("discord.js");
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const fetch = require("node-fetch");
-const { JSDOM } = require("jsdom");
+import { MessageEmbed } from "discord.js";
+import { SlashCommandBuilder } from "@discordjs/builders";
+import fetch from "node-fetch";
+import { JSDOM } from "jsdom";
 
-module.exports = {
-	data: new SlashCommandBuilder()
-		.setName("squadronstats")
-		.setDescription("Creates a 'squadronstats' box.")
-		.addSubcommand((subcommand) =>
-			subcommand
-				.setName("name")
-				.setDescription(
-					"Creates a 'squadronstats' box based on the squad name."
-				)
-				.addStringOption((option) =>
-					option
-						.setName("name")
-						.setDescription("name of the squad")
-						.setRequired(true)
-				)
-		)
+export const data = new SlashCommandBuilder()
+	.setName("squadronstats")
+	.setDescription("Creates a 'squadronstats' box.")
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName("name")
+			.setDescription("Creates a 'squadronstats' box based on the squad name.")
+			.addStringOption((option) =>
+				option
+					.setName("name")
+					.setDescription("name of the squad")
+					.setRequired(true)
+			)
+	)
 
-		.addSubcommand((subcommand) =>
-			subcommand
-				.setName("url")
-				.setDescription("Creates a 'squadronstats' box based on the squad url.")
-				.addStringOption((option) =>
-					option
-						.setName("url")
-						.setDescription("url of the squad")
-						.setRequired(true)
-				)
-		),
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName("url")
+			.setDescription("Creates a 'squadronstats' box based on the squad url.")
+			.addStringOption((option) =>
+				option
+					.setName("url")
+					.setDescription("url of the squad")
+					.setRequired(true)
+			)
+	);
 
-	async execute(client, interaction) {
+export async function execute(client, interaction) {
 		await interaction.deferReply();
 		let respond = "";
 		if (interaction.options.getSubcommand() === "url") {
@@ -49,15 +46,15 @@ module.exports = {
 					const statcount = (await getstatcount(url)).toString();
 					console.log(statcount);
 
-					const squadstatembed = new Discord.MessageEmbed()
-						.setColor("0x0099FF")
-						.setTitle(title)
-						.setURL(url)
-						.addFields(
-							{ name: "Kampfgruppenaktivität", value: statact, inline: true },
-							{ name: "Spielerzahl", value: `${statcount}/128`, inline: true }
-						)
-						.setTimestamp();
+				const squadstatembed = new MessageEmbed()
+					.setColor("0x0099FF")
+					.setTitle(title)
+					.setURL(url)
+					.addFields(
+						{ name: "Kampfgruppenaktivität", value: statact, inline: true },
+						{ name: "Spielerzahl", value: statcount, inline: true }
+					)
+					.setTimestamp();
 
 					respond = { embeds: [squadstatembed] };
 				} else {
@@ -80,7 +77,7 @@ module.exports = {
 				const statcount = (await getstatcount(url)).toString();
 				console.log(statcount);
 
-				const squadstatembed = new Discord.MessageEmbed()
+				const squadstatembed = new MessageEmbed()
 					.setColor("0x0099FF")
 					.setTitle(title)
 					.setURL(url)
@@ -95,9 +92,8 @@ module.exports = {
 			}
 		}
 
-		await interaction.followUp(respond);
-	},
-};
+	await interaction.followUp(respond);
+}
 
 function isValidUrl(url) {
 	//überprüft ob die URl passt

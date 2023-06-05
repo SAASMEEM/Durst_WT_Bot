@@ -1,6 +1,7 @@
 {
 	"name": "durst_wt",
 	"version": "1.0.0",
+	"type": "module",
 	"scripts": {
 		"prepare": "husky install",
 		"format": "prettier -w . && xo --fix .",
@@ -39,11 +40,12 @@
 		],
 		"prettier": true,
 		"rules": {
-			"unicorn/prefer-module": "off",
+			"node/file-extension-in-import": "off",
+			"n/file-extension-in-import": "off",
 			"capitalized-comments": "off",
 			"spaced-comment": "off",
-			"import/no-unassigned-import": "off",
 			"unicorn/prefer-top-level-await": "off",
+			"unicorn/no-await-expression-member": "off",
 			"no-await-in-loop": "off"
 		}
 	},

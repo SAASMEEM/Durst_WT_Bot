@@ -1,7 +1,9 @@
-const Discord = require("discord.js");
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const botconfig = require("../../config.json");
-const { checkPerm } = require("../../import_folders/functions.js");
+import { readFileSync } from "node:fs";
+import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
+import { SlashCommandBuilder } from "@discordjs/builders";
+import { checkPerm } from "../../import_folders/functions.js";
+
+const botconfig = JSON.parse(readFileSync("./config.json"));
 
 // functions
 /**
@@ -55,23 +57,22 @@ function getFields(message, map) {
 }
 
 /** @type {{data: import("@discordjs/builders").SlashCommandBuilder, execute: (interaction: import("discord.js").MessageComponentInteraction) => Promise<void>}} */
-module.exports = {
-	data: new SlashCommandBuilder()
-		.setName(`clanwar`)
-		.setDescription("Starte einen Clanwar!")
-		.addStringOption((option) =>
-			option
-				.setName("battlerank")
-				.setDescription("Aktuelles Battle Ranking")
-				.setRequired(true)
-		)
-		.addIntegerOption((option) =>
-			option
-				.setName("hour")
-				.setDescription("Bitte die Startzeit angeben. Default: 20:00")
-				.setRequired(false)
-		),
-	/*
+export const data = new SlashCommandBuilder()
+	.setName(`clanwar`)
+	.setDescription("Starte einen Clanwar!")
+	.addStringOption((option) =>
+		option
+			.setName("battlerank")
+			.setDescription("Aktuelles Battle Ranking")
+			.setRequired(true)
+	)
+	.addIntegerOption((option) =>
+		option
+			.setName("hour")
+			.setDescription("Bitte die Startzeit angeben. Default: 20:00")
+			.setRequired(false)
+	);
+/*
 		.addIntegerOption((option) =>
 			option
 				.setName("minute")
@@ -79,11 +80,10 @@ module.exports = {
 				.setRequired(true)
 		),
 		*/
-
-	async execute(client, interaction) {
-		// check for permission
-		const check = await checkPerm(interaction, "MENTION_EVERYONE");
-		if (!check) return;
+export async function execute(client, interaction) {
+	// check for permission
+	const check = await checkPerm(interaction, "MENTION_EVERYONE");
+	if (!check) return;
 
 		// declare variables
 		const br = interaction.options.getString("battlerank");
@@ -103,51 +103,45 @@ module.exports = {
 				? defaulthour
 				: inserthour;
 
-		const date = new Date(year, month, day, hour, minute, second);
-		const dateseconds = date.getTime() / 1000;
-		const start = new Date(year, month, day, starttime, 0, 0);
-		const startseconds = start.getTime() / 1000;
-		const time = startseconds * 1000 - dateseconds * 1000;
+	const date = new Date(year, month, day, hour, minute, second);
+	const dateseconds = date.getTime() / 1000;
+	const start = new Date(year, month, day, starttime, 0, 0);
+	const startseconds = start.getTime() / 1000;
+	const time = startseconds * 1000 - dateseconds * 1000;
 
-		// declare embed
-		const tableEmbed = new Discord.MessageEmbed({
-			color: "880099",
-			title: `Clanwar (${br})`,
-			description: `⏲️ <t:${startseconds}:R>\n[Checkliste](https://shorturl.at/kLNZ9)\n[Fahrzeugaufstellung](https://shorturl.at/lnH49)`,
-			fields: [
-				{ name: "✅Accepted:", value: "\u200B", inline: true },
-				{ name: "❌Declined:", value: "\u200B", inline: true },
-				{ name: "❔Maybe:", value: "\u200B", inline: true },
-			],
-			timestamp: Date.now(),
-		});
+	// declare embed
+	const tableEmbed = new MessageEmbed({
+		color: "880099",
+		title: `Clanwar (${br})`,
+		description: `⏲️ <t:${startseconds}:R>\n[Checkliste](https://shorturl.at/kLNZ9)\n[Fahrzeugaufstellung](https://shorturl.at/lnH49)`,
+		fields: [
+			{ name: "✅Accepted:", value: "\u200B", inline: true },
+			{ name: "❌Declined:", value: "\u200B", inline: true },
+			{ name: "❔Maybe:", value: "\u200B", inline: true },
+		],
+		timestamp: Date.now(),
+	});
 
-		// declare buttons
-		const Reactions = new Discord.MessageActionRow().addComponents(
-			new Discord.MessageButton()
-				.setEmoji("✅")
-				.setCustomId("Yes")
-				.setStyle("SUCCESS"),
-			new Discord.MessageButton()
-				.setEmoji("❌")
-				.setCustomId("Cancel")
-				.setStyle("DANGER"),
-			new Discord.MessageButton()
-				.setEmoji("❔")
-				.setCustomId("Maybe")
-				.setStyle("SECONDARY")
-		);
+	// declare buttons
+	const Reactions = new MessageActionRow().addComponents(
+		new MessageButton().setEmoji("✅").setCustomId("Yes").setStyle("SUCCESS"),
+		new MessageButton().setEmoji("❌").setCustomId("Cancel").setStyle("DANGER"),
+		new MessageButton()
+			.setEmoji("❔")
+			.setCustomId("Maybe")
+			.setStyle("SECONDARY")
+	);
 
-		// post message and embed with buttons
-		await interaction.deferReply();
-		await interaction.followUp({
-			content: `<@&${botconfig.mannschafter1RoleId}> CW um ${starttime}:00 Uhr! Tragt euch ein!`,
-		});
-		const message = await interaction.channel.send({
-			embeds: [tableEmbed],
-			components: [Reactions],
-			fetchReply: true,
-		});
+	// post message and embed with buttons
+	await interaction.deferReply();
+	await interaction.followUp({
+		content: `CW um ${starttime}:00 Uhr! Tragt euch ein!`,
+	});
+	const message = await interaction.channel.send({
+		embeds: [tableEmbed],
+		components: [Reactions],
+		fetchReply: true,
+	});
 
 		// remove buttons and send notification
 		setTimeout(async () => {
@@ -166,8 +160,8 @@ module.exports = {
 			}
 		);
 
-		/** @type {Map<string,"+"|"-"|"~">} */
-		const tableMap = new Map();
+	/** @type {Map<string,"+"|"-"|"~">} */
+	const tableMap = new Map();
 
 		buttonCollector.on("collect", async (buttonInteraction) => {
 			if (!buttonInteraction.member.roles.cache.has(botconfig.cwRoleId)) {
@@ -178,72 +172,71 @@ module.exports = {
 				return;
 			}
 
-			switch (buttonInteraction.customId) {
-				case "Yes": {
-					if (tableMap.get(buttonInteraction.user.id) === "+") {
-						await buttonInteraction.reply({
-							content: `Du bist schon dem Clanwar beigetreten!`,
-							ephemeral: true,
-						});
-						return;
-					}
-
-					tableMap.set(buttonInteraction.user.id, "+");
-					//                    buttonInteraction.member.roles.add(cwRoleId)
+		switch (buttonInteraction.customId) {
+			case "Yes": {
+				if (tableMap.get(buttonInteraction.user.id) === "+") {
 					await buttonInteraction.reply({
-						content: `Du bist dem Clanwar beigetreten.`,
+						content: `Du bist schon dem Clanwar beigetreten!`,
 						ephemeral: true,
 					});
-					break;
+					return;
 				}
 
-				case "Cancel": {
-					if (tableMap.get(buttonInteraction.user.id) === "-") {
-						await buttonInteraction.reply({
-							content: `Du hast den Clanwar schon abgelehnt!`,
-							ephemeral: true,
-						});
-						return;
-					}
-
-					tableMap.set(buttonInteraction.user.id, "-");
-					//                    buttonInteraction.member.roles.remove(cwRoleId)
-					await buttonInteraction.reply({
-						content: `Du hast den Clanwar abgelehnt.`,
-						ephemeral: true,
-					});
-					break;
-				}
-
-				case "Maybe": {
-					if (tableMap.get(buttonInteraction.user.id) === "~") {
-						await buttonInteraction.reply({
-							content: `Du bist bereits als moeglicher Teilnehmer eingetragen!`,
-							ephemeral: true,
-						});
-						return;
-					}
-
-					tableMap.set(buttonInteraction.user.id, "~");
-					//                    buttonInteraction.member.roles.add(cwRoleId)
-					await buttonInteraction.reply({
-						content: `Du hast dich als moeglicher Teilnehmer eingetragen.`,
-						ephemeral: true,
-					});
-					break;
-				}
-
-				default: {
-					console.log("Something Broke");
-					await buttonInteraction.reply({
-						content: "Something Broke",
-						ephemeral: true,
-					});
-					break;
-				}
+				tableMap.set(buttonInteraction.user.id, "+");
+				//                    buttonInteraction.member.roles.add(cwRoleId)
+				await buttonInteraction.reply({
+					content: `Du bist dem Clanwar beigetreten.`,
+					ephemeral: true,
+				});
+				break;
 			}
 
-			updateEmbed(message, tableMap);
-		});
-	},
-};
+			case "Cancel": {
+				if (tableMap.get(buttonInteraction.user.id) === "-") {
+					await buttonInteraction.reply({
+						content: `Du hast den Clanwar schon abgelehnt!`,
+						ephemeral: true,
+					});
+					return;
+				}
+
+				tableMap.set(buttonInteraction.user.id, "-");
+				//                    buttonInteraction.member.roles.remove(cwRoleId)
+				await buttonInteraction.reply({
+					content: `Du hast den Clanwar abgelehnt.`,
+					ephemeral: true,
+				});
+				break;
+			}
+
+			case "Maybe": {
+				if (tableMap.get(buttonInteraction.user.id) === "~") {
+					await buttonInteraction.reply({
+						content: `Du bist bereits als moeglicher Teilnehmer eingetragen!`,
+						ephemeral: true,
+					});
+					return;
+				}
+
+				tableMap.set(buttonInteraction.user.id, "~");
+				//                    buttonInteraction.member.roles.add(cwRoleId)
+				await buttonInteraction.reply({
+					content: `Du hast dich als moeglicher Teilnehmer eingetragen.`,
+					ephemeral: true,
+				});
+				break;
+			}
+
+			default: {
+				console.log("Something Broke");
+				await buttonInteraction.reply({
+					content: "Something Broke",
+					ephemeral: true,
+				});
+				break;
+			}
+		}
+
+		updateEmbed(message, tableMap);
+	});
+}
