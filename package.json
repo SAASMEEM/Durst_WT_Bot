@@ -10,7 +10,7 @@
 		"deploy": "node deploy-commands.js"
 	},
 	"dependencies": {
-		"@discordjs/builders": "^1.5.0",
+		"@discordjs/builders": "^1.6.3",
 		"@discordjs/rest": "^1.7.1",
 		"@discordjs/voice": "^0.16.0",
 		"discord-api-types": "^0.37.37",
