@@ -17,8 +17,9 @@ client.commands = new Collection();
 
 const load = async (client, dir = "./commands/") => {
 	for (const dirs of await fs.promises.readdir(dir)) {
-		const commandFiles = (await fs.promises.readdir(`${dir}/${dirs}`))
-			.filter((files) => files.endsWith(".js"));
+		const commandFiles = (await fs.promises.readdir(`${dir}/${dirs}`)).filter(
+			(files) => files.endsWith(".js")
+		);
 		for (const file of commandFiles) {
 			try {
 				const { data, execute } = await import(`${dir}/${dirs}/${file}`);
@@ -37,8 +38,9 @@ const load = async (client, dir = "./commands/") => {
 
 load(client);
 
-const eventFiles = (await fs.promises.readdir('./events'))
-	.filter((file) => file.endsWith('.js'));
+const eventFiles = (await fs.promises.readdir("./events")).filter((file) =>
+	file.endsWith(".js")
+);
 for (const file of eventFiles) {
 	try {
 		const { name, once, execute } = await import(`./events/${file}`);

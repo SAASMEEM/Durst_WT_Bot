@@ -44,7 +44,9 @@
 			"n/file-extension-in-import": "off",
 			"capitalized-comments": "off",
 			"spaced-comment": "off",
-			"unicorn/prefer-top-level-await": "off"
+			"unicorn/prefer-top-level-await": "off",
+			"unicorn/no-await-expression-member": "off",
+			"no-await-in-loop": "off"
 		}
 	},
 	"lint-staged": {

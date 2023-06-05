@@ -1,7 +1,9 @@
+import { readFileSync } from "node:fs";
 import { MessageEmbed } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import botconfig from "./../../config.json" assert { type: "json" };
 import { checkPerm } from "../../import_folders/functions.js";
+
+const botconfig = JSON.parse(readFileSync("./config.json"));
 
 export const data = new SlashCommandBuilder()
 	.setName("squadron")
@@ -133,7 +135,9 @@ export async function execute(client, interaction) {
 			});
 			// send embed
 			member.send({ embeds: [removeEmbed] }).catch(() => {
-				const channel = member.guild.channels.cache.get(uffzChannelId);
+				const channel = member.guild.channels.cache.get(
+					botconfig.uffzChannelId
+				);
 				channel.send(`<@${user.id}> konnte nicht benachrichtigt werden!`);
 			});
 		} else if (interaction.options.getSubcommand() === "add") {
@@ -209,7 +213,7 @@ export async function execute(client, interaction) {
 			const user = interaction.options.getUser("target");
 			const member = await interaction.guild.members.fetch(user).then();
 			// manage role
-			member.roles.remove(cwRoleId);
+			member.roles.remove(botconfig.cwRoleId);
 			// send feedback
 			interaction.reply({
 				content: `<@${user.id}> ist jetzt kein clanwar Teammitglied mehr!`,
@@ -220,7 +224,7 @@ export async function execute(client, interaction) {
 			const user = interaction.options.getUser("target");
 			const member = await interaction.guild.members.fetch(user).then();
 			// manage roles
-			member.roles.add(cwRoleId);
+			member.roles.add(botconfig.cwRoleId);
 			interaction.reply({
 				content: `<@${user.id}> ist jetzt Clanwar-Mitglied!`,
 				ephemeral: true,

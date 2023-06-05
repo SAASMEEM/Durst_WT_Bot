@@ -1,16 +1,19 @@
 import { env } from "node:process";
+import fs, { readFileSync } from "node:fs";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
-import fs from "node:fs";
 import dotenv from "dotenv";
-import botconfig from "./config.json" assert { type: "json" };
+//import botconfig from "./config.json" assert { type: "json" };
+
+const botconfig = JSON.parse(readFileSync("./config.json"));
 dotenv.config();
 
 const commands = [];
 const dir = "./commands/";
 for (const dirs of await fs.promises.readdir(dir)) {
-	const commandFiles = (await fs.promises.readdir(`${dir}/${dirs}`))
-		.filter((files) => files.endsWith('.js'));
+	const commandFiles = (await fs.promises.readdir(`${dir}/${dirs}`)).filter(
+		(files) => files.endsWith(".js")
+	);
 
 	for (const file of commandFiles) {
 		try {
@@ -32,9 +35,12 @@ const rest = new REST({ version: "9" }).setToken(env.token);
 	try {
 		console.log("Started refreshing application (/) commands.");
 
-		await rest.put(Routes.applicationGuildCommands(botconfig.botId, botconfig.guildId), {
-			body: commands,
-		});
+		await rest.put(
+			Routes.applicationGuildCommands(botconfig.botId, botconfig.guildId),
+			{
+				body: commands,
+			}
+		);
 
 		console.log("Successfully reloaded application (/) commands.");
 	} catch (error) {

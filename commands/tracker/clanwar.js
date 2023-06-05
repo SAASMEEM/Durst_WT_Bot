@@ -1,7 +1,9 @@
+import { readFileSync } from "node:fs";
 import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import botconfig from "./../../config.json" assert { type: "json" };
 import { checkPerm } from "../../import_folders/functions.js";
+
+const botconfig = JSON.parse(readFileSync("./config.json"));
 
 // functions
 /**
