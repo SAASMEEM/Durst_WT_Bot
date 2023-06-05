@@ -1,7 +1,7 @@
 import { MessageEmbed } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import fetch from "node-fetch";
-import JSDOM from "jsdom";
+import { JSDOM } from "jsdom";
 
 export const data = new SlashCommandBuilder()
 	.setName("squadronstats")

@@ -1,11 +1,7 @@
 import { env } from "node:process";
-
+import fs from "node:fs";
 import dotenv from "dotenv";
-// Require the necessary discord.js classes
-import { Client, Intents } from "discord.js";
-
-import { commands } from "./commands/index.js";
-import { events } from "./events/index.js";
+import { Client, Collection, Intents } from "discord.js";
 
 dotenv.config();
 
@@ -17,25 +13,49 @@ const client = new Client({
 		Intents.FLAGS.GUILD_VOICE_STATES,
 	],
 });
+client.commands = new Collection();
 
-const commandMap = new Map();
+const load = async (client, dir = "./commands/") => {
+	for (const dirs of await fs.promises.readdir(dir)) {
+		const commandFiles = (await fs.promises.readdir(`${dir}/${dirs}`))
+			.filter((files) => files.endsWith(".js"));
+		for (const file of commandFiles) {
+			try {
+				const { data, execute } = await import(`${dir}/${dirs}/${file}`);
+				if (data) {
+					client.commands.set(data.name, { data, execute });
+					execute.bind(null, client);
+				} else {
+					console.log(`Invalid command module: ${dir}/${dirs}/${file}`);
+				}
+			} catch (error) {
+				console.error(`Error loading command: ${dir}/${dirs}/${file}`, error);
+			}
+		}
+	}
+};
 
-for (const command of commands) {
-	commandMap.set(command.data.name, command);
-}
+load(client);
 
-for (const event of events) {
-	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
-	} else {
-		client.on(event.name, (...args) => event.execute(...args));
+const eventFiles = (await fs.promises.readdir('./events'))
+	.filter((file) => file.endsWith('.js'));
+for (const file of eventFiles) {
+	try {
+		const { name, once, execute } = await import(`./events/${file}`);
+		if (once) {
+			client.once(name, (...args) => execute(...args));
+		} else {
+			client.on(name, (...args) => execute(...args));
+		}
+	} catch (error) {
+		console.error(`Error loading event: ./events/${file}`, error);
 	}
 }
 
 client.on("interactionCreate", async (interaction) => {
 	if (!interaction.isCommand()) return;
 
-	const command = commandMap.get(interaction.commandName);
+	const command = client.commands.get(interaction.commandName);
 
 	if (!command) return;
 

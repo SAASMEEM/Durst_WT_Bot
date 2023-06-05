@@ -1,16 +1,29 @@
 import { env } from "node:process";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
+import fs from "node:fs";
 import dotenv from "dotenv";
-import { botId, guildId } from "./settings.js";
-import { commands } from "./commands/index.js";
-
+import botconfig from "./config.json" assert { type: "json" };
 dotenv.config();
 
-const commandJson = [];
+const commands = [];
+const dir = "./commands/";
+for (const dirs of await fs.promises.readdir(dir)) {
+	const commandFiles = (await fs.promises.readdir(`${dir}/${dirs}`))
+		.filter((files) => files.endsWith('.js'));
 
-for (const command of commands) {
-	commandJson.push(command.data.toJSON());
+	for (const file of commandFiles) {
+		try {
+			const { data } = await import(`${dir}/${dirs}/${file}`);
+			if (data) {
+				commands.push(data);
+			} else {
+				console.log(`Invalid command module: ${dir}/${dirs}/${file}`);
+			}
+		} catch (error) {
+			console.error(`Error importing module: ${dir}/${dirs}/${file}`, error);
+		}
+	}
 }
 
 const rest = new REST({ version: "9" }).setToken(env.token);
@@ -19,8 +32,8 @@ const rest = new REST({ version: "9" }).setToken(env.token);
 	try {
 		console.log("Started refreshing application (/) commands.");
 
-		await rest.put(Routes.applicationGuildCommands(botId, guildId), {
-			body: commandJson,
+		await rest.put(Routes.applicationGuildCommands(botconfig.botId, botconfig.guildId), {
+			body: commands,
 		});
 
 		console.log("Successfully reloaded application (/) commands.");

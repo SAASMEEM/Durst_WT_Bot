@@ -1,6 +1,6 @@
 import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { defaultTime, cwRoleId } from "../../settings.js";
+import botconfig from "./../../config.json" assert { type: "json" };
 import { checkPerm } from "../../import_folders/functions.js";
 
 // functions
@@ -87,7 +87,7 @@ async function execute(client, interaction) {
 	const br = interaction.options.getString("battlerank");
 	const inserthour = interaction.options.getInteger("hour");
 	//		const insertminute = interaction.options.getInteger("minute");
-	const defaulthour = defaultTime;
+	const defaulthour = botconfig.defaultTime;
 	const d = new Date();
 	const year = d.getFullYear();
 	const month = d.getMonth();
@@ -142,7 +142,7 @@ async function execute(client, interaction) {
 	// remove buttons and send notification
 	setTimeout(async () => {
 		await message.edit({ components: [] });
-		await interaction.channel.send(`<@&${cwRoleId}> CW!`);
+		await interaction.channel.send(`<@&${botconfig.cwRoleId}> CW!`);
 	}, time);
 
 	// button collector
@@ -156,9 +156,9 @@ async function execute(client, interaction) {
 	const tableMap = new Map();
 
 	buttonCollector.on("collect", async (buttonInteraction) => {
-		if (!buttonInteraction.member.roles.cache.has(cwRoleId)) {
+		if (!buttonInteraction.member.roles.cache.has(botconfig.cwRoleId)) {
 			await buttonInteraction.reply({
-				content: `Nur <@&${cwRoleId}>-Mitlgieder koennen sich zum Clanwar eintragen!\nBitte lies dir die [Checkliste](https://shorturl.at/kLNZ9)_sorgfaeltig_ durch.\nSobald du dies getan hast kannst du dich an einen CW-Mod.`,
+				content: `Nur <@&${botconfig.cwRoleId}>-Mitlgieder koennen sich zum Clanwar eintragen!\nBitte lies dir die [Checkliste](https://shorturl.at/kLNZ9)_sorgfaeltig_ durch.\nSobald du dies getan hast kannst du dich an einen CW-Mod.`,
 				ephemeral: true,
 			});
 			return;

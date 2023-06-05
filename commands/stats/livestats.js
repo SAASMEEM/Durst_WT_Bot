@@ -2,7 +2,7 @@ import fs from "node:fs";
 import { MessageEmbed } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import fetch from "node-fetch";
-import JSDOM from "jsdom";
+import { JSDOM } from "jsdom";
 import { checkPerm } from "../../import_folders/functions.js";
 
 export const data = new SlashCommandBuilder()

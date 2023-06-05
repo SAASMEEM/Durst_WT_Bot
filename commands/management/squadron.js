@@ -1,12 +1,6 @@
 import { MessageEmbed } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import {
-	mannschafter1RoleId,
-	mannschafter2RoleId,
-	mannschafter3RoleId,
-	cwRoleId,
-	uffzChannelId,
-} from "../../settings.js";
+import botconfig from "./../../config.json" assert { type: "json" };
 import { checkPerm } from "../../import_folders/functions.js";
 
 export const data = new SlashCommandBuilder()
@@ -97,10 +91,10 @@ export async function execute(client, interaction) {
 			const user = interaction.options.getUser("target");
 			const member = await interaction.guild.members.fetch(user).then();
 			// manage roles
-			member.roles.remove(mannschafter1RoleId);
-			member.roles.remove(mannschafter2RoleId);
-			member.roles.remove(mannschafter3RoleId);
-			member.roles.remove(cwRoleId);
+			member.roles.remove(botconfig.mannschafter1RoleId);
+			member.roles.remove(botconfig.mannschafter2RoleId);
+			member.roles.remove(botconfig.mannschafter3RoleId);
+			member.roles.remove(botconfig.cwRoleId);
 			// send feedback
 			interaction.reply({
 				content: `<@${user.id}> ist jetzt kein Mannschafter mehr!`,
@@ -151,11 +145,11 @@ export async function execute(client, interaction) {
 			// manage roles
 			switch (role) {
 				case 1: {
-					member.roles.add(mannschafter1RoleId);
-					member.roles.remove(mannschafter2RoleId);
-					member.roles.remove(mannschafter3RoleId);
+					member.roles.add(botconfig.mannschafter1RoleId);
+					member.roles.remove(botconfig.mannschafter2RoleId);
+					member.roles.remove(botconfig.mannschafter3RoleId);
 					interaction.reply({
-						content: `<@${user.id}> ist jetzt <@&${mannschafter1RoleId}>!`,
+						content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter1RoleId}>!`,
 						ephemeral: true,
 					});
 
@@ -163,12 +157,12 @@ export async function execute(client, interaction) {
 				}
 
 				case 2: {
-					member.roles.add(mannschafter2RoleId);
-					member.roles.remove(mannschafter1RoleId);
-					member.roles.remove(mannschafter3RoleId);
-					member.roles.remove(cwRoleId);
+					member.roles.add(botconfig.mannschafter2RoleId);
+					member.roles.remove(botconfig.mannschafter1RoleId);
+					member.roles.remove(botconfig.mannschafter3RoleId);
+					member.roles.remove(botconfig.cwRoleId);
 					interaction.reply({
-						content: `<@${user.id}> ist jetzt <@&${mannschafter2RoleId}>!`,
+						content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter2RoleId}>!`,
 						ephemeral: true,
 					});
 
@@ -176,12 +170,12 @@ export async function execute(client, interaction) {
 				}
 
 				case 3: {
-					member.roles.add(mannschafter3RoleId);
-					member.roles.remove(mannschafter1RoleId);
-					member.roles.remove(mannschafter2RoleId);
-					member.roles.remove(cwRoleId);
+					member.roles.add(botconfig.mannschafter3RoleId);
+					member.roles.remove(botconfig.mannschafter1RoleId);
+					member.roles.remove(botconfig.mannschafter2RoleId);
+					member.roles.remove(botconfig.cwRoleId);
 					interaction.reply({
-						content: `<@${user.id}> ist jetzt <@&${mannschafter3RoleId}>!`,
+						content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter3RoleId}>!`,
 						ephemeral: true,
 					});
 
