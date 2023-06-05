@@ -31,45 +31,14 @@ export const data = new SlashCommandBuilder()
 	);
 
 export async function execute(client, interaction) {
-		await interaction.deferReply();
-		let respond = "";
-		if (interaction.options.getSubcommand() === "url") {
-			const url = interaction.options.getString("url");
-			if (isValidUrl(url)) {
-				//damit wird überprüft ob die URL passt
-				//respond = "Die Kampgruppenaktivität ist aktuell " +await getstatact(url) + "\nDie Anzahl der Mitglieder ist: " + await getstatcount(url);
-				if ((await squadcheck(url)) === true) {
-					const title = (await getsquadname(url)).toString();
-					console.log(title);
-					const statact = (await getstatact(url)).toString();
-					console.log(statact);
-					const statcount = (await getstatcount(url)).toString();
-					console.log(statcount);
-
-				const squadstatembed = new MessageEmbed()
-					.setColor("0x0099FF")
-					.setTitle(title)
-					.setURL(url)
-					.addFields(
-						{ name: "Kampfgruppenaktivität", value: statact, inline: true },
-						{ name: "Spielerzahl", value: statcount, inline: true }
-					)
-					.setTimestamp();
-
-					respond = { embeds: [squadstatembed] };
-				} else {
-					respond = "Die Kampfgruppe existiert nicht!";
-				}
-			} else {
-				respond = "Die URL ist ungültig!";
-			}
-		} else if (interaction.options.getSubcommand() === "name") {
-			const name = interaction.options.getString("name");
-			const url =
-				"https://warthunder.com/de/community/claninfo/" +
-				name.replace(/ /g, "%20");
+	await interaction.deferReply();
+	let respond = "";
+	if (interaction.options.getSubcommand() === "url") {
+		const url = interaction.options.getString("url");
+		if (isValidUrl(url)) {
+			//damit wird überprüft ob die URL passt
+			//respond = "Die Kampgruppenaktivität ist aktuell " +await getstatact(url) + "\nDie Anzahl der Mitglieder ist: " + await getstatcount(url);
 			if ((await squadcheck(url)) === true) {
-				console.log(url);
 				const title = (await getsquadname(url)).toString();
 				console.log(title);
 				const statact = (await getstatact(url)).toString();
@@ -83,14 +52,45 @@ export async function execute(client, interaction) {
 					.setURL(url)
 					.addFields(
 						{ name: "Kampfgruppenaktivität", value: statact, inline: true },
-						{ name: "Spielerzahl", value: `${statcount}/128`, inline: true }
-						)
+						{ name: "Spielerzahl", value: statcount, inline: true }
+					)
 					.setTimestamp();
+
 				respond = { embeds: [squadstatembed] };
 			} else {
 				respond = "Die Kampfgruppe existiert nicht!";
 			}
+		} else {
+			respond = "Die URL ist ungültig!";
 		}
+	} else if (interaction.options.getSubcommand() === "name") {
+		const name = interaction.options.getString("name");
+		const url =
+			"https://warthunder.com/de/community/claninfo/" +
+			name.replace(/ /g, "%20");
+		if ((await squadcheck(url)) === true) {
+			console.log(url);
+			const title = (await getsquadname(url)).toString();
+			console.log(title);
+			const statact = (await getstatact(url)).toString();
+			console.log(statact);
+			const statcount = (await getstatcount(url)).toString();
+			console.log(statcount);
+
+			const squadstatembed = new MessageEmbed()
+				.setColor("0x0099FF")
+				.setTitle(title)
+				.setURL(url)
+				.addFields(
+					{ name: "Kampfgruppenaktivität", value: statact, inline: true },
+					{ name: "Spielerzahl", value: `${statcount}/128`, inline: true }
+				)
+				.setTimestamp();
+			respond = { embeds: [squadstatembed] };
+		} else {
+			respond = "Die Kampfgruppe existiert nicht!";
+		}
+	}
 
 	await interaction.followUp(respond);
 }

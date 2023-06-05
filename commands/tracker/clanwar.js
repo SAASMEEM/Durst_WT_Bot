@@ -85,23 +85,21 @@ export async function execute(client, interaction) {
 	const check = await checkPerm(interaction, "MENTION_EVERYONE");
 	if (!check) return;
 
-		// declare variables
-		const br = interaction.options.getString("battlerank");
-		const inserthour = interaction.options.getInteger("hour");
-		//		const insertminute = interaction.options.getInteger("minute");
-		const defaulthour = botconfig.defaultTime;
-		const d = new Date();
-		const year = d.getFullYear();
-		const month = d.getMonth();
-		const day = d.getDate();
-		const hour = d.getHours();
-		const minute = d.getMinutes();
-		const second = d.getSeconds();
-		let starttime = null;
-		starttime =
-			inserthour === null || inserthour === undefined
-				? defaulthour
-				: inserthour;
+	// declare variables
+	const br = interaction.options.getString("battlerank");
+	const inserthour = interaction.options.getInteger("hour");
+	//		const insertminute = interaction.options.getInteger("minute");
+	const defaulthour = botconfig.defaultTime;
+	const d = new Date();
+	const year = d.getFullYear();
+	const month = d.getMonth();
+	const day = d.getDate();
+	const hour = d.getHours();
+	const minute = d.getMinutes();
+	const second = d.getSeconds();
+	let starttime = null;
+	starttime =
+		inserthour === null || inserthour === undefined ? defaulthour : inserthour;
 
 	const date = new Date(year, month, day, hour, minute, second);
 	const dateseconds = date.getTime() / 1000;
@@ -143,34 +141,30 @@ export async function execute(client, interaction) {
 		fetchReply: true,
 	});
 
-		// remove buttons and send notification
-		setTimeout(async () => {
-			await message.edit({ components: [] });
-			await interaction.channel.send(`<@&${botconfig.cwRoleId}> CW!`);
-		}, time);
+	// remove buttons and send notification
+	setTimeout(async () => {
+		await message.edit({ components: [] });
+		await interaction.channel.send(`<@&${botconfig.cwRoleId}> CW!`);
+	}, time);
 
-		// button collector
-		const buttonCollector = interaction.channel.createMessageComponentCollector(
-			{
-				filter: (m) =>
-					m.customId === "Yes" ||
-					m.customId === "Cancel" ||
-					m.customId === "Maybe",
-				time,
-			}
-		);
+	// button collector
+	const buttonCollector = interaction.channel.createMessageComponentCollector({
+		filter: (m) =>
+			m.customId === "Yes" || m.customId === "Cancel" || m.customId === "Maybe",
+		time,
+	});
 
 	/** @type {Map<string,"+"|"-"|"~">} */
 	const tableMap = new Map();
 
-		buttonCollector.on("collect", async (buttonInteraction) => {
-			if (!buttonInteraction.member.roles.cache.has(botconfig.cwRoleId)) {
-				await buttonInteraction.reply({
-					content: `Nur <@&${botconfig.cwRoleId}>-Mitlgieder koennen sich zum Clanwar eintragen!\nBitte lies dir die [Checkliste](https://shorturl.at/kLNZ9)_sorgfaeltig_ durch.\nSobald du dies getan hast kannst du dich an einen CW-Mod.`,
-					ephemeral: true,
-				});
-				return;
-			}
+	buttonCollector.on("collect", async (buttonInteraction) => {
+		if (!buttonInteraction.member.roles.cache.has(botconfig.cwRoleId)) {
+			await buttonInteraction.reply({
+				content: `Nur <@&${botconfig.cwRoleId}>-Mitlgieder koennen sich zum Clanwar eintragen!\nBitte lies dir die [Checkliste](https://shorturl.at/kLNZ9)_sorgfaeltig_ durch.\nSobald du dies getan hast kannst du dich an einen CW-Mod.`,
+				ephemeral: true,
+			});
+			return;
+		}
 
 		switch (buttonInteraction.customId) {
 			case "Yes": {
