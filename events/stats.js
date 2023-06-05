@@ -56,9 +56,9 @@ async function refresh(client) {
 					const messageobject = idlist[i][0];
 					const url = idlist[i][1];
 					// Neue Embed erstellen
-					const title = (await getsquadname(url)) + " ";
-					const statact = (await getstatact(url)) + " ";
-					const statcount = (await getstatcount(url)) + " ";
+					const title = (await getsquadname(url)).toString();
+					const statact = (await getstatact(url)).toString();
+					const statcount = (await getstatcount(url)).toString();
 
 					const newEmbed = new MessageEmbed()
 						.setColor("0x0099FF")
