@@ -121,12 +121,12 @@ export async function execute(client, interaction) {
 
 	// declare buttons
 	const Reactions = new ActionRowBuilder().addComponents(
-		new ButtonBuilder().setEmoji("✅").setCustomId("Yes").setStyle("SUCCESS"),
-		new ButtonBuilder().setEmoji("❌").setCustomId("Cancel").setStyle("DANGER"),
+		new ButtonBuilder().setEmoji("✅").setCustomId("Yes").setStyle("Success"),
+		new ButtonBuilder().setEmoji("❌").setCustomId("Cancel").setStyle("Danger"),
 		new ButtonBuilder()
 			.setEmoji("❔")
 			.setCustomId("Maybe")
-			.setStyle("SECONDARY")
+			.setStyle("Secondary")
 	);
 
 	// post message and embed with buttons
