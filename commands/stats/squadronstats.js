@@ -131,7 +131,7 @@ async function getstatcount(url) {
 			"#squadronsInfoRoot > div.squadrons-info__content-wrapper > div:nth-child(2)"
 		); //hier wird das Element ausgelesen
 		let temporary = count1.textContent;
-		temporary = temporary.replace(/[A-z]/g, ""); // ersetzen der Buchstaben durch nichts aka. Buchstaben entfernen
+		temporary = temporary.replace(/[a-zA-Z]/g, ""); // ersetzen der Buchstaben durch nichts aka. Buchstaben entfernen
 		temporary = temporary.replace(/ /g, ""); //Leerzeichen entfernen
 		temporary = temporary.replace(/:/g, ""); //Doppelpunkt entfernen
 		const icount1 = Number.parseInt(temporary, 10); //den Rest des String in einen Intwert übersetzen
