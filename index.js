@@ -8,9 +8,9 @@ dotenv.config();
 // Create a new client instance
 const client = new Client({
 	intents: [
-		GatewayIntentBits.GUILDS,
-		GatewayIntentBits.GUILD_MEMBERS,
-		GatewayIntentBits.GUILD_VOICE_STATES,
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildVoiceStates,
 	],
 });
 client.commands = new Collection();
