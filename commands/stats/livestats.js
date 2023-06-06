@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import fetch from "node-fetch";
 import { JSDOM } from "jsdom";
@@ -61,7 +61,7 @@ export async function execute(client, interaction) {
 				const statcount = (await getstatcount(url)).toString();
 				console.log(statcount);
 
-				const squadstatembed = new MessageEmbed()
+				const squadstatembed = new EmbedBuilder()
 					.setColor("0x0099FF")
 					.setTitle(title)
 					.setURL(url)
@@ -94,7 +94,7 @@ export async function execute(client, interaction) {
 			const statcount = (await getstatcount(url)).toString();
 			console.log(statcount);
 
-			const squadstatembed = new MessageEmbed()
+			const squadstatembed = new EmbedBuilder()
 				.setColor("0x0099FF")
 				.setTitle(title)
 				.setURL(url)

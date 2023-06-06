@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { checkPerm } from "../../import_folders/functions.js";
 
@@ -108,7 +108,7 @@ export async function execute(client, interaction) {
 	const time = startseconds * 1000 - dateseconds * 1000;
 
 	// declare embed
-	const tableEmbed = new MessageEmbed({
+	const tableEmbed = new EmbedBuilder({
 		color: "880099",
 		title: `Clanwar (${br})`,
 		description: `⏲️ <t:${startseconds}:R>\n[Checkliste](https://shorturl.at/kLNZ9)\n[Fahrzeugaufstellung](https://shorturl.at/lnH49)`,
@@ -121,10 +121,10 @@ export async function execute(client, interaction) {
 	});
 
 	// declare buttons
-	const Reactions = new MessageActionRow().addComponents(
-		new MessageButton().setEmoji("✅").setCustomId("Yes").setStyle("SUCCESS"),
-		new MessageButton().setEmoji("❌").setCustomId("Cancel").setStyle("DANGER"),
-		new MessageButton()
+	const Reactions = new ActionRowBuilder().addComponents(
+		new ButtonBuilder().setEmoji("✅").setCustomId("Yes").setStyle("SUCCESS"),
+		new ButtonBuilder().setEmoji("❌").setCustomId("Cancel").setStyle("DANGER"),
+		new ButtonBuilder()
 			.setEmoji("❔")
 			.setCustomId("Maybe")
 			.setStyle("SECONDARY")

@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import fetch from "node-fetch";
 import { JSDOM } from "jsdom";
 
@@ -60,7 +60,7 @@ async function refresh(client) {
 					const statact = (await getstatact(url)).toString();
 					const statcount = (await getstatcount(url)).toString();
 
-					const newEmbed = new MessageEmbed()
+					const newEmbed = new EmbedBuilder()
 						.setColor("0x0099FF")
 						.setTitle(title)
 						.setURL(url)

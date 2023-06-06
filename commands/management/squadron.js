@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { checkPerm } from "../../import_folders/functions.js";
 
@@ -103,7 +103,7 @@ export async function execute(client, interaction) {
 				ephemeral: true,
 			});
 			// create embed for user DM
-			const removeEmbed = new MessageEmbed({
+			const removeEmbed = new EmbedBuilder({
 				color: "2F3136",
 				thumbnail: {
 					url: `https://cdn.discordapp.com/icons/515253143580442660/d83147d1c4f5ebd03c71793a61ec0b5e.webp?size=96`,
