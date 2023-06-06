@@ -1,5 +1,4 @@
-import { EmbedBuilder } from "discord.js";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export const data = new SlashCommandBuilder()
 	.setName("avatar")

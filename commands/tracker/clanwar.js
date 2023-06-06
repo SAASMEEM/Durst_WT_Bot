@@ -1,6 +1,5 @@
 import { readFileSync } from "node:fs";
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder } from "discord.js";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SlashCommandBuilder } from "discord.js";
 import { checkPerm } from "../../import_folders/functions.js";
 
 const botconfig = JSON.parse(readFileSync("./config.json"));

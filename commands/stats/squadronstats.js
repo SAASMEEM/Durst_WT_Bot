@@ -1,6 +1,4 @@
-import { EmbedBuilder } from "discord.js";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import fetch from "node-fetch";
+import fetch, { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { JSDOM } from "jsdom";
 
 export const data = new SlashCommandBuilder()

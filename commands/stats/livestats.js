@@ -1,7 +1,5 @@
 import fs from "node:fs";
-import { EmbedBuilder } from "discord.js";
-import { SlashCommandBuilder } from "@discordjs/builders";
-import fetch from "node-fetch";
+import fetch, { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { JSDOM } from "jsdom";
 import { checkPerm } from "../../import_folders/functions.js";
 

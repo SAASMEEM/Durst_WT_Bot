@@ -1,6 +1,5 @@
 import { memoryUsage, version as _version } from "node:process";
-import { EmbedBuilder, version } from "discord.js";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { EmbedBuilder, SlashCommandBuilder, version } from "discord.js";
 
 const SECONDS_IN_DAY = 86_400;
 
