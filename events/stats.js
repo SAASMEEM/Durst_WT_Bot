@@ -1,5 +1,6 @@
 import fs from "node:fs";
-import fetch, { EmbedBuilder } from "discord.js";
+import { EmbedBuilder } from "discord.js";
+import fetch from "node-fetch";
 import { JSDOM } from "jsdom";
 
 export function statupdate(client) {
