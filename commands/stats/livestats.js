@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import fetch, { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { JSDOM } from "jsdom";
+import fetch from "node-fetch";
 import { checkPerm } from "../../import_folders/functions.js";
 
 export const data = new SlashCommandBuilder()
