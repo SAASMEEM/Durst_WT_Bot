@@ -61,12 +61,12 @@ export async function execute(client, interaction) {
 				console.log(statcount);
 
 				const squadstatembed = new EmbedBuilder()
-					.setColor("0x0099FF")
+					.setColor(0x2b2d31)
 					.setTitle(title)
 					.setURL(url)
 					.addFields(
 						{ name: "Kampfgruppenaktivität", value: statact, inline: true },
-						{ name: "Spielerzahl", value: statcount, inline: true }
+						{ name: "Spielerzahl", value: `${statcount}/128`, inline: true }
 					)
 					.setTimestamp();
 
@@ -94,7 +94,7 @@ export async function execute(client, interaction) {
 			console.log(statcount);
 
 			const squadstatembed = new EmbedBuilder()
-				.setColor("0x0099FF")
+				.setColor(0x2b2d31)
 				.setTitle(title)
 				.setURL(url)
 				.addFields(
