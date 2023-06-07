@@ -1,6 +1,6 @@
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { JSDOM } from "jsdom";
-import fetch from "node-fetch"
+import fetch from "node-fetch";
 
 export const data = new SlashCommandBuilder()
 	.setName("squadronstats")
@@ -42,7 +42,7 @@ export async function execute(client, interaction) {
 			const statcount = (await getstatcount(url)).toString();
 
 			const squadstatembed = new EmbedBuilder()
-				.setColor(0x2b2d31)
+				.setColor(0x2b_2d_31)
 				.setTitle(title)
 				.setURL(url)
 				.addFields(
@@ -52,27 +52,26 @@ export async function execute(client, interaction) {
 				.setTimestamp();
 
 			return { embeds: [squadstatembed] };
-		} else {
-			return "Die Kampfgruppe existiert nicht!";
 		}
+
+		return "Die Kampfgruppe existiert nicht!";
 	};
 
 	if (interaction.options.getSubcommand() === "url") {
 		const url = interaction.options.getString("url");
-		if (isValidUrl(url)) {
-			respond = await getSquadStats(url);
-		} else {
-			respond = "Die URL ist ungültig!";
-		}
+		respond = isValidUrl(url)
+			? await getSquadStats(url)
+			: "Die URL ist ungültig!";
 	} else if (interaction.options.getSubcommand() === "name") {
 		const name = interaction.options.getString("name");
-		const url = "https://warthunder.com/de/community/claninfo/" + name.replace(/ /g, "%20");
+		const url =
+			"https://warthunder.com/de/community/claninfo/" +
+			name.replace(/ /g, "%20");
 		respond = await getSquadStats(url);
 	}
 
 	await interaction.followUp(respond);
 }
-
 
 function isValidUrl(url) {
 	//überprüft ob die URl passt

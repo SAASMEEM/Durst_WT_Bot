@@ -53,7 +53,9 @@ export async function execute(client, interaction) {
 		url = interaction.options.getString("url");
 	} else if (interaction.options.getSubcommand() === "name") {
 		const name = interaction.options.getString("name");
-		url = "https://warthunder.com/de/community/claninfo/" + name.replace(/ /g, "%20");
+		url =
+			"https://warthunder.com/de/community/claninfo/" +
+			name.replace(/ /g, "%20");
 	}
 
 	if (url) {
@@ -64,7 +66,7 @@ export async function execute(client, interaction) {
 				const statcount = (await getstatcount(url)).toString();
 
 				const squadstatembed = new EmbedBuilder()
-					.setColor(0x2b2d31)
+					.setColor(0x2b_2d_31)
 					.setTitle(title)
 					.setURL(url)
 					.addFields(
