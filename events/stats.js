@@ -61,7 +61,7 @@ async function refresh(client) {
 					const statcount = (await getstatcount(url)).toString();
 
 					const newEmbed = new EmbedBuilder()
-						.setColor("0x0099FF")
+						.setColor(0x2b_2d_31)
 						.setTitle(title)
 						.setURL(url)
 						.addFields(
