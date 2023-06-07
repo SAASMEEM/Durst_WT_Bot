@@ -1,5 +1,6 @@
-import fetch, { EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { JSDOM } from "jsdom";
+import fetch from "node-fetch"
 
 export const data = new SlashCommandBuilder()
 	.setName("squadronstats")
