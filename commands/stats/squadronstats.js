@@ -46,7 +46,7 @@ export async function execute(client, interaction) {
 				console.log(statcount);
 
 				const squadstatembed = new EmbedBuilder()
-					.setColor("#0099FF")
+					.setColor(0x2b2d31)
 					.setTitle(title)
 					.setURL(url)
 					.addFields(
@@ -77,7 +77,7 @@ export async function execute(client, interaction) {
 			console.log(statcount);
 
 			const squadstatembed = new EmbedBuilder()
-				.setColor("#0099FF")
+				.setColor(0x2b2d31)
 				.setTitle(title)
 				.setURL(url)
 				.addFields(
