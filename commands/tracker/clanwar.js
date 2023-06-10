@@ -17,9 +17,12 @@ const botconfig = JSON.parse(readFileSync("./config.json"));
  */
 async function updateEmbed(message, map) {
 	try {
-		message.embeds[0].fields = getFields(message, map);
+		const embed = message.embeds[0];
+		const newEmbed = new EmbedBuilder(embed);
+		newEmbed.setFields(getFields(message, map));
+
 		await message.edit({
-			embeds: message.embeds,
+			embeds: [newEmbed],
 		});
 	} catch (er) {
 		console.log(er)
@@ -44,18 +47,17 @@ function getFields(message, map) {
 		["❔Maybe:", "~"],
 	]);
 
-	return message.embeds[0].fields.map((old) => {
-		const key = keyMap.get(old.name);
-		if (!key) {
-			console.error("Something has gone terribly wrong here!");
-			return undefined;
-		}
+	return message.embeds[0].fields.map((field) => {
+		const key = keyMap.get(field.name);
+		const ids = [...map.entries()]
+			.filter(([k, v]) => v === key)
+			.map(([k]) => k);
 
-		const ids = [...map].filter((v) => v[1] === key).map((v) => v[0]);
+		const fieldValue = ids.map((id) => `<@${id}>`).join('\n');
 
 		return {
-			name: old.name,
-			value: `\u200B${ids.map((id) => `<@${id}>\n `).join("")}`,
+			name: field.name,
+			value: fieldValue.length > 0 && fieldValue.trim().length > 0 ? fieldValue : "\u200B",
 			inline: true,
 		};
 	});
