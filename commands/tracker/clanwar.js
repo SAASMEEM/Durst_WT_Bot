@@ -24,8 +24,8 @@ async function updateEmbed(message, map) {
 		await message.edit({
 			embeds: [newEmbed],
 		});
-	} catch (er) {
-		console.log(er)
+	} catch (error) {
+		console.log(error);
 		await message.edit({
 			components: [],
 			content:
@@ -50,14 +50,17 @@ function getFields(message, map) {
 	return message.embeds[0].fields.map((field) => {
 		const key = keyMap.get(field.name);
 		const ids = [...map.entries()]
-			.filter(([k, v]) => v === key)
-			.map(([k]) => k);
+			.filter(([_, value]) => value === key)
+			.map(([key]) => key);
 
-		const fieldValue = ids.map((id) => `<@${id}>`).join('\n');
+		const fieldValue = ids.map((id) => `<@${id}>`).join("\n");
 
 		return {
 			name: field.name,
-			value: fieldValue.length > 0 && fieldValue.trim().length > 0 ? fieldValue : "\u200B",
+			value:
+				fieldValue.length > 0 && fieldValue.trim().length > 0
+					? fieldValue
+					: "\u200B",
 			inline: true,
 		};
 	});
