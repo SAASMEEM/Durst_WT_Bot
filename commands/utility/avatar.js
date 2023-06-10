@@ -1,5 +1,4 @@
-import { MessageEmbed } from "discord.js";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export const data = new SlashCommandBuilder()
 	.setName("avatar")
@@ -12,7 +11,7 @@ export const data = new SlashCommandBuilder()
 export async function execute(client, interaction) {
 	const user = interaction.options.getUser("target") || interaction.user;
 
-	const AvatarEmbed = new MessageEmbed()
+	const AvatarEmbed = new EmbedBuilder()
 		.setColor(interaction.member.displayHexColor)
 		.setTimestamp()
 		.setImage(user.displayAvatarURL({ dynamic: true, size: 4096 }));

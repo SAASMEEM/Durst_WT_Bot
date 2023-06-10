@@ -1,6 +1,10 @@
 import { readFileSync } from "node:fs";
-import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import {
+	EmbedBuilder,
+	ActionRowBuilder,
+	ButtonBuilder,
+	SlashCommandBuilder,
+} from "discord.js";
 import { checkPerm } from "../../import_folders/functions.js";
 
 const botconfig = JSON.parse(readFileSync("./config.json"));
@@ -13,11 +17,15 @@ const botconfig = JSON.parse(readFileSync("./config.json"));
  */
 async function updateEmbed(message, map) {
 	try {
-		message.embeds[0].fields = getFields(message, map);
+		const embed = message.embeds[0];
+		const newEmbed = new EmbedBuilder(embed);
+		newEmbed.setFields(getFields(message, map));
+
 		await message.edit({
-			embeds: message.embeds,
+			embeds: [newEmbed],
 		});
-	} catch {
+	} catch (error) {
+		console.log(error);
 		await message.edit({
 			components: [],
 			content:
@@ -39,18 +47,20 @@ function getFields(message, map) {
 		["❔Maybe:", "~"],
 	]);
 
-	return message.embeds[0].fields.map((old) => {
-		const key = keyMap.get(old.name);
-		if (!key) {
-			console.error("Something has gone terribly wrong here!");
-			return undefined;
-		}
+	return message.embeds[0].fields.map((field) => {
+		const key = keyMap.get(field.name);
+		const ids = [...map.entries()]
+			.filter(([_, value]) => value === key)
+			.map(([key]) => key);
 
-		const ids = [...map].filter((v) => v[1] === key).map((v) => v[0]);
+		const fieldValue = ids.map((id) => `<@${id}>`).join("\n");
 
 		return {
-			name: old.name,
-			value: `\u200B${ids.map((id) => `<@${id}>\n `).join("")}`,
+			name: field.name,
+			value:
+				fieldValue.length > 0 && fieldValue.trim().length > 0
+					? fieldValue
+					: "\u200B",
 			inline: true,
 		};
 	});
@@ -108,7 +118,7 @@ export async function execute(client, interaction) {
 	const time = startseconds * 1000 - dateseconds * 1000;
 
 	// declare embed
-	const tableEmbed = new MessageEmbed({
+	const tableEmbed = new EmbedBuilder({
 		color: "880099",
 		title: `Clanwar (${br})`,
 		description: `⏲️ <t:${startseconds}:R>\n[Checkliste](https://shorturl.at/kLNZ9)\n[Fahrzeugaufstellung](https://shorturl.at/lnH49)`,
@@ -121,13 +131,13 @@ export async function execute(client, interaction) {
 	});
 
 	// declare buttons
-	const Reactions = new MessageActionRow().addComponents(
-		new MessageButton().setEmoji("✅").setCustomId("Yes").setStyle("SUCCESS"),
-		new MessageButton().setEmoji("❌").setCustomId("Cancel").setStyle("DANGER"),
-		new MessageButton()
+	const Reactions = new ActionRowBuilder().addComponents(
+		new ButtonBuilder().setEmoji("✅").setCustomId("Yes").setStyle("Success"),
+		new ButtonBuilder().setEmoji("❌").setCustomId("Cancel").setStyle("Danger"),
+		new ButtonBuilder()
 			.setEmoji("❔")
 			.setCustomId("Maybe")
-			.setStyle("SECONDARY")
+			.setStyle("Secondary")
 	);
 
 	// post message and embed with buttons

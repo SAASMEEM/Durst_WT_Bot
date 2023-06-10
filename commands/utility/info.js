@@ -1,6 +1,5 @@
 import { memoryUsage, version as _version } from "node:process";
-import { MessageEmbed, version } from "discord.js";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { EmbedBuilder, SlashCommandBuilder, version } from "discord.js";
 
 const SECONDS_IN_DAY = 86_400;
 
@@ -18,7 +17,7 @@ export async function execute(client, interaction) {
 	const m = Math.floor(totalSeconds / 60);
 	const s = Math.floor(totalSeconds % 60);
 
-	const InfoEmbed = new MessageEmbed()
+	const InfoEmbed = new EmbedBuilder()
 		.setTitle("Bot Info")
 		.setColor(interaction.member.displayHexColor)
 		.setTimestamp()
