@@ -21,7 +21,8 @@ async function updateEmbed(message, map) {
 		await message.edit({
 			embeds: message.embeds,
 		});
-	} catch {
+	} catch (er) {
+		console.log(er)
 		await message.edit({
 			components: [],
 			content:
