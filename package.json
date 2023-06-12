@@ -1,6 +1,6 @@
 {
 	"name": "durst_wt",
-	"version": "1.0.0",
+	"version": "3.0.0",
 	"type": "module",
 	"scripts": {
 		"prepare": "husky install",
