@@ -7,7 +7,8 @@
 		"format": "prettier -w . && xo --fix .",
 		"lint": "prettier -c . && xo",
 		"start": "node index.js",
-		"deploy": "node deploy-commands.js"
+		"deploy": "node deploy-commands.js",
+		"boot": "npm run deploy && npm run start"
 	},
 	"dependencies": {
 		"@discordjs/voice": "^0.16.0",
