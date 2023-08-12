@@ -30,7 +30,7 @@ export async function execute(client, interaction) {
             .setStyle("Danger"),
         new ButtonBuilder()
             .setEmoji("❔")
-            .setCustomId("maybe")
+            .setCustomId("tentative")
             .setStyle("Secondary"),
         new ButtonBuilder()
             .setEmoji("⚙️")

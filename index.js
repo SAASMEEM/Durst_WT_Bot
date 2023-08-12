@@ -1,6 +1,7 @@
 import { env } from "node:process";
 import fs from "node:fs";
 import dotenv from "dotenv";
+import Sequelize from "sequelize";
 import { Client, Collection, GatewayIntentBits } from "discord.js";
 
 dotenv.config();
@@ -13,6 +14,15 @@ const client = new Client({
 		GatewayIntentBits.GuildVoiceStates,
 	],
 });
+
+const sequelize = new Sequelize('database', 'user', 'password', {
+	host: 'localhost',
+	dialect: 'sqlite',
+	logging: false,
+	// SQLite only
+	storage: 'database.sqlite',
+});
+
 client.commands = new Collection();
 
 const load = async (client, dir = "./commands/") => {
