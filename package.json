@@ -43,7 +43,8 @@
 			"spaced-comment": "off",
 			"unicorn/prefer-top-level-await": "off",
 			"unicorn/no-await-expression-member": "off",
-			"no-await-in-loop": "off"
+			"no-await-in-loop": "off",
+			"unicorn/prefer-replace-all": "off"
 		}
 	},
 	"lint-staged": {
