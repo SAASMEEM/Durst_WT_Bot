@@ -5,7 +5,7 @@ import {
 	ButtonBuilder,
 	SlashCommandBuilder,
 } from "discord.js";
-import { checkPerm } from "../../import_folders/functions.js";
+import { checkPerms } from "../../import_folders/functions.js";
 
 const botconfig = JSON.parse(readFileSync("./config.json"));
 
@@ -92,7 +92,12 @@ export const data = new SlashCommandBuilder()
 		*/
 export async function execute(client, interaction) {
 	// check for permission
-	const check = await checkPerm(interaction, "MENTION_EVERYONE");
+	const check = await checkPerms(
+		interaction,
+		null,
+		botconfig.cwModRoleId,
+		null
+	);
 	if (!check) return;
 
 	// declare variables
