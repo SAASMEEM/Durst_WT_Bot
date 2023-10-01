@@ -1,103 +1,77 @@
-const Discord = require("discord.js");
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const fetch = require("node-fetch");
-const { JSDOM } = require("jsdom");
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { JSDOM } from "jsdom";
+import fetch from "node-fetch";
 
-module.exports = {
-	data: new SlashCommandBuilder()
-		.setName("squadronstats")
-		.setDescription("Creates a 'squadronstats' box.")
-		.addSubcommand((subcommand) =>
-			subcommand
-				.setName("name")
-				.setDescription(
-					"Creates a 'squadronstats' box based on the squad name."
+export const data = new SlashCommandBuilder()
+	.setName("squadronstats")
+	.setDescription("Creates a 'squadronstats' box.")
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName("name")
+			.setDescription("Creates a 'squadronstats' box based on the squad name.")
+			.addStringOption((option) =>
+				option
+					.setName("name")
+					.setDescription("name of the squad")
+					.setRequired(true)
+			)
+	)
+
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName("url")
+			.setDescription("Creates a 'squadronstats' box based on the squad url.")
+			.addStringOption((option) =>
+				option
+					.setName("url")
+					.setDescription("url of the squad")
+					.setRequired(true)
+			)
+	);
+
+export async function execute(client, interaction) {
+	await interaction.deferReply();
+	let respond = "";
+
+	const getSquadStats = async (url) => {
+		const squadExists = await squadcheck(url);
+
+		if (squadExists) {
+			const title = (await getsquadname(url)).toString();
+			const statact = (await getstatact(url)).toString();
+			const statcount = (await getstatcount(url)).toString();
+
+			const squadstatembed = new EmbedBuilder()
+				.setColor(0x2b_2d_31)
+				.setTitle(title)
+				.setURL(url)
+				.addFields(
+					{ name: "Kampfgruppenaktivität", value: statact, inline: true },
+					{ name: "Spielerzahl", value: `${statcount}/128`, inline: true }
 				)
-				.addStringOption((option) =>
-					option
-						.setName("name")
-						.setDescription("name of the squad")
-						.setRequired(true)
-				)
-		)
+				.setTimestamp();
 
-		.addSubcommand((subcommand) =>
-			subcommand
-				.setName("url")
-				.setDescription("Creates a 'squadronstats' box based on the squad url.")
-				.addStringOption((option) =>
-					option
-						.setName("url")
-						.setDescription("url of the squad")
-						.setRequired(true)
-				)
-		),
-
-	async execute(client, interaction) {
-		await interaction.deferReply();
-		let respond = "";
-		if (interaction.options.getSubcommand() === "url") {
-			const url = interaction.options.getString("url");
-			if (isValidUrl(url)) {
-				//damit wird überprüft ob die URL passt
-				//respond = "Die Kampgruppenaktivität ist aktuell " +await getstatact(url) + "\nDie Anzahl der Mitglieder ist: " + await getstatcount(url);
-				if ((await squadcheck(url)) === true) {
-					const title = (await getsquadname(url)).toString();
-					console.log(title);
-					const statact = (await getstatact(url)).toString();
-					console.log(statact);
-					const statcount = (await getstatcount(url)).toString();
-					console.log(statcount);
-
-					const squadstatembed = new Discord.MessageEmbed()
-						.setColor("0x0099FF")
-						.setTitle(title)
-						.setURL(url)
-						.addFields(
-							{ name: "Kampfgruppenaktivität", value: statact, inline: true },
-							{ name: "Spielerzahl", value: `${statcount}/128`, inline: true }
-						)
-						.setTimestamp();
-
-					respond = { embeds: [squadstatembed] };
-				} else {
-					respond = "Die Kampfgruppe existiert nicht!";
-				}
-			} else {
-				respond = "Die URL ist ungültig!";
-			}
-		} else if (interaction.options.getSubcommand() === "name") {
-			const name = interaction.options.getString("name");
-			const url =
-				"https://warthunder.com/de/community/claninfo/" +
-				name.replace(/ /g, "%20");
-			if ((await squadcheck(url)) === true) {
-				console.log(url);
-				const title = (await getsquadname(url)).toString();
-				console.log(title);
-				const statact = (await getstatact(url)).toString();
-				console.log(statact);
-				const statcount = (await getstatcount(url)).toString();
-				console.log(statcount);
-
-				const squadstatembed = new Discord.MessageEmbed()
-					.setColor("0x0099FF")
-					.setTitle(title)
-					.setURL(url)
-					.addFields(
-						{ name: "Kampfgruppenaktivität", value: statact, inline: true },
-						{ name: "Spielerzahl", value: `${statcount}/128`, inline: true }
-						)
-					.setTimestamp();
-				respond = { embeds: [squadstatembed] };
-			} else {
-				respond = "Die Kampfgruppe existiert nicht!";
-			}
+			return { embeds: [squadstatembed] };
 		}
 
-		await interaction.followUp(respond);
-	},
-};
+		return "Die Kampfgruppe existiert nicht!";
+	};
+
+	if (interaction.options.getSubcommand() === "url") {
+		const url = interaction.options.getString("url");
+		respond = isValidUrl(url)
+			? await getSquadStats(url)
+			: "Die URL ist ungültig!";
+	} else if (interaction.options.getSubcommand() === "name") {
+		const name = interaction.options.getString("name");
+		const url =
+			"https://warthunder.com/de/community/claninfo/" +
+			name.replace(/ /g, "%20");
+		respond = await getSquadStats(url);
+	}
+
+	await interaction.followUp(respond);
+}
 
 function isValidUrl(url) {
 	//überprüft ob die URl passt
@@ -135,7 +109,7 @@ async function getstatcount(url) {
 			"#squadronsInfoRoot > div.squadrons-info__content-wrapper > div:nth-child(2)"
 		); //hier wird das Element ausgelesen
 		let temporary = count1.textContent;
-		temporary = temporary.replace(/[A-z]/g, ""); // ersetzen der Buchstaben durch nichts aka. Buchstaben entfernen
+		temporary = temporary.replace(/[a-zA-Z]/g, ""); // ersetzen der Buchstaben durch nichts aka. Buchstaben entfernen
 		temporary = temporary.replace(/ /g, ""); //Leerzeichen entfernen
 		temporary = temporary.replace(/:/g, ""); //Doppelpunkt entfernen
 		const icount1 = Number.parseInt(temporary, 10); //den Rest des String in einen Intwert übersetzen

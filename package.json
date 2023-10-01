@@ -1,6 +1,7 @@
 {
 	"name": "durst_wt",
-	"version": "1.0.0",
+	"version": "3.0.0",
+	"type": "module",
 	"scripts": {
 		"prepare": "husky install",
 		"format": "prettier -w . && xo --fix .",
@@ -9,22 +10,19 @@
 		"deploy": "node deploy-commands.js"
 	},
 	"dependencies": {
-		"@discordjs/builders": "^1.5.0",
-		"@discordjs/rest": "^1.6.0",
 		"@discordjs/voice": "^0.16.0",
-		"discord-api-types": "^0.37.37",
-		"discord.js": "^13",
-		"dotenv": "^16.0.3",
-		"jsdom": "^21.1.1",
+		"discord.js": "^14.11.0",
+		"dotenv": "^16.3.1",
+		"jsdom": "^22.1.0",
 		"node-bash-title": "^0.0.2",
-		"util": "^0.12.5",
-		"xmldom": "^0.6.0"
+		"node-fetch": "^3.3.2",
+		"util": "^0.12.5"
 	},
 	"devDependencies": {
 		"husky": "^8.0.2",
-		"lint-staged": "^13.0.4",
-		"prettier": "^2.8.0",
-		"xo": "^0.53.0"
+		"lint-staged": "^14.0.1",
+		"prettier": "^3.0.3",
+		"xo": "^0.56.0"
 	},
 	"prettier": {
 		"bracketSpacing": true,
@@ -39,12 +37,14 @@
 		],
 		"prettier": true,
 		"rules": {
-			"unicorn/prefer-module": "off",
+			"node/file-extension-in-import": "off",
+			"n/file-extension-in-import": "off",
 			"capitalized-comments": "off",
 			"spaced-comment": "off",
-			"import/no-unassigned-import": "off",
 			"unicorn/prefer-top-level-await": "off",
-			"no-await-in-loop": "off"
+			"unicorn/no-await-expression-member": "off",
+			"no-await-in-loop": "off",
+			"unicorn/prefer-replace-all": "off"
 		}
 	},
 	"lint-staged": {

@@ -1,124 +1,122 @@
-const fs = require("node:fs");
-const Discord = require("discord.js");
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { JSDOM } = require("jsdom");
-const fetch = require("node-fetch");
-const { checkPerm } = require("../../import_folders/functions.js");
+import fs from "node:fs";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { JSDOM } from "jsdom";
+import fetch from "node-fetch";
+import { checkPerm } from "../../import_folders/functions.js";
 
-module.exports = {
-	data: new SlashCommandBuilder()
-		.setName("livestats")
-		.setDescription("Creates a 'squadronstats' box that gets daily updates.")
-		.addSubcommand((subcommand) =>
-			subcommand
-				.setName("name")
-				.setDescription(
-					"Creates a 'squadronstats' box that receives daily updates based on the squad name."
-				)
-				.addStringOption((option) =>
-					option
-						.setName("name")
-						.setDescription("name of the squad")
-						.setRequired(true)
-				)
-		)
+export const data = new SlashCommandBuilder()
+	.setName("livestats")
+	.setDescription("Creates a 'squadronstats' box that gets daily updates.")
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName("name")
+			.setDescription(
+				"Creates a 'squadronstats' box that receives daily updates based on the squad name."
+			)
+			.addStringOption((option) =>
+				option
+					.setName("name")
+					.setDescription("name of the squad")
+					.setRequired(true)
+			)
+	)
 
-		.addSubcommand((subcommand) =>
-			subcommand
-				.setName("url")
-				.setDescription(
-					"Creates a 'squadronstats' box that receives daily updates based on the squad url."
-				)
-				.addStringOption((option) =>
-					option
-						.setName("url")
-						.setDescription("url of the squad")
-						.setRequired(true)
-				)
-		),
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName("url")
+			.setDescription(
+				"Creates a 'squadronstats' box that receives daily updates based on the squad url."
+			)
+			.addStringOption((option) =>
+				option
+					.setName("url")
+					.setDescription("url of the squad")
+					.setRequired(true)
+			)
+	);
 
-	async execute(client, interaction) {
-		const check = await checkPerm(interaction, "ADMINISTRATOR");
-		if (!check) return;
-		let checker = false;
-		const channelid = interaction.channel.id;
-		const channel = client.channels.cache.get(channelid);
-		let url = "";
-		interaction.reply({
-			content: `Livestatbox wird erstellt<a:sesam_loading:847835764650016830>`,
-			ephemeral: true,
-		});
-		let respond = "";
-		if (interaction.options.getSubcommand() === "url") {
-			url = interaction.options.getString("url");
-			if (isValidUrl(url)) {
-				//damit wird überprüft ob die URL passt
-				//respond = "Die Kampgruppenaktivität ist aktuell " +await getstatact(url) + "\nDie Anzahl der Mitglieder ist: " + await getstatcount(url);
-				if ((await squadcheck(url)) === true) {
-					const title = (await getsquadname(url)).toString();
-					console.log(title);
-					const statact = (await getstatact(url)).toString();
-					console.log(statact);
-					const statcount = (await getstatcount(url)).toString();
-					console.log(statcount);
+export async function execute(client, interaction) {
+	const check = await checkPerm(interaction, "ADMINISTRATOR");
+	if (!check) return;
+	const channelid = interaction.channel.id;
+	const channel = client.channels.cache.get(channelid);
+	let url = "";
+	let respond = "";
+	let checker = false;
 
-					const squadstatembed = new Discord.MessageEmbed()
-						.setColor("0x0099FF")
-						.setTitle(title)
-						.setURL(url)
-						.addFields(
-							{ name: "Kampfgruppenaktivität", value: statact, inline: true },
-							{ name: "Spielerzahl", value: `${statcount}/128`, inline: true }
-						)
-						.setTimestamp();
+	interaction.reply({
+		content: `Livestatbox wird erstellt<a:sesam_loading:847835764650016830>`,
+		ephemeral: true,
+	});
 
-					respond = { embeds: [squadstatembed] };
-					checker = true;
-				} else {
-					respond = "Die Kampfgruppe existiert nicht!";
-				}
-			} else {
-				respond = "Die URL ist ungültig!";
-			}
-		} else if (interaction.options.getSubcommand() === "name") {
-			const name = interaction.options.getString("name");
-			url =
-				"https://warthunder.com/de/community/claninfo/" +
-				name.replace(/ /g, "%20");
+	if (interaction.options.getSubcommand() === "url") {
+		url = interaction.options.getString("url");
+	} else if (interaction.options.getSubcommand() === "name") {
+		const name = interaction.options.getString("name");
+		url =
+			"https://warthunder.com/de/community/claninfo/" +
+			name.replace(/ /g, "%20");
+	}
 
-			if ((await squadcheck(url)) === true) {
-				console.log(url);
+	if (url) {
+		if (isValidUrl(url)) {
+			if (await squadcheck(url)) {
 				const title = (await getsquadname(url)).toString();
-				console.log(title);
 				const statact = (await getstatact(url)).toString();
-				console.log(statact);
 				const statcount = (await getstatcount(url)).toString();
-				console.log(statcount);
 
-				const squadstatembed = new Discord.MessageEmbed()
-					.setColor("0x0099FF")
+				const squadstatembed = new EmbedBuilder()
+					.setColor(0x2b_2d_31)
 					.setTitle(title)
 					.setURL(url)
 					.addFields(
 						{ name: "Kampfgruppenaktivität", value: statact, inline: true },
 						{ name: "Spielerzahl", value: `${statcount}/128`, inline: true }
-						)
+					)
 					.setTimestamp();
+
 				respond = { embeds: [squadstatembed] };
 				checker = true;
 			} else {
 				respond = "Die Kampfgruppe existiert nicht!";
 			}
+		} else {
+			respond = "Die URL ist ungültig!";
 		}
+	}
 
-		const response = await channel.send(respond);
-		if (checker === true) {
-			fs.access("idlist.json", fs.constants.F_OK, (error) => {
-				if (error) {
-					const idlist = [];
-					idlist[0] = [];
-					idlist[0][0] = response;
-					idlist[0][1] = url;
+	const response = await channel.send(respond);
+	if (checker === true) {
+		fs.access("idlist.json", fs.constants.F_OK, (error) => {
+			if (error) {
+				const idlist = [];
+				idlist[0] = [];
+				idlist[0][0] = response;
+				idlist[0][1] = url;
+				const stringlist = JSON.stringify(idlist);
+				fs.writeFile("idlist.json", stringlist, "utf8", function (error_) {
+					if (error_) {
+						console.log("Error occurred while writing JSON file:", error_);
+						return;
+					}
+
+					console.log("JSON file has been saved.");
+				});
+			} else {
+				console.log("File exists");
+				fs.readFile("idlist.json", "utf8", function (error_, jsonContent) {
+					if (error_) {
+						console.log("Error occurred while reading JSON file:", error_);
+						return;
+					}
+
+					let idlist = [];
+					idlist = JSON.parse(jsonContent);
+					console.log(idlist.length);
+					const idlength = idlist.length;
+					idlist[idlist.length] = [];
+					idlist[idlength][0] = response;
+					idlist[idlength][1] = url;
 					const stringlist = JSON.stringify(idlist);
 					fs.writeFile("idlist.json", stringlist, "utf8", function (error_) {
 						if (error_) {
@@ -128,36 +126,11 @@ module.exports = {
 
 						console.log("JSON file has been saved.");
 					});
-				} else {
-					console.log("File exists");
-					fs.readFile("idlist.json", "utf8", function (error_, jsonContent) {
-						if (error_) {
-							console.log("Error occurred while reading JSON file:", error_);
-							return;
-						}
-
-						let idlist = [];
-						idlist = JSON.parse(jsonContent);
-						console.log(idlist.length);
-						const idlength = idlist.length;
-						idlist[idlist.length] = [];
-						idlist[idlength][0] = response;
-						idlist[idlength][1] = url;
-						const stringlist = JSON.stringify(idlist);
-						fs.writeFile("idlist.json", stringlist, "utf8", function (error_) {
-							if (error_) {
-								console.log("Error occurred while writing JSON file:", error_);
-								return;
-							}
-
-							console.log("JSON file has been saved.");
-						});
-					});
-				}
-			});
-		}
-	},
-};
+				});
+			}
+		});
+	}
+}
 
 function isValidUrl(url) {
 	//überprüft ob die URl passt
@@ -195,7 +168,7 @@ async function getstatcount(url) {
 			"#squadronsInfoRoot > div.squadrons-info__content-wrapper > div:nth-child(2)"
 		); //hier wird das Element ausgelesen
 		let temporary = count1.textContent;
-		temporary = temporary.replace(/[A-z]/g, ""); // ersetzen der Buchstaben durch nichts aka. Buchstaben entfernen
+		temporary = temporary.replace(/[a-zA-Z]/g, ""); // ersetzen der Buchstaben durch nichts aka. Buchstaben entfernen
 		temporary = temporary.replace(/ /g, ""); //Leerzeichen entfernen
 		temporary = temporary.replace(/:/g, ""); //Doppelpunkt entfernen
 		const icount1 = Number.parseInt(temporary, 10); //den Rest des String in einen Intwert übersetzen

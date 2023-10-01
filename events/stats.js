@@ -1,11 +1,9 @@
-const fs = require("node:fs");
-const Discord = require("discord.js");
-const { JSDOM } = require("jsdom");
-const fetch = require("node-fetch");
+import fs from "node:fs";
+import { EmbedBuilder } from "discord.js";
+import fetch from "node-fetch";
+import { JSDOM } from "jsdom";
 
-module.exports = { statupdate };
-
-function statupdate(client) {
+export function statupdate(client) {
 	// Berechnen der Zeit, bis die Funktion ausgeführt werden soll
 	const now = new Date();
 	let millisUntil =
@@ -58,12 +56,12 @@ async function refresh(client) {
 					const messageobject = idlist[i][0];
 					const url = idlist[i][1];
 					// Neue Embed erstellen
-					const title = (await getsquadname(url)) + " ";
-					const statact = (await getstatact(url)) + " ";
-					const statcount = (await getstatcount(url)) + " ";
+					const title = (await getsquadname(url)).toString();
+					const statact = (await getstatact(url)).toString();
+					const statcount = (await getstatcount(url)).toString();
 
-					const newEmbed = new Discord.MessageEmbed()
-						.setColor("0x0099FF")
+					const newEmbed = new EmbedBuilder()
+						.setColor(0x2b_2d_31)
 						.setTitle(title)
 						.setURL(url)
 						.addFields(
@@ -137,7 +135,7 @@ async function getstatcount(url) {
 			"#squadronsInfoRoot > div.squadrons-info__content-wrapper > div:nth-child(2)"
 		); //hier wird das Element ausgelesen
 		let temporary = count1.textContent;
-		temporary = temporary.replace(/[A-z]/g, ""); // ersetzen der Buchstaben durch nichts aka. Buchstaben entfernen
+		temporary = temporary.replace(/[a-zA-Z]/g, ""); // ersetzen der Buchstaben durch nichts aka. Buchstaben entfernen
 		temporary = temporary.replace(/ /g, ""); //Leerzeichen entfernen
 		temporary = temporary.replace(/:/g, ""); //Doppelpunkt entfernen
 		const icount1 = Number.parseInt(temporary, 10); //den Rest des String in einen Intwert übersetzen
