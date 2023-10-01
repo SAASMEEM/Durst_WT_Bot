@@ -92,7 +92,12 @@ export const data = new SlashCommandBuilder()
 		*/
 export async function execute(client, interaction) {
 	// check for permission
-	const check = await checkPerms(interaction, null, botconfig.cwModRoleId, null);
+	const check = await checkPerms(
+		interaction,
+		null,
+		botconfig.cwModRoleId,
+		null
+	);
 	if (!check) return;
 
 	// declare variables
