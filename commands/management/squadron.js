@@ -205,7 +205,7 @@ export async function execute(client, interaction) {
 
 	if (interaction.options.getSubcommandGroup() === "clanwar") {
 		// check for required permission
-		const check = await checkPerm(interaction, "MOVE_MEMBERS");
+		const check = await checkPerms(interaction, null, botconfig.cwModRoleId, null);
 		if (!check) return;
 		// /user/remove
 		if (interaction.options.getSubcommand() === "remove") {
