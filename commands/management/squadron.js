@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
-import { checkPerm } from "../../import_folders/functions.js";
+import { checkPerm, checkPerms } from "../../import_folders/functions.js";
 
 const botconfig = JSON.parse(readFileSync("./config.json"));
 
@@ -205,7 +205,12 @@ export async function execute(client, interaction) {
 
 	if (interaction.options.getSubcommandGroup() === "clanwar") {
 		// check for required permission
-		const check = await checkPerm(interaction, "MOVE_MEMBERS");
+		const check = await checkPerms(
+			interaction,
+			null,
+			botconfig.cwModRoleId,
+			null
+		);
 		if (!check) return;
 		// /user/remove
 		if (interaction.options.getSubcommand() === "remove") {
