@@ -1,6 +1,6 @@
 import shellTitle from "node-bash-title";
-import { statupdate } from "./stats.js";
 import { ActivityType } from "discord.js";
+import { statupdate } from "./stats.js";
 
 export const name = "ready";
 export function execute(client) {
