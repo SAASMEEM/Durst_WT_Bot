@@ -77,11 +77,21 @@ export const data = new SlashCommandBuilder()
 			.setRequired(true)
 	)
 	.addIntegerOption((option) =>
+		option.setName("year").setDescription("Jahr").setRequired(true)
+	)
+	.addIntegerOption((option) =>
+		option.setName("month").setDescription("Monat").setRequired(true)
+	)
+	.addIntegerOption((option) =>
+		option.setName("day").setDescription("Tag").setRequired(true)
+	)
+	.addIntegerOption((option) =>
 		option
 			.setName("hour")
 			.setDescription("Bitte die Startzeit angeben. Default: 20:00")
 			.setRequired(false)
 	);
+
 /*
 		.addIntegerOption((option) =>
 			option
@@ -102,25 +112,23 @@ export async function execute(client, interaction) {
 
 	// declare variables
 	const title = interaction.options.getString("title");
-	const inserthour = interaction.options.getInteger("hour");
-	//		const insertminute = interaction.options.getInteger("minute");
-	const defaulthour = botconfig.defaultTime;
-	const d = new Date();
-	const year = d.getFullYear();
-	const month = d.getMonth();
-	const day = d.getDate();
-	const hour = d.getHours();
-	const minute = d.getMinutes();
-	const second = d.getSeconds();
-	let starttime = null;
-	starttime =
-		inserthour === null || inserthour === undefined ? defaulthour : inserthour;
+	// Input date and time components
+	const year = interaction.options.getInteger("year");
+	const month = interaction.options.getInteger("month");
+	const day = interaction.options.getInteger("day");
+	const hours = interaction.options.getInteger("hour");
+	const minutes = 0;
+	const seconds = 0;
 
-	const date = new Date(year, month, day, hour, minute, second);
-	const dateseconds = date.getTime() / 1000;
-	const start = new Date(year, month, day, starttime, 0, 0);
-	const startseconds = start.getTime() / 1000;
-	const time = startseconds * 1000 - dateseconds * 1000;
+	// Create a Date object with the provided information
+	const targetDate = new Date(year, month - 1, day, hours, minutes, seconds);
+
+	// Get the Unix timestamp (in milliseconds) for the target time
+	const targetTimestamp = targetDate.getTime();
+	const startseconds = targetTimestamp / 1000;
+
+	// Calculate the time remaining until the target time
+	const timeRemaining = targetTimestamp - Date.now();
 
 	// declare embed
 	const tableEmbed = new EmbedBuilder({
@@ -148,7 +156,7 @@ export async function execute(client, interaction) {
 	// post message and embed with buttons
 	await interaction.deferReply();
 	await interaction.followUp({
-		content: `${title} um ${starttime}:00 Uhr! Tragt euch ein!`,
+		content: `${title} am <t:${startseconds}:f>! Tragt euch ein!`,
 	});
 	const message = await interaction.channel.send({
 		embeds: [tableEmbed],
@@ -162,13 +170,13 @@ export async function execute(client, interaction) {
 		await interaction.channel.send(
 			`<@&${botconfig.mannschafter1RoleId}><@&${botconfig.mannschafter2RoleId}><@&${botconfig.mannschafter3RoleId}> ${title} geht los!`
 		);
-	}, time);
+	}, timeRemaining);
 
 	// button collector
 	const buttonCollector = interaction.channel.createMessageComponentCollector({
 		filter: (m) =>
 			m.customId === "Yes" || m.customId === "Cancel" || m.customId === "Maybe",
-		time,
+		timeRemaining,
 	});
 
 	/** @type {Map<string,"+"|"-"|"~">} */
