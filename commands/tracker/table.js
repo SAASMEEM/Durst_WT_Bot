@@ -77,22 +77,13 @@ export const data = new SlashCommandBuilder()
 			.setRequired(true)
 	)
 	.addIntegerOption((option) =>
-		option
-			.setName("year")
-			.setDescription("Jahr")
-			.setRequired(true)
+		option.setName("year").setDescription("Jahr").setRequired(true)
 	)
 	.addIntegerOption((option) =>
-		option
-			.setName("month")
-			.setDescription("Monat")
-			.setRequired(true)
+		option.setName("month").setDescription("Monat").setRequired(true)
 	)
 	.addIntegerOption((option) =>
-		option
-			.setName("day")
-			.setDescription("Tag")
-			.setRequired(true)
+		option.setName("day").setDescription("Tag").setRequired(true)
 	)
 	.addIntegerOption((option) =>
 		option
