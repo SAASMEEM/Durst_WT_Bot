@@ -4,8 +4,9 @@ import {
 	ActionRowBuilder,
 	ButtonBuilder,
 	SlashCommandBuilder,
+	PermissionsBitField
 } from "discord.js";
-import { checkPerms } from "../../import_folders/functions.js";
+import { checkPerm } from "../../import_folders/functions.js";
 
 const botconfig = JSON.parse(readFileSync("./config.json"));
 
@@ -92,12 +93,7 @@ export const data = new SlashCommandBuilder()
 		*/
 export async function execute(client, interaction) {
 	// check for permission
-	const check = await checkPerms(
-		interaction,
-		null,
-		botconfig.cwModRoleId,
-		null
-	);
+	const check = await checkPerm(interaction, PermissionsBitField.Flags.MentionEveryone);
 	if (!check) return;
 
 	// declare variables
