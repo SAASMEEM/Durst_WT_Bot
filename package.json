@@ -10,18 +10,18 @@
 		"deploy": "node deploy-commands.js"
 	},
 	"dependencies": {
-		"@discordjs/voice": "^0.16.0",
+		"@discordjs/voice": "^0.16.1",
 		"discord.js": "^14.11.0",
 		"dotenv": "^16.3.1",
-		"jsdom": "^22.1.0",
+		"jsdom": "^23.0.1",
 		"node-bash-title": "^0.0.2",
 		"node-fetch": "^3.3.2",
 		"util": "^0.12.5"
 	},
 	"devDependencies": {
 		"husky": "^8.0.2",
-		"lint-staged": "^14.0.1",
-		"prettier": "^3.0.3",
+		"lint-staged": "^15.1.0",
+		"prettier": "^3.1.0",
 		"xo": "^0.56.0"
 	},
 	"prettier": {
@@ -44,7 +44,7 @@
 			"unicorn/prefer-top-level-await": "off",
 			"unicorn/no-await-expression-member": "off",
 			"no-await-in-loop": "off",
-			"unicorn/prefer-replace-all": "off"
+			"unicorn/prefer-string-replace-all": "off"
 		}
 	},
 	"lint-staged": {

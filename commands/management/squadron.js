@@ -1,5 +1,9 @@
 import { readFileSync } from "node:fs";
-import { EmbedBuilder, SlashCommandBuilder, PermissionsBitField } from "discord.js";
+import {
+	EmbedBuilder,
+	SlashCommandBuilder,
+	PermissionsBitField,
+} from "discord.js";
 import { checkPerm } from "../../import_folders/functions.js";
 
 const botconfig = JSON.parse(readFileSync("./config.json"));
@@ -84,7 +88,10 @@ export async function execute(client, interaction) {
 	// /user
 	if (interaction.options.getSubcommandGroup() === "user") {
 		// check for required permission
-		const check = await checkPerm(interaction, PermissionsBitField.Flags.ManageNicknames);
+		const check = await checkPerm(
+			interaction,
+			PermissionsBitField.Flags.ManageNicknames
+		);
 		if (!check) return;
 		// /user/remove
 		if (interaction.options.getSubcommand() === "remove") {
@@ -205,7 +212,10 @@ export async function execute(client, interaction) {
 
 	if (interaction.options.getSubcommandGroup() === "clanwar") {
 		// check for required permission
-		const check = await checkPerm(interaction, PermissionsBitField.Flags.MentionEveryone);
+		const check = await checkPerm(
+			interaction,
+			PermissionsBitField.Flags.MentionEveryone
+		);
 		if (!check) return;
 		// /user/remove
 		if (interaction.options.getSubcommand() === "remove") {

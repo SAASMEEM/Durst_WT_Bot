@@ -4,7 +4,7 @@ import {
 	ActionRowBuilder,
 	ButtonBuilder,
 	SlashCommandBuilder,
-	PermissionsBitField
+	PermissionsBitField,
 } from "discord.js";
 import { checkPerm } from "../../import_folders/functions.js";
 
@@ -93,7 +93,10 @@ export const data = new SlashCommandBuilder()
 		*/
 export async function execute(client, interaction) {
 	// check for permission
-	const check = await checkPerm(interaction, PermissionsBitField.Flags.MentionEveryone);
+	const check = await checkPerm(
+		interaction,
+		PermissionsBitField.Flags.MentionEveryone
+	);
 	if (!check) return;
 
 	// declare variables
