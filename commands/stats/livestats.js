@@ -1,5 +1,9 @@
 import fs from "node:fs";
-import { EmbedBuilder, SlashCommandBuilder, PermissionsBitField } from "discord.js";
+import {
+	EmbedBuilder,
+	SlashCommandBuilder,
+	PermissionsBitField,
+} from "discord.js";
 import { JSDOM } from "jsdom";
 import fetch from "node-fetch";
 import { checkPerm } from "../../import_folders/functions.js";
@@ -36,7 +40,10 @@ export const data = new SlashCommandBuilder()
 	);
 
 export async function execute(client, interaction) {
-	const check = await checkPerm(interaction, PermissionsBitField.Flags.Administrator);
+	const check = await checkPerm(
+		interaction,
+		PermissionsBitField.Flags.Administrator
+	);
 	if (!check) return;
 	const channelid = interaction.channel.id;
 	const channel = client.channels.cache.get(channelid);
