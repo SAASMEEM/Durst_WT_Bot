@@ -20,7 +20,7 @@
 	},
 	"devDependencies": {
 		"husky": "^8.0.2",
-		"lint-staged": "^14.0.1",
+		"lint-staged": "^15.1.0",
 		"prettier": "^3.0.3",
 		"xo": "^0.56.0"
 	},
@@ -44,7 +44,7 @@
 			"unicorn/prefer-top-level-await": "off",
 			"unicorn/no-await-expression-member": "off",
 			"no-await-in-loop": "off",
-			"unicorn/prefer-replace-all": "off"
+			"unicorn/prefer-string-replace-all": "off"
 		}
 	},
 	"lint-staged": {
