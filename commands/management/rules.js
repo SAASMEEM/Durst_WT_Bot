@@ -9,25 +9,25 @@ import { checkPerm } from "../../import_folders/functions.js";
 const botconfig = JSON.parse(readFileSync("./config.json"));
 
 // Rules content
-const discordRules = `Die **[Nutzungsbedingungen](<https://discord.com/terms/>) (ToS)** von Discord gelten für diesen Server.
+const discordRules = `Die [Nutzungsbedingungen](<https://discord.com/terms/>) (ToS) von Discord gelten für diesen Server.
 
-1. Das **Serverteam** und seine Entscheidungen müssen **respektiert** werden.
-2. Wenn du **Hilfe** benötigst wende dich an einen <@&${botconfig.uffzRoleId}>.
-3. Jegliche Form von **Diskriminierung, Spam, Mobbing oder NSFW-Inhalten** ist auf diesem Server **nicht erlaubt**. 
-4. Jede Art von **Werbung** ist **verboten**. Dies gilt auch für **Direktnachrichten**.
-5. Diskussionen sind **respektvoll und konstruktiv** zu führen.
-6. Veröffentliche Beiträge in den dafür vorgesehenen Kanal.
-7. **Urheberrechtlich geschütztes** Material darf **nicht geteilt** werden.
-8. Achte darauf, **keine sensiblen persönlichen Daten**, weder deine eigenen noch die anderer Personen, auf dem Server zu **veröffentlichen**.
-9. Unerlaubtes Stören von Voice-Chats wird nicht toleriert.`;
+1. Das Serverteam und seine Entscheidungen müssen respektiert werden.
+2. Jegliche Form von Diskriminierung, Spam, Mobbing oder NSFW-Inhalten ist auf diesem Server nicht erlaubt.
+3. Antisemitische, rassistische, sexistische, homophobe oder diskriminierende Äußerungen oder Handlungen sind nicht erlaubt.
+4. Die Verwendung und Verbreitung von verfassungswidrigen Symbolen, Zeichen und Flaggen ist strengstens untersagt.
+5. Avatare, Nicknamen und Beschreibungen dürfen keine pornographischen, rassistischen oder beleidigenden Inhalte beinhalten.
+6. Jede Art von Werbung ist verboten. Dies gilt auch für Direktnachrichten.
+7. Diskussionen sind respektvoll und konstruktiv zu führen.
+8. Veröffentliche Beiträge in den dafür vorgesehenen Kanal.
+9. Urheberrechtlich geschütztes Material darf nicht geteilt werden.
+10. Achte darauf, keine sensiblen persönlichen Daten, weder deine eigenen noch die anderer Personen, auf dem Server zu veröffentlichen.
+11. Unerlaubtes Stören von Voice-Chats wird nicht toleriert.
+12. Das benutzen von Cheats, Hacks oder Modifikationen, die das Spiel verfälschen ist verboten.
+13. Die Verwendung von Decals oder anderen Mitteln zur Herstellung oder Verbreitung von Nazisymbolen, verbotenen Zeichen, Flaggen oder beleidigenden/verletzenden Darstellungen ist strengstens untersagt.`;
 
-const inGameRules = `10. Benutze keine **Bugs, Cheats, Hacks oder Modifikationen**, die das Spiel verfälschen.
-11. Respektiere andere Spieler und **verhalte dich fair**, unabhängig von ihrer Spielstärke.
-12. Teamarbeit und Kooperation sind erwünscht; gehe **respektvoll** mit deinen Teammitgliedern um.
-13. **Antisemitische, rassistische, sexistische, homophobe oder diskriminierende Äußerungen oder Handlungen sind nicht erlaubt**.
-14. Die Verwendung von Decals oder anderen Mitteln zur Herstellung oder Verbreitung von **Nazisymbolen, verbotenen Zeichen, Flaggen oder beleidigenden/verletzenden Darstellungen ist strengstens untersagt**.`;
-
-const addOnRules = `Das **Ausnutzen von Sicherheitslücken** ist **verboten**. Das Serverteam behält sich das Recht vor, nach gesundem Menschenverstand zu entscheiden (**Timeout, Kick, Ban**).`;
+const addOnRules = `Das Ausnutzen von Sicherheitslücken ist verboten. Das Serverteam behält sich das Recht vor, nach gesundem Menschenverstand zu entscheiden (Timeout, Kick, Ban).\n
+Die Regeln gelten sowohl für den Discord-Server, als auch für alle Mitglieder der Kampfgruppen ingame.\n
+Wenn du Hilfe benötigst oder Fragen hast wende dich an einen <@&${botconfig.uffzRoleId}>`;
 
 // Command structure
 export const data = new SlashCommandBuilder()
@@ -43,24 +43,19 @@ export async function execute(client, interaction) {
     if (!check) return;
 
     const discordRulesEmbed = new EmbedBuilder()
-        .setTitle("Server-Regeln")
+        .setTitle("Regeln")
         .setDescription(discordRules)
-        .setColor("#FF0000")
-
-    const inGameRulesEmbed = new EmbedBuilder()
-        .setTitle("Ingame-Regeln")
-        .setDescription(inGameRules)
-        .setColor("#FF0000")
+        .setColor("#FCD33F")
 
     const addOnRulesEmbed = new EmbedBuilder()
         .setTitle("\u200B")
         .setDescription(addOnRules)
-        .setColor("#0000FF")
+        .setColor("#FCD33F")
         .setTimestamp();
 
     await interaction.reply({
         content: `Regeln werden erstellt<a:sesam_loading:847835764650016830>`,
         ephemeral: true,
     });
-    await interaction.channel.send({ embeds: [discordRulesEmbed, inGameRulesEmbed, addOnRulesEmbed] });
+    await interaction.channel.send({ embeds: [discordRulesEmbed, addOnRulesEmbed] });
 }
