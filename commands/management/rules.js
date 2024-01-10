@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
 import {
-    EmbedBuilder,
-    SlashCommandBuilder,
-    PermissionsBitField,
+	EmbedBuilder,
+	SlashCommandBuilder,
+	PermissionsBitField,
 } from "discord.js";
 import { checkPerm } from "../../import_folders/functions.js";
 
@@ -31,31 +31,33 @@ Wenn du Hilfe benötigst oder Fragen hast wende dich an einen <@&${botconfig.uff
 
 // Command structure
 export const data = new SlashCommandBuilder()
-    .setName("rules")
-    .setDescription("Displays server rules");
+	.setName("rules")
+	.setDescription("Displays server rules");
 
 // Function to execute command
 export async function execute(client, interaction) {
-    const check = await checkPerm(
-        interaction,
-        PermissionsBitField.Flags.Administrator
-    );
-    if (!check) return;
+	const check = await checkPerm(
+		interaction,
+		PermissionsBitField.Flags.Administrator
+	);
+	if (!check) return;
 
-    const discordRulesEmbed = new EmbedBuilder()
-        .setTitle("Regeln")
-        .setDescription(discordRules)
-        .setColor("#FCD33F")
+	const discordRulesEmbed = new EmbedBuilder()
+		.setTitle("Regeln")
+		.setDescription(discordRules)
+		.setColor("#FCD33F");
 
-    const addOnRulesEmbed = new EmbedBuilder()
-        .setTitle("\u200B")
-        .setDescription(addOnRules)
-        .setColor("#FCD33F")
-        .setTimestamp();
+	const addOnRulesEmbed = new EmbedBuilder()
+		.setTitle("\u200B")
+		.setDescription(addOnRules)
+		.setColor("#FCD33F")
+		.setTimestamp();
 
-    await interaction.reply({
-        content: `Regeln werden erstellt<a:sesam_loading:847835764650016830>`,
-        ephemeral: true,
-    });
-    await interaction.channel.send({ embeds: [discordRulesEmbed, addOnRulesEmbed] });
+	await interaction.reply({
+		content: `Regeln werden erstellt<a:sesam_loading:847835764650016830>`,
+		ephemeral: true,
+	});
+	await interaction.channel.send({
+		embeds: [discordRulesEmbed, addOnRulesEmbed],
+	});
 }
