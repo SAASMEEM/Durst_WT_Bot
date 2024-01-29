@@ -32,17 +32,6 @@ export const data = new SlashCommandBuilder()
 							.setDescription("The user")
 							.setRequired(true)
 					)
-					.addIntegerOption((option) =>
-						option
-							.setName("role")
-							.setDescription("Bitte waehle die Kampfguppe aus")
-							.setRequired(true)
-							.setChoices(
-								{ name: "Mannschafter (Main)", value: 1 },
-								{ name: "Mannschafter (zweite)", value: 2 },
-								{ name: "Mannschafter (dritte)", value: 3 }
-							)
-					)
 					.addStringOption((option) =>
 						option
 							.setName("nickname")
@@ -96,6 +85,7 @@ export async function execute(client, interaction) {
 			const member = await interaction.guild.members.fetch(user).then();
 			// manage role
 			member.roles.remove(botconfig.cwRoleId);
+			member.roles.remove(botconfig.mannschafter1RoleId);
 			member.roles.remove(botconfig.trialRoleId);
 			// send feedback
 			interaction.reply({
@@ -108,7 +98,6 @@ export async function execute(client, interaction) {
 			const user = interaction.options.getUser("target");
 			const member = await interaction.guild.members.fetch(user).then();
 			// manage roles
-			member.roles.add(botconfig.cwRoleId);
 			member.roles.add(botconfig.trialRoleId);
 			interaction.reply({
 				content: `<@${user.id}> ist jetzt <@&${botconfig.mannschafter1RoleId}>!`,
