@@ -1,8 +1,5 @@
 import { readFileSync } from "node:fs";
-import {
-	SlashCommandBuilder,
-	PermissionsBitField,
-} from "discord.js";
+import { SlashCommandBuilder, PermissionsBitField } from "discord.js";
 import { checkPerm } from "../../import_folders/functions.js";
 
 const botconfig = JSON.parse(readFileSync("./config.json"));
