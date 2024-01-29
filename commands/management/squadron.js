@@ -1,6 +1,5 @@
 import { readFileSync } from "node:fs";
 import {
-	EmbedBuilder,
 	SlashCommandBuilder,
 	PermissionsBitField,
 } from "discord.js";
@@ -119,7 +118,6 @@ export async function execute(client, interaction) {
 				ephemeral: true,
 			});
 		}
-
 	}
 
 	if (interaction.options.getSubcommandGroup() === "clanwar") {
